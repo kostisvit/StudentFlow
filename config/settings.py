@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     
     #External
     'django_extensions',
+    'import_export',
 ]
 
 MIDDLEWARE = [
