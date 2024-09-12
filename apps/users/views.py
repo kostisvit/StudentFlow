@@ -17,10 +17,10 @@ def custom_login_view(request):
                 return redirect('home')  # Redirect to home page after successful login
         else:
             # If the form is invalid, the error message will be shown on the form
-            return render(request, 'users/login.html', {'form': form})
+            return render(request, 'app/users/login.html', {'form': form})
     else:
         form = EmailAuthenticationForm()
-    return render(request, 'users/login.html', {'form': form})
+    return render(request, 'app/users/login.html', {'form': form})
 
 
 

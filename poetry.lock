@@ -104,6 +104,94 @@ xlsx = ["tablib[xlsx] (==3.5.0)"]
 yaml = ["tablib[yaml] (==3.5.0)"]
 
 [[package]]
+name = "django-tailwind"
+version = "3.8.0"
+description = "Tailwind CSS Framework for Django projects"
+optional = false
+python-versions = ">=3.10.0,<4.0.0"
+files = [
+    {file = "django_tailwind-3.8.0-py3-none-any.whl", hash = "sha256:fa969c5b95d314b173fe2b2ed2cb2c03f2e2c94fdc2c01ff73a993fa159085da"},
+    {file = "django_tailwind-3.8.0.tar.gz", hash = "sha256:31c2f4a7879d685c2de0feaf0b63f246200b37337bea4d7dbafb59bc3f10c008"},
+]
+
+[package.dependencies]
+django = ">=3.2.14"
+
+[package.extras]
+reload = ["django-browser-reload (>=1.12.1,<2.0.0)"]
+
+[[package]]
+name = "node"
+version = "1.2.2"
+description = "Building data structures as node trees"
+optional = false
+python-versions = "*"
+files = [
+    {file = "node-1.2.2-py3-none-any.whl", hash = "sha256:93884cc7ed36f3b43c3c8a4f3370723b8a5fe4bb3e9a817a693a21ffb44206f4"},
+    {file = "node-1.2.2.tar.gz", hash = "sha256:4e164c76912c5b11397758ebbd27f032f116b32c306f0a90b235da466e188527"},
+]
+
+[package.dependencies]
+odict = ">=1.9.0"
+plumber = ">=1.5"
+setuptools = "*"
+"zope.component" = "*"
+"zope.deferredimport" = "*"
+"zope.deprecation" = "*"
+"zope.lifecycleevent" = "*"
+
+[[package]]
+name = "odict"
+version = "1.9.0"
+description = "Ordered Dictionary."
+optional = false
+python-versions = "*"
+files = [
+    {file = "odict-1.9.0-py3-none-any.whl", hash = "sha256:6e7ff07552d3c6cddffac565fdc7fd1fef0220b6c68f518128cab40f82114d97"},
+    {file = "odict-1.9.0.tar.gz", hash = "sha256:fc4a05c46fd3d574bf9cf89a3e23aa3f1584a246419a1f7365fc36f9f36c2b44"},
+]
+
+[package.dependencies]
+setuptools = "*"
+
+[[package]]
+name = "plumber"
+version = "1.7"
+description = "An alternative to mixin-based extension of classes."
+optional = false
+python-versions = "*"
+files = [
+    {file = "plumber-1.7-py3-none-any.whl", hash = "sha256:4e734ce006b2b4367ce6f7e22c854f434f09eebfe9679b91758745c6184ddc11"},
+    {file = "plumber-1.7.tar.gz", hash = "sha256:bde8d6323a8b3bdfc49ae3fa054c0801408a09a2c37e319ae9f0a4d49e4d5a23"},
+]
+
+[package.dependencies]
+setuptools = "*"
+
+[package.extras]
+test = ["zope.interface"]
+
+[[package]]
+name = "setuptools"
+version = "74.1.2"
+description = "Easily download, build, install, upgrade, and uninstall Python packages"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "setuptools-74.1.2-py3-none-any.whl", hash = "sha256:5f4c08aa4d3ebcb57a50c33b1b07e94315d7fc7230f7115e47fc99776c8ce308"},
+    {file = "setuptools-74.1.2.tar.gz", hash = "sha256:95b40ed940a1c67eb70fc099094bd6e99c6ee7c23aa2306f4d2697ba7916f9c6"},
+]
+
+[package.extras]
+check = ["pytest-checkdocs (>=2.4)", "pytest-ruff (>=0.2.1)", "ruff (>=0.5.2)"]
+core = ["importlib-metadata (>=6)", "importlib-resources (>=5.10.2)", "jaraco.text (>=3.7)", "more-itertools (>=8.8)", "packaging (>=24)", "platformdirs (>=2.6.2)", "tomli (>=2.0.1)", "wheel (>=0.43.0)"]
+cover = ["pytest-cov"]
+doc = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "pyproject-hooks (!=1.1)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-inline-tabs", "sphinx-lint", "sphinx-notfound-page (>=1,<2)", "sphinx-reredirects", "sphinxcontrib-towncrier", "towncrier (<24.7)"]
+enabler = ["pytest-enabler (>=2.2)"]
+test = ["build[virtualenv] (>=1.0.3)", "filelock (>=3.4.0)", "ini2toml[lite] (>=0.14)", "jaraco.develop (>=7.21)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "jaraco.test", "packaging (>=23.2)", "pip (>=19.1)", "pyproject-hooks (!=1.1)", "pytest (>=6,!=8.1.*)", "pytest-home (>=0.5)", "pytest-perf", "pytest-subprocess", "pytest-timeout", "pytest-xdist (>=3)", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel (>=0.44.0)"]
+type = ["importlib-metadata (>=7.0.2)", "jaraco.develop (>=7.21)", "mypy (==1.11.*)", "pytest-mypy"]
+
+[[package]]
 name = "sqlparse"
 version = "0.5.1"
 description = "A non-validating SQL parser."
@@ -150,7 +238,264 @@ files = [
     {file = "tzdata-2024.1.tar.gz", hash = "sha256:2674120f8d891909751c38abcdfd386ac0a5a1127954fbc332af6b5ceae07efd"},
 ]
 
+[[package]]
+name = "zope-component"
+version = "6.0"
+description = "Zope Component Architecture"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "zope.component-6.0-py3-none-any.whl", hash = "sha256:96d0a04db39643caf2dfaec152340f3e914df1dc3fa32fbb913782620dc6c3c6"},
+    {file = "zope.component-6.0.tar.gz", hash = "sha256:9a0a0472ad201b94b4fe6741ce9ac2c30b8bb22c516077bf03692dec4dfb6906"},
+]
+
+[package.dependencies]
+setuptools = "*"
+"zope.event" = "*"
+"zope.hookable" = ">=4.2.0"
+"zope.interface" = ">=5.3"
+
+[package.extras]
+docs = ["Sphinx", "ZODB", "repoze.sphinx.autointerface"]
+mintests = ["zope.configuration", "zope.i18nmessageid", "zope.testing", "zope.testrunner"]
+persistentregistry = ["persistent"]
+security = ["zope.location", "zope.proxy", "zope.security"]
+test = ["persistent", "zope.configuration", "zope.i18nmessageid", "zope.location", "zope.proxy", "zope.security", "zope.testing", "zope.testrunner"]
+zcml = ["zope.configuration", "zope.i18nmessageid"]
+
+[[package]]
+name = "zope-deferredimport"
+version = "5.0"
+description = "zope.deferredimport allows you to perform imports names that will only be resolved when used in the code."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "zope.deferredimport-5.0-py3-none-any.whl", hash = "sha256:b26e013b02fd1ee3e26510db66a737105128e48a0d348490f7c901ffd1928f25"},
+    {file = "zope.deferredimport-5.0.tar.gz", hash = "sha256:3abbf0e18c1f1765914ecd1d41b549e4d045b21b28e4065fb0c1de0ad736b2c3"},
+]
+
+[package.dependencies]
+setuptools = "*"
+"zope.proxy" = "*"
+
+[package.extras]
+docs = ["Sphinx", "repoze.sphinx.autointerface"]
+test = ["zope.testrunner"]
+
+[[package]]
+name = "zope-deprecation"
+version = "5.0"
+description = "Zope Deprecation Infrastructure"
+optional = false
+python-versions = ">= 3.7"
+files = [
+    {file = "zope.deprecation-5.0-py3-none-any.whl", hash = "sha256:28c2ee983812efb4676d33c7a8c6ade0df191c1c6d652bbbfe6e2eeee067b2d4"},
+    {file = "zope.deprecation-5.0.tar.gz", hash = "sha256:b7c32d3392036b2145c40b3103e7322db68662ab09b7267afe1532a9d93f640f"},
+]
+
+[package.dependencies]
+setuptools = "*"
+
+[package.extras]
+docs = ["Sphinx"]
+test = ["zope.testrunner"]
+
+[[package]]
+name = "zope-event"
+version = "5.0"
+description = "Very basic event publishing system"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "zope.event-5.0-py3-none-any.whl", hash = "sha256:2832e95014f4db26c47a13fdaef84cef2f4df37e66b59d8f1f4a8f319a632c26"},
+    {file = "zope.event-5.0.tar.gz", hash = "sha256:bac440d8d9891b4068e2b5a2c5e2c9765a9df762944bda6955f96bb9b91e67cd"},
+]
+
+[package.dependencies]
+setuptools = "*"
+
+[package.extras]
+docs = ["Sphinx"]
+test = ["zope.testrunner"]
+
+[[package]]
+name = "zope-hookable"
+version = "6.0"
+description = "Zope hookable"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "zope.hookable-6.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:2d7c782bbfed7aa4846af2a67269718563daa904b33077d97665e5644b08ce2b"},
+    {file = "zope.hookable-6.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:351cc91c0bc4c9a6d537c033179be22b613e3a60be42ba08f863490c32f736cf"},
+    {file = "zope.hookable-6.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7ca296b1fb0c5f69e8c0e5a90a5a953e456931016fd1f8c513b3baa3751b0640"},
+    {file = "zope.hookable-6.0-cp310-cp310-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:6cd064359ba8c356b1bdb6c84df028ce2f6402f3703a930c4e1bab25d3ff7fff"},
+    {file = "zope.hookable-6.0-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:cd6fb03c174a4e20f4faec9ff22bace922bb59adb44078aebec862605bbcee92"},
+    {file = "zope.hookable-6.0-cp310-cp310-win_amd64.whl", hash = "sha256:3875bfb6d113ecb41c07dee67be16f5a0bbbae13199b9979e2bbeec97d97ec4b"},
+    {file = "zope.hookable-6.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:b99ddae52522dce614a0323812df944b1835d97f254f81c46b33c3bcf82dadf5"},
+    {file = "zope.hookable-6.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:c0db442d2e78d5ea1afa5f1c2537bf7201155ec8963abc8d0f3b9257b52caffb"},
+    {file = "zope.hookable-6.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:20936873c8b17f903bc8b63ca13ec6c492665b48067988e4359ddd5d1c5b6f2f"},
+    {file = "zope.hookable-6.0-cp311-cp311-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:7c5a8204992fe677bffa0e5e190cb031aef74994c658a0402a338eed7b58fe8d"},
+    {file = "zope.hookable-6.0-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ad48a4db8d12701759b93f3cec55aff9f53626dff12ec415144c2d0ee719b965"},
+    {file = "zope.hookable-6.0-cp311-cp311-win_amd64.whl", hash = "sha256:2d7bfcb11356e4dbb3e24943f0055819ff264dada4dc0b68ca012e5a1ff5b474"},
+    {file = "zope.hookable-6.0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:ba0e86642d5b33b5edf39d28da26ed34545780a2720aa79e6dda94402c3fc457"},
+    {file = "zope.hookable-6.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:968f196347fa1bd9ffc15e1d1c9d250f46137d36b75bdd2a482c51c5fc314402"},
+    {file = "zope.hookable-6.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:4d3200d955c4182223f04593fef4add9771d4156d4ba6f034e65396f3b132139"},
+    {file = "zope.hookable-6.0-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:f58a129a63289c44ba84ae951019f8a60d34c4d948350be7fa2abda5106f8498"},
+    {file = "zope.hookable-6.0-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ee7ff109b2b4793137b6bd82ddc3516cbd643e67813e11e31e0bf613b387d2ec"},
+    {file = "zope.hookable-6.0-cp312-cp312-win_amd64.whl", hash = "sha256:1a97f4a46d87ee726d48f3058062e2a1570f136ba9aa788e9c0bcdd5e511609d"},
+    {file = "zope.hookable-6.0-cp37-cp37m-macosx_11_0_x86_64.whl", hash = "sha256:78e4953334592c42aefa3e74f74d4c5b168a70d2c2d8cd945eb1a2f442eebee5"},
+    {file = "zope.hookable-6.0-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:aaac43ac9bf9359db5170627f645c6442e9cf74414f8299ee217e4cfb259bc5c"},
+    {file = "zope.hookable-6.0-cp37-cp37m-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:c2cf62d40f689d4bfbe733e3ed41ed2b557d011d9050185abb2bc3e96130677d"},
+    {file = "zope.hookable-6.0-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6ff30e7b24859974f2ff3f00b4564c4c8692730690c4c46f0019ef9b42b1f795"},
+    {file = "zope.hookable-6.0-cp37-cp37m-win_amd64.whl", hash = "sha256:5efffb4417604561ff0bae5c80ad3aa2ecd2145c5a8c3a4b0a4a1f55017e95a2"},
+    {file = "zope.hookable-6.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:2968b37457079678a9d1bd9ef09ff1a224d4234e02120792a9e4e00117193df3"},
+    {file = "zope.hookable-6.0-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:12959a3d70c35a6b835e69d9f70008d3a31e324d2f2d13536c8533f648fa8a96"},
+    {file = "zope.hookable-6.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:070776c9f36b99fb0df5af2a762a4d4f77e568df36637797e2e8a41c9d8d290d"},
+    {file = "zope.hookable-6.0-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:6f4d8b99c1d52e3da1b122e42e7c07eb02f6468cd315f0b6811f426586b7aa8c"},
+    {file = "zope.hookable-6.0-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ee1e32f54db69abfb6c7e227e65452d2b92e1cefae93a51106419ec623a845ff"},
+    {file = "zope.hookable-6.0-cp38-cp38-win_amd64.whl", hash = "sha256:ff5ee2df0dc3ccc524772e00d5a1991c3b8d942cc12fd503a7bf9dc35a040779"},
+    {file = "zope.hookable-6.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:6d5f83e626caa7ed2814609b446dcc6a3abb19db729bc67671c3eef2265006fd"},
+    {file = "zope.hookable-6.0-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:7761c5fdf97a274ce8576002a2444ff45645327179ee1bafde5d5d743d0d3556"},
+    {file = "zope.hookable-6.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:e21dc34ba2453d798cf3cab92efb4994e55659c19a1f77d4cf0c2a0067e78583"},
+    {file = "zope.hookable-6.0-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:55a0a9d62ea907861fd79ae39e86f1d9e755064543e46c5430aa586c1b5a4854"},
+    {file = "zope.hookable-6.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:86bc17b6b3d1d9274168318cf171d509cbe6c8a8bdd8be0282291dac4a768de0"},
+    {file = "zope.hookable-6.0-cp39-cp39-win_amd64.whl", hash = "sha256:f2eeba6e2fd69e9e72a003edcceed7ce4614ad1c1e866bf168c92540c3658343"},
+    {file = "zope.hookable-6.0.tar.gz", hash = "sha256:1668993d40a7cfdc867843dd5725929e7f83a5b0c195c709af1daef8274f43cb"},
+]
+
+[package.dependencies]
+setuptools = "*"
+
+[package.extras]
+docs = ["Sphinx", "sphinx_rtd_theme"]
+test = ["zope.testing", "zope.testrunner"]
+testing = ["coverage", "zope.testing", "zope.testrunner"]
+
+[[package]]
+name = "zope-interface"
+version = "7.0.3"
+description = "Interfaces for Python"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "zope.interface-7.0.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:9b9369671a20b8d039b8e5a1a33abd12e089e319a3383b4cc0bf5c67bd05fe7b"},
+    {file = "zope.interface-7.0.3-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:db6237e8fa91ea4f34d7e2d16d74741187e9105a63bbb5686c61fea04cdbacca"},
+    {file = "zope.interface-7.0.3-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:53d678bb1c3b784edbfb0adeebfeea6bf479f54da082854406a8f295d36f8386"},
+    {file = "zope.interface-7.0.3-cp310-cp310-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:3aa8fcbb0d3c2be1bfd013a0f0acd636f6ed570c287743ae2bbd467ee967154d"},
+    {file = "zope.interface-7.0.3-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6195c3c03fef9f87c0dbee0b3b6451df6e056322463cf35bca9a088e564a3c58"},
+    {file = "zope.interface-7.0.3-cp310-cp310-win_amd64.whl", hash = "sha256:11fa1382c3efb34abf16becff8cb214b0b2e3144057c90611621f2d186b7e1b7"},
+    {file = "zope.interface-7.0.3-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:af94e429f9d57b36e71ef4e6865182090648aada0cb2d397ae2b3f7fc478493a"},
+    {file = "zope.interface-7.0.3-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:6dd647fcd765030638577fe6984284e0ebba1a1008244c8a38824be096e37fe3"},
+    {file = "zope.interface-7.0.3-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1bee1b722077d08721005e8da493ef3adf0b7908e0cd85cc7dc836ac117d6f32"},
+    {file = "zope.interface-7.0.3-cp311-cp311-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:2545d6d7aac425d528cd9bf0d9e55fcd47ab7fd15f41a64b1c4bf4c6b24946dc"},
+    {file = "zope.interface-7.0.3-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6d04b11ea47c9c369d66340dbe51e9031df2a0de97d68f442305ed7625ad6493"},
+    {file = "zope.interface-7.0.3-cp311-cp311-win_amd64.whl", hash = "sha256:064ade95cb54c840647205987c7b557f75d2b2f7d1a84bfab4cf81822ef6e7d1"},
+    {file = "zope.interface-7.0.3-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:3fcdc76d0cde1c09c37b7c6b0f8beba2d857d8417b055d4f47df9c34ec518bdd"},
+    {file = "zope.interface-7.0.3-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:3d4b91821305c8d8f6e6207639abcbdaf186db682e521af7855d0bea3047c8ca"},
+    {file = "zope.interface-7.0.3-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:35062d93bc49bd9b191331c897a96155ffdad10744ab812485b6bad5b588d7e4"},
+    {file = "zope.interface-7.0.3-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:c96b3e6b0d4f6ddfec4e947130ec30bd2c7b19db6aa633777e46c8eecf1d6afd"},
+    {file = "zope.interface-7.0.3-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7e0c151a6c204f3830237c59ee4770cc346868a7a1af6925e5e38650141a7f05"},
+    {file = "zope.interface-7.0.3-cp312-cp312-win_amd64.whl", hash = "sha256:3de1d553ce72868b77a7e9d598c9bff6d3816ad2b4cc81c04f9d8914603814f3"},
+    {file = "zope.interface-7.0.3-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ab985c566a99cc5f73bc2741d93f1ed24a2cc9da3890144d37b9582965aff996"},
+    {file = "zope.interface-7.0.3-cp313-cp313-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:d976fa7b5faf5396eb18ce6c132c98e05504b52b60784e3401f4ef0b2e66709b"},
+    {file = "zope.interface-7.0.3-cp313-cp313-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:21a207c6b2c58def5011768140861a73f5240f4f39800625072ba84e76c9da0b"},
+    {file = "zope.interface-7.0.3-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:382d31d1e68877061daaa6499468e9eb38eb7625d4369b1615ac08d3860fe896"},
+    {file = "zope.interface-7.0.3-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:2c4316a30e216f51acbd9fb318aa5af2e362b716596d82cbb92f9101c8f8d2e7"},
+    {file = "zope.interface-7.0.3-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:01e6e58078ad2799130c14a1d34ec89044ada0e1495329d72ee0407b9ae5100d"},
+    {file = "zope.interface-7.0.3-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:799ef7a444aebbad5a145c3b34bff012b54453cddbde3332d47ca07225792ea4"},
+    {file = "zope.interface-7.0.3-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d3b7ce6d46fb0e60897d62d1ff370790ce50a57d40a651db91a3dde74f73b738"},
+    {file = "zope.interface-7.0.3-cp38-cp38-win_amd64.whl", hash = "sha256:f418c88f09c3ba159b95a9d1cfcdbe58f208443abb1f3109f4b9b12fd60b187c"},
+    {file = "zope.interface-7.0.3-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:84f8794bd59ca7d09d8fce43ae1b571be22f52748169d01a13d3ece8394d8b5b"},
+    {file = "zope.interface-7.0.3-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:7d92920416f31786bc1b2f34cc4fc4263a35a407425319572cbf96b51e835cd3"},
+    {file = "zope.interface-7.0.3-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:95e5913ec718010dc0e7c215d79a9683b4990e7026828eedfda5268e74e73e11"},
+    {file = "zope.interface-7.0.3-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:1eeeb92cb7d95c45e726e3c1afe7707919370addae7ed14f614e22217a536958"},
+    {file = "zope.interface-7.0.3-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ecd32f30f40bfd8511b17666895831a51b532e93fc106bfa97f366589d3e4e0e"},
+    {file = "zope.interface-7.0.3-cp39-cp39-win_amd64.whl", hash = "sha256:5112c530fa8aa2108a3196b9c2f078f5738c1c37cfc716970edc0df0414acda8"},
+    {file = "zope.interface-7.0.3.tar.gz", hash = "sha256:cd2690d4b08ec9eaf47a85914fe513062b20da78d10d6d789a792c0b20307fb1"},
+]
+
+[package.dependencies]
+setuptools = "*"
+
+[package.extras]
+docs = ["Sphinx", "repoze.sphinx.autointerface", "sphinx-rtd-theme"]
+test = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
+testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
+
+[[package]]
+name = "zope-lifecycleevent"
+version = "5.0"
+description = "Object life-cycle events"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "zope.lifecycleevent-5.0-py3-none-any.whl", hash = "sha256:28431a461522e7a49f8e1e4d7541a73566747c70300ff4b6dee29e021e70540b"},
+    {file = "zope.lifecycleevent-5.0.tar.gz", hash = "sha256:ead3fb496e7614f9b569d16dad4b78052b0ac21875bad8d66ca350352d9b6f9d"},
+]
+
+[package.dependencies]
+setuptools = "*"
+"zope.event" = "*"
+"zope.interface" = "*"
+
+[package.extras]
+docs = ["repoze.sphinx.autointerface", "sphinx-rtd-theme"]
+test = ["zope.component", "zope.configuration", "zope.testing", "zope.testrunner"]
+
+[[package]]
+name = "zope-proxy"
+version = "5.3"
+description = "Generic Transparent Proxies"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "zope.proxy-5.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:c2ba567b1472d17b564393c2b3f32e989b5b17b846cbf5b2c6d760c489835557"},
+    {file = "zope.proxy-5.3-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:51f3aa55101cb6f9976979dbd6792c0727590a4089629c5bef44bc3797451456"},
+    {file = "zope.proxy-5.3-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:a962aca6fdeb33d7c6d61744b49507962e61de9c6ec4406a0b757c73213d1b07"},
+    {file = "zope.proxy-5.3-cp310-cp310-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:800079cea5061eeeb167f88d356c73635c4a908ee4f5d2f1bf2ab91037769a6f"},
+    {file = "zope.proxy-5.3-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7d50505389c59cf497083216c6d1cbbed7991b3f29b24e47416ca9ae26d46183"},
+    {file = "zope.proxy-5.3-cp310-cp310-win_amd64.whl", hash = "sha256:11422389f279b35b743e572a544d4bb33254ae931d95ba5b534d1b33a3e596b0"},
+    {file = "zope.proxy-5.3-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:4853b4d3f464cc5e17753e84910c45f0993dba7dfcd60049ecf8fb0631969a32"},
+    {file = "zope.proxy-5.3-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:ed0294119fdb7dcc57056e23e72a28af5988d405ab7d5e9b97ece57ba6a96be2"},
+    {file = "zope.proxy-5.3-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b947fc51aa63d0a9c4e0e950df19db867bec0d4c76d9a87ff0dcd5b40cab6bb5"},
+    {file = "zope.proxy-5.3-cp311-cp311-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:c0afdfa4f180e0285b761d5701c6f083b0001ba3b713effe611cd0617a9d0d90"},
+    {file = "zope.proxy-5.3-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7da8f77b439c83c9099f7abed460b009fac57bad87b4020aa8d8030a7134f294"},
+    {file = "zope.proxy-5.3-cp311-cp311-win_amd64.whl", hash = "sha256:e40c889e69116cc8fee9c48a1a77a8c64fc5b0556902ad0c2fac162e3a7be5bc"},
+    {file = "zope.proxy-5.3-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:2e2d31cec5cd98386fd0fb37ed14f83f8b9bfbaf7009ac6fcebafa052adce256"},
+    {file = "zope.proxy-5.3-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:14a66957a74e1c2b9d4fd3a893e048349d1f134d6c7093ba63c333ffca1d4ae7"},
+    {file = "zope.proxy-5.3-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:af7f36bd57c429a28216c79b91a03bdc514f49b7fbf4e5821986c8420d58971b"},
+    {file = "zope.proxy-5.3-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:9c4c484a8a72512d56452638cddfc2f5f3d31b7c90f7e23ca68849a682079c65"},
+    {file = "zope.proxy-5.3-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ae7f6c34e719d3aced8bbb93d0f39eb36d9c262fca7d61ea6c754865966008ab"},
+    {file = "zope.proxy-5.3-cp312-cp312-win_amd64.whl", hash = "sha256:b34ef34f2027ff37981c730e027633de3bc2fa57d96ca7832b225119ac41bed3"},
+    {file = "zope.proxy-5.3-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f5f1349ee58a7c1f15e1a12c34c600202a59630b40e337befe50e3c9d4375d9e"},
+    {file = "zope.proxy-5.3-cp313-cp313-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:b0cadc4d28b3fc6f4c03fb6e31cce52aa0499b10f488fa180ba2d363e636fb37"},
+    {file = "zope.proxy-5.3-cp313-cp313-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:725cc65ae2254e79f4010e3d895f5e0b30da0daeeb77e4fdc2c8ebcee3da8d77"},
+    {file = "zope.proxy-5.3-cp37-cp37m-macosx_11_0_x86_64.whl", hash = "sha256:2224189e5b2072d66c97d4cc6dbfcf282c77e8c5d1cc5480825fc96f795e17d8"},
+    {file = "zope.proxy-5.3-cp37-cp37m-win_amd64.whl", hash = "sha256:3e73b0d2abac72d602e5ca1b3a15799647dca2ed5879f98a39e9fb0e21935bf0"},
+    {file = "zope.proxy-5.3-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:d598c4cb0172a29c98ad10228a16540558ba9060f68b83dd0740f84eecf804f0"},
+    {file = "zope.proxy-5.3-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:4dbc67cd386fa17c6de94de3a3161e111bbfadbbc9eaf4e6a6c74559b48f0ac5"},
+    {file = "zope.proxy-5.3-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:471c702e4fd1909bb36f82135d2215e89c817efab424522b71a8a54877741eec"},
+    {file = "zope.proxy-5.3-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:141122f3b282524b7d726f4fe16b3c2ffde03aee790591d60c28b121c9f3c806"},
+    {file = "zope.proxy-5.3-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a2bd26cd82593202260882043a8913fd2babbf75ef5d3a0ef1d74fdf1487586b"},
+    {file = "zope.proxy-5.3-cp38-cp38-win_amd64.whl", hash = "sha256:e55e199987cb11d3d902466edf61c5ed952c65abde59e8bd912981f70c604a19"},
+    {file = "zope.proxy-5.3-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:163f19b979102a8f6f43d919f47edfa6d5d1d151f57b76dafa445f667962356d"},
+    {file = "zope.proxy-5.3-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:fb34cf86e294bfe680c8982a57c23f518b3a468bf516868288a0ae661ebaa7a7"},
+    {file = "zope.proxy-5.3-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:25fb4b6665738d02ee2594f386122b2d358b7abae68c7b3b34721b784e407692"},
+    {file = "zope.proxy-5.3-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:8f37398acbf3eb6d333e06e71375c3b3f792251f5eaaf4f2e85d35c2a7523f13"},
+    {file = "zope.proxy-5.3-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ffa3cda0b7448042f70afa705ed724f95506870f91086400d2eb556821364ee4"},
+    {file = "zope.proxy-5.3-cp39-cp39-win_amd64.whl", hash = "sha256:a96ead15dadf334e117fe2357625c93f044d286d4a728d633bc6a5aee86e4703"},
+    {file = "zope.proxy-5.3.tar.gz", hash = "sha256:ad24d28ebc6ade9fbebe0cc4bdc4ec50d1dee41a453e331afd2a1260be967608"},
+]
+
+[package.dependencies]
+setuptools = "*"
+"zope.interface" = "*"
+
+[package.extras]
+docs = ["Sphinx", "repoze.sphinx.autointerface", "sphinx_rtd_theme"]
+test = ["zope.security", "zope.testrunner"]
+
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "01a728ac2f101b554126335880a0e2eee718b5ccd58823531a13f77725b43132"
+content-hash = "47b1cd6c4f6dcdfdaab287b1021f0fc572e6f47e0ab02c19dc8af90a6ed60559"
