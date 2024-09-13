@@ -1,4 +1,5 @@
 from django.urls import path
+from . import views
 from .views import *
 #from .views import CustomUserUpdateView, CustomUserCreateView,CustomUserDeleteView,CustomUserDashboardView,CustomUserStaffView,CustomUserStaffCreateView,password_change,ajax_user_search,upload_files,DocumentListView,custom_login_view,UserFileDeleteView
 
@@ -10,8 +11,8 @@ from .views import *
 
 
 urlpatterns = [
-    path('login/', custom_login_view, name='login'),
-    path('logout/', custom_logout, name='logout'),
+    path('login/', views.custom_login_view, name='login'),
+    path('logout/', views.custom_logout, name='logout'),
     #path('sentry-debug/', trigger_error),
     # path('users/staff', CustomUserStaffView.as_view(), name='staff_list'),
     # path('users/staff/new', CustomUserStaffCreateView.as_view(), name='staff_new'),
