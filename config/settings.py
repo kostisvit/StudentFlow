@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     
     #External
     'django_extensions',
+    'django_filters',
+    'widget_tweaks',
     'import_export',
     'tailwind',
     'theme'
