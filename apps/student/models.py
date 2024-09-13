@@ -1,6 +1,7 @@
 import random
 from django.urls import reverse
 from django.db import models
+from django.utils import timezone
 from organization.models import Organization
 from django_extensions.db.models import TimeStampedModel
 from django.utils.translation import gettext_lazy as _
@@ -49,3 +50,17 @@ class Course(TimeStampedModel):
 
     def __str__(self):
         return self.title
+
+
+class Subscription(TimeStampedModel):
+    user = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    is_online = models.BooleanField(default=True)
+    start_date = models.DateField(default=timezone.now)
+    days = models.PositiveIntegerField(default=30)
+    end_date = models.DateField(editable=False)
+    is_paid = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.member.user}"
