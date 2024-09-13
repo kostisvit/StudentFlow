@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     
     #Local
     'users',
+    'organization',
     
     #External
     'django_extensions',
