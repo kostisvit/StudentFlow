@@ -3,6 +3,9 @@ from django.contrib.auth import logout
 from .forms import EmailAuthenticationForm
 from django.contrib.auth import authenticate, login
 
+from django.http import HttpResponse
+def fake_view(request):
+    return HttpResponse("This is a fake view for testing purposes.")
 
 # Login user function
 def custom_login_view(request):

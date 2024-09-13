@@ -13,13 +13,13 @@ class UserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'date_of_birth','phone_number','postal_code','address','city','country','gender',)}),
-        ('Permissions', {'fields': ('course','is_staff', 'is_active','groups','is_company_owner', 'user_permissions')}),
+        ('Permissions', {'fields': ('is_staff', 'is_active','groups','is_company_owner', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('first_name', 'last_name', 'email',  'is_staff','course', 'is_active','is_company_owner','date_joined','date_of_birth','phone_number','address','city','country','gender','date_joined','postal_code','groups', 'user_permissions')}
+            'fields': ('first_name', 'last_name', 'email',  'is_staff', 'is_active','is_company_owner','date_joined','date_of_birth','phone_number','address','city','country','gender','date_joined','postal_code','groups', 'user_permissions')}
         ),
     )
     search_fields = ('email',)

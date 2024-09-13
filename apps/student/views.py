@@ -4,6 +4,9 @@ from .filters import StudentFilter
 from django_filters.views import FilterView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
+
+
+
 # Member list view
 class StudentListView(LoginRequiredMixin,FilterView):
     model = Student

@@ -83,10 +83,10 @@ class User(TimeStampedModel,AbstractBaseUser, PermissionsMixin):
         return ", ".join(course.title for course in self.course.all())
     
     def get_absolute_url(self):
-        return reverse('user_edit', args=[str(self.id)])
+        return reverse('user_student_edit', args=[str(self.id)])
     
     def get_absolute_url_delete(self):
-        return reverse('user_delete', args=[str(self.id)])
+        return reverse('user_student_delete', args=[str(self.id)])
 
     def get_absolute_url_dashboard(self):
-        return reverse('user_dashboard', args=[str(self.id)])
+        return reverse('user_student_dashboard', args=[str(self.id)])
