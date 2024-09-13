@@ -64,3 +64,9 @@ class Subscription(TimeStampedModel):
 
     def __str__(self):
         return f"{self.member.user}"
+    
+    def get_absolute_url_edit(self):
+        return reverse("subscription_edit", args=[str(self.id)])
+    
+    def get_absolute_url_delete(self):
+        return reverse("subscription_delete", args=[str(self.id)])
