@@ -16,7 +16,7 @@ urlpatterns = [
     #path('sentry-debug/', trigger_error),
     # path('users/staff', CustomUserStaffView.as_view(), name='staff_list'),
     # path('users/staff/new', CustomUserStaffCreateView.as_view(), name='staff_new'),
-    # path('users/member/new/', CustomUserCreateView.as_view(), name='member_new' ),
+     path('users/student/new/', StudentUserCreateView.as_view(), name='student_new' ),
      path('users/student/<int:pk>/edit/', views.fake_view, name='user_student_edit'),
      path('users/student/<int:pk>/delete/', views.fake_view,  name='user_student_delete'),
     # path('users/members/export', views.Export_data, name='members_list_export'),

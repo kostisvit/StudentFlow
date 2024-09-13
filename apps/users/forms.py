@@ -4,7 +4,7 @@ from .models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
-#from company.models import Company
+from organization.models import Organization
 from django.forms import ModelChoiceField
 from datetime import date
 from .choices import gender_choice
@@ -27,24 +27,24 @@ class EmailAuthenticationForm(AuthenticationForm):
 
 # Custom User-Student New Form
 class UserCreationForm(forms.ModelForm):
-    #company = ModelChoiceField(queryset=Company.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}),label='Εταιρεία',required=False)
+    organization = ModelChoiceField(queryset=Organization.objects.all(),widget=forms.Select(attrs={'class': 'bg-white-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'}),label='Εταιρεία',required=False)
     date_joined = forms.DateField(initial=date.today,widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': 'Select a date'}),label='Ημ. Εγγραφης')
     date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': 'Select a date'}),label='Ημ. Γέννησης')
     gender = forms.ChoiceField(choices=gender_choice,widget=forms.Select(attrs={'class': 'form-control'}),label='Φύλο')
-    first_name = forms.CharField(label='Όνομα')
-    last_name = forms.CharField(label='Επώνυμο')
-    phone_number = forms.CharField(label='Τηλ. Επικ.',required=False)
+    first_name = forms.CharField(label='Όνομα', widget=forms.TextInput(attrs={'class':'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'}))
+    last_name = forms.CharField(label='Επώνυμο',widget=forms.TextInput(attrs={'class':'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'}))
+    phone_number = forms.CharField(label='Τηλ. Επικ.',widget=forms.TextInput(attrs={'class':'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'}),required=False)
     address = forms.CharField(label='Διεύθυνση',required=False)
     city = forms.CharField(label='Πόλη',required=False)
     country = forms.CharField(label='Χώρα',required=False)
     postal_code = forms.CharField(label='ΤΚ')
     is_active = forms.BooleanField(label='Κατάσταση', initial=True,required=False)
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'autocomplete': 'off','class': 'custom-email-field'}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'autocomplete': 'off','class':'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'}))
     is_student = forms.BooleanField(initial=True,label='Μαθητής',required=False)
     
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('email','first_name','last_name','date_joined','date_of_birth','phone_number','address','city','postal_code','country','gender','is_active','is_student')
+        fields = ('organization','email','first_name','last_name','date_joined','date_of_birth','phone_number','address','city','postal_code','country','gender','is_active','is_student')
 
     
     def __init__(self, *args, **kwargs):
