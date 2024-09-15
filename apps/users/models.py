@@ -55,7 +55,7 @@ class User(TimeStampedModel,AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_company_owner = models.BooleanField(default=False)
-    date_joined = models.DateTimeField(default=timezone.now)
+    #date_joined = models.DateTimeField(default=timezone.now)
     date_of_birth = models.DateField(null=True)
     phone_number = models.CharField(max_length=15, unique=True,null=True, blank=True)
     address = models.CharField(max_length=255)

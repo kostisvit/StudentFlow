@@ -43,7 +43,7 @@ def custom_logout(request):
 
 # Student User create
 class StudentUserCreateView(LoginRequiredMixin,CreateView):
-    model = UserModel
+    model = get_user_model()
     form_class = UserCreationForm
     template_name = "app/student/student_new.html"
     success_url = reverse_lazy('home')
@@ -52,10 +52,10 @@ class StudentUserCreateView(LoginRequiredMixin,CreateView):
         print(form.errors)
         return super().form_invalid(form)
     
-    # def get_form_kwargs(self):
-    #     kwargs = super().get_form_kwargs()
-    #     kwargs['user'] = self.request.user
-    #     return kwargs
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
     
     def get_initial(self):
         initial = super().get_initial()

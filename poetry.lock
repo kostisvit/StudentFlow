@@ -49,6 +49,21 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-browser-reload"
+version = "1.15.0"
+description = "Automatically reload your browser in development."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "django_browser_reload-1.15.0-py3-none-any.whl", hash = "sha256:55b72335568b988e3a2beddb1703db6951516355925d3fc9c587f0bbd9e8efaa"},
+    {file = "django_browser_reload-1.15.0.tar.gz", hash = "sha256:ed094386c587a95ff4f34a0d302ecd58f15e919784c4c76a97f7cb977446104c"},
+]
+
+[package.dependencies]
+asgiref = ">=3.6"
+django = ">=3.2"
+
+[[package]]
 name = "django-environ"
 version = "0.11.2"
 description = "A package that allows you to utilize 12factor inspired environment variables to configure your Django application."
@@ -130,6 +145,7 @@ files = [
 
 [package.dependencies]
 django = ">=3.2.14"
+django-browser-reload = {version = ">=1.12.1,<2.0.0", optional = true, markers = "extra == \"reload\""}
 
 [package.extras]
 reload = ["django-browser-reload (>=1.12.1,<2.0.0)"]
@@ -523,4 +539,4 @@ test = ["zope.security", "zope.testrunner"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "78f17acc2363f1b07a46ab6c5851977f4ab547d342a9d2c7e80e6a85bc32562e"
+content-hash = "7cb876728baedf4a8f70cf112db481c4635a632b336ce4a0ee45d870d1c653f4"

@@ -55,7 +55,7 @@
             <td class="px-6 py-4" data-label="Email">{{ student.user.email }}</td>
             <td class="px-6 py-4" data-label="Τηλ. Επικ.">{{ student.user.phone_number }}</td>
             <td class="px-6 py-4" data-label="Φύλλο">{{ student.user.gender }}</td>
-            <td class="px-6 py-4" data-label="Εγγραφή">{{ student.user.date_joined|date:'d/m/Y' }}</td>
+            <td class="px-6 py-4" data-label="Εγγραφή">{{ student.user.created|date:'d/m/Y' }}</td>
             <td class="px-6 py-4" data-label="Κωδ.Μέλους">#{{ student.membership_number }}</td>
             {% if student.user.is_active == True %}
             <td data-label="Κατάσταση" class="status-face-on"><i class="bi bi-emoji-smile-fill"></i></td>
