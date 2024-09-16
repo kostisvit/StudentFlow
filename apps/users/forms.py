@@ -28,7 +28,7 @@ class EmailAuthenticationForm(AuthenticationForm):
 
 # Custom User-Student New Form
 class UserCreationForm(forms.ModelForm):
-    organization = ModelChoiceField(queryset=Organization.objects.all(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}),label='Εταιρεία',required=False)
+    organization = ModelChoiceField(queryset=Organization.objects.all(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}),label='Οργανισμός',required=False)
     #date_joined = forms.DateField(initial=date.today,widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': 'Select a date'}),label='Ημ. Εγγραφης',required=False)
     date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'type': 'date','class': 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500','placeholder': 'YYYY-MM-DD',}),label='Ημ. Γέννησης',required=True)
     gender = forms.ChoiceField(choices=gender_choice,widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}),label='Φύλο')
