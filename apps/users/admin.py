@@ -12,8 +12,8 @@ class UserAdmin(UserAdmin):
     readonly_fields = ()
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'date_of_birth','phone_number','postal_code','address','city','country','gender',)}),
-        ('Permissions', {'fields': ('is_staff', 'is_active','groups','is_company_owner', 'user_permissions')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'date_of_birth','phone_number','postal_code','address','city','country','gender')}),
+        ('Permissions', {'fields': ('is_staff', 'is_active','is_company_owner','groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login',)}),
     )
     add_fieldsets = (

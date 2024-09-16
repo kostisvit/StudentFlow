@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
-from .forms import EmailAuthenticationForm, UserCreationForm
+from .forms import EmailAuthenticationForm, UserCreationForm, UserChangeForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
+from django.views.generic.edit import UpdateView
 
 
 UserModel = get_user_model()
@@ -41,7 +42,7 @@ def custom_logout(request):
     return redirect('login')
 
 
-# Student User create
+# Student - User create
 class StudentUserCreateView(LoginRequiredMixin,CreateView):
     model = get_user_model()
     form_class = UserCreationForm
@@ -65,3 +66,42 @@ class StudentUserCreateView(LoginRequiredMixin,CreateView):
     def form_valid(self, form):
         form.cleaned_data['is_student'] = self.get_initial()['is_student']
         return super().form_valid(form)
+
+
+# Student - User Update
+class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
+    model = get_user_model()
+    #fields = '__all__'
+    template_name = 'app/student/student_edit.html'
+    form_class = UserChangeForm
+    success_url = reverse_lazy('home')
+
+    # def form_valid(self, form):
+    #     try:
+    #         response = super().form_valid(form)
+    #         logger.info(f'Member "{self.object}" updated successfully.')
+    #         messages.success(self.request, 'Member updated successfully.')
+    #         return response
+    #     except Exception as e:
+    #         logger.error(f'Error updating book: {e}')
+    #         form.add_error(None, 'An error occurred while updating the member.')
+    #         return super().form_invalid(form)
+
+from django_filters.views import FilterView
+from .filters import UserStaffFillter
+
+
+class UserStaffView(LoginRequiredMixin,FilterView):
+    model = get_user_model()
+    filterset_class = UserStaffFillter
+    context_object_name = 'users'
+    template_name = "app/staff/staff.html"
+    
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if  self.request.user.is_superuser:
+            queryset = get_user_model().objects.all()
+        else:
+            queryset = queryset.filter(is_staff=True,organization=self.request.student.user.organization)
+        return queryset

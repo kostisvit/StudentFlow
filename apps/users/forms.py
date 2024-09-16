@@ -26,9 +26,9 @@ class EmailAuthenticationForm(AuthenticationForm):
         return email
 
 
-# Custom User-Student New Form
+# Student - User New Form
 class UserCreationForm(forms.ModelForm):
-    organization = ModelChoiceField(queryset=Organization.objects.all(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}),label='Οργανισμός',required=False)
+    organization = ModelChoiceField(queryset=Organization.objects.all(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}),label='Οργανισμός',required=True)
     #date_joined = forms.DateField(initial=date.today,widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': 'Select a date'}),label='Ημ. Εγγραφης',required=False)
     date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'type': 'date','class': 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500','placeholder': 'YYYY-MM-DD',}),label='Ημ. Γέννησης',required=True)
     gender = forms.ChoiceField(choices=gender_choice,widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}),label='Φύλο')
@@ -39,17 +39,9 @@ class UserCreationForm(forms.ModelForm):
     city = forms.CharField(label='Πόλη',widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}),required=False)
     country = forms.CharField(label='Χώρα',widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}),required=False)
     postal_code = forms.CharField(label='ΤΚ',widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}))
-    is_active = forms.BooleanField(label='Κατάσταση',widget=forms.CheckboxInput(
-            attrs={
-                'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',  # Tailwind classes for checkbox styling
-            }
-        ), initial=True,required=False)
+    is_active = forms.BooleanField(label='Κατάσταση',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}), initial=True,required=False)
     email = forms.EmailField(widget=forms.EmailInput(attrs={'autocomplete': 'off','class':'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'}))
-    is_student = forms.BooleanField(initial=True,label='Μαθητής',widget=forms.CheckboxInput(
-            attrs={
-                'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',  # Tailwind classes for checkbox styling
-            }
-        ),required=False)
+    is_student = forms.BooleanField(initial=True,label='Μαθητής',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
     
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
@@ -91,27 +83,37 @@ class UserCreationForm(forms.ModelForm):
                 student.save()
         return user
 
-# Custom User Change Form
-class UserChangeForm(UserChangeForm):
-    #company = ModelChoiceField(queryset=Company.objects.order_by('name'),widget=forms.Select(attrs={'class': 'form-control'}),label='Εταιρεία')
-    #date_joined = forms.DateField(initial=date.today,widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': 'Select a date'}),label='Ημ. Εγγραφης')
-    date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': 'Select a date'}),label='Ημ. Γέννησης')
-    gender = forms.ChoiceField(choices=gender_choice,widget=forms.Select(attrs={'class': 'form-control'}),label='Φύλο')
-    first_name = forms.CharField(label='Όνομα')
-    last_name = forms.CharField(label='Επώνυμο')
-    phone_number = forms.CharField(label='Τηλ. Επικ.')
-    address = forms.CharField(label='Διεύθυνση')
-    city = forms.CharField(label='Πόλη')
-    country = forms.CharField(label='Χώρα')
-    postal_code = forms.CharField(label='ΤΚ')
-    is_active = forms.BooleanField(label='Κατάσταση',required=False, initial=True)
-    is_student = forms.BooleanField(initial=True,label='Μαθητής',required=False)
+# Student - User Change Form
+class UserChangeForm(forms.ModelForm):
+    organization = forms.ModelChoiceField(queryset=Organization.objects.all(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}),label='Οργανισμός',required=True)
+    #date_joined = forms.DateField(initial=date.today,widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': 'Select a date'}),label='Ημ. Εγγραφης',required=False)
+    date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'type': 'date','class': 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500','placeholder': 'YYYY-MM-DD',}),label='Ημ. Γέννησης',required=True)
+    gender = forms.ChoiceField(choices=gender_choice,widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}),label='Φύλο')
+    first_name = forms.CharField(label='Όνομα', widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}))
+    last_name = forms.CharField(label='Επώνυμο',widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}))
+    phone_number = forms.CharField(label='Τηλ. Επικ.',widget=forms.TextInput(attrs={'class':'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'}),required=False)
+    address = forms.CharField(label='Διεύθυνση',widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}),required=False)
+    city = forms.CharField(label='Πόλη',widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}),required=False)
+    country = forms.CharField(label='Χώρα',widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}),required=False)
+    postal_code = forms.CharField(label='ΤΚ',widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}))
+    is_active = forms.BooleanField(label='Κατάσταση',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}), initial=True,required=False)
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'autocomplete': 'off','class':'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'}))
+    is_student = forms.BooleanField(initial=True,label='Μαθητής',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
     
     class Meta:
         model = get_user_model()
         fields = ('email','first_name','last_name','date_of_birth','phone_number','address','city','postal_code','country','gender','is_active','is_student')
- 
- 
+
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.get('instance')
+        super().__init__(*args, **kwargs)
+
+        # Pre-fill the organization field from the Student model
+        if user and hasattr(user, 'student'):
+            self.fields['organization'].initial = user.student.organization
+
+
  # Custom Staff New Form
 class UserStaffCreationForm(forms.ModelForm):
     #company = ModelChoiceField(queryset=Company.objects.order_by('name'),widget=forms.Select(attrs={'class': 'form-control'}),label='Εταιρεία')

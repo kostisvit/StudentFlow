@@ -79,8 +79,8 @@ class User(TimeStampedModel,AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return f"{self.last_name} {self.first_name}"
 
-    def get_course_as_string(self):
-        return ", ".join(course.title for course in self.course.all())
+    # def get_course_as_string(self):
+    #     return ", ".join(course.title for course in self.course.all())
     
     def get_absolute_url(self):
         return reverse('user_student_edit', args=[str(self.id)])

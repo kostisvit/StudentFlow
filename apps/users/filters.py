@@ -14,4 +14,4 @@ class UserStaffFillter(django_filters.FilterSet):
   
   class Meta:
     model = User
-    fileds = ['is_active']
+    fields = ['email','is_active','phone_number']

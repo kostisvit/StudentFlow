@@ -1,0 +1,39 @@
+{% extends "_base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
+    <div class="w-full md:w-2/3 px-3 mb-6 md:mb-0">
+        
+        {% render_field filter.form.email class="form-control" %}
+        </div>
+</div>
+{% for user in users %}
+<tr>
+  <td data-label="Ονοματεπώνυμο">{{user.last_name}} {{user.first_name}}</td>
+  <td data-label="Εταιρεία">{{ user.company }}</td>
+  <td data-label="Πρόσληψη">{{user.date_joined|date:"d/m/Y"}}</td>
+  <td data-label="Τηλ. Επικ.">{{user.phone_number}}</td>
+  <td data-label="Email">{{user.email}}</td>
+  {% if user.is_company_owner == True %}
+  <td data-label="Ιδιοκτήτης">ΝΑΙ</td>
+  {% else %}
+  <td data-label="Ιδιοκτήτης">ΟΧΙ</td>
+  {% endif %}
+  {% if user.is_staff == True %}
+  <td data-label="Υπάλληλος">ΝΑΙ</td>
+  {% else %}
+  <td data-label="Υπάλληλος">ΟΧΙ</td>
+  {% endif %}
+
+  {% if user.is_active == True %}
+  <td data-label="Κατάσταση" class="status-face-on"><i class="bi bi-emoji-smile-fill"></i></td>
+  {% else %}
+  <td data-label="Κατάσταση" class="status-face-off"><i class="bi bi-emoji-frown-fill" ></i></td>
+  {% endif %}
+  <td data-label="Ενέργειες"><a href="" style="color: #4FC3A1; font-weight: bold; font-size: 20px;"><i class="bi bi-pencil-square"></i></a>
+    <a href="" style="margin-left: 10px; color: red; font-weight: bold; font-size: 20px;"><i class="bi bi-trash3-fill"></i></a></td>
+</tr>
+{% endfor %}
+{% endblock %}
