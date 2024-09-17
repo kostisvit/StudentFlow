@@ -12,19 +12,19 @@ class UserAdmin(UserAdmin):
     readonly_fields = ()
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'date_of_birth','phone_number','postal_code','address','city','country','gender')}),
+        ('Personal info', {'fields': ('organization','first_name', 'last_name', 'date_of_birth','phone_number','postal_code','address','city','country','gender')}),
         ('Permissions', {'fields': ('is_staff', 'is_active','is_company_owner','groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login',)}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('first_name', 'last_name', 'email',  'is_staff', 'is_active','is_company_owner','date_of_birth','phone_number','address','city','country','gender','postal_code','groups', 'user_permissions')}
+            'fields': ('organization','first_name', 'last_name', 'email',  'is_staff', 'is_active','is_company_owner','date_of_birth','phone_number','address','city','country','gender','postal_code','groups', 'user_permissions')}
         ),
     )
     search_fields = ('email',)
     ordering = ('email',)
-    
+
 
 admin.site.register(User, UserAdmin)
 

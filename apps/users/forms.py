@@ -26,9 +26,9 @@ class EmailAuthenticationForm(AuthenticationForm):
         return email
 
 
-# Student - User New Form
+# User New Form
 class UserCreationForm(forms.ModelForm):
-    organization = ModelChoiceField(queryset=Organization.objects.all(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}),label='Οργανισμός',required=True)
+    #organization = ModelChoiceField(queryset=Organization.objects.all(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}),label='Οργανισμός',required=True)
     #date_joined = forms.DateField(initial=date.today,widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': 'Select a date'}),label='Ημ. Εγγραφης',required=False)
     date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'type': 'date','class': 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500','placeholder': 'YYYY-MM-DD',}),label='Ημ. Γέννησης',required=True)
     gender = forms.ChoiceField(choices=gender_choice,widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}),label='Φύλο')
@@ -41,47 +41,56 @@ class UserCreationForm(forms.ModelForm):
     postal_code = forms.CharField(label='ΤΚ',widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'}))
     is_active = forms.BooleanField(label='Κατάσταση',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}), initial=True,required=False)
     email = forms.EmailField(widget=forms.EmailInput(attrs={'autocomplete': 'off','class':'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'}))
-    is_student = forms.BooleanField(initial=True,label='Μαθητής',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
+    #is_student = forms.BooleanField(initial=True,label='Μαθητής',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
     
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
-        fields = ('organization','email','first_name','last_name','date_of_birth','phone_number','address','city','postal_code','country','gender','is_active','is_student')
-
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['password1'].required = False
-        self.fields['password2'].required = False
+        fields = ('organization','email','first_name','last_name','date_of_birth','phone_number','address','city','postal_code','country','gender','is_active')
 
     
     def __init__(self, *args, **kwargs):
         super(UserCreationForm, self).__init__(*args, **kwargs)
-        self.fields['is_student'].widget.attrs['disabled'] = True
+        # Ensure the password fields are correctly initialized
+        if 'password1' not in self.fields:
+            self.fields['password1'] = forms.CharField(widget=forms.PasswordInput(), required=False)
+        if 'password2' not in self.fields:
+            self.fields['password2'] = forms.CharField(widget=forms.PasswordInput(), required=False)
 
     
-    def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
-        super(UserCreationForm, self).__init__(*args, **kwargs)
-        if user:
-            if user.is_superuser:
-                self.fields['organization'].queryset = Organization.objects.all()
-            else:
-                self.fields['organization'].queryset = Organization.objects.filter(id=user.organization.id)
-
+    # def __init__(self, *args, **kwargs):
+    #     super(UserCreationForm, self).__init__(*args, **kwargs)
+    #     self.fields['is_student'].widget.attrs['disabled'] = True
 
     def save(self, commit=True):
-        user = super().save(commit=False)
-        user.set_password('password')  # Set your default password here
+        user = super(UserCreationForm, self).save(commit=False)
+        if not self.cleaned_data["password1"]:  # If no password is provided
+            user.set_password('passw0rd')  # Set a default password here
         if commit:
             user.save()
-            is_student = self.cleaned_data.get('is_student')
-            student, created = Student.objects.get_or_create(user=user, defaults={'is_student': is_student})
+        return user 
+    # def __init__(self, *args, **kwargs):
+    #     user = kwargs.pop('user', None)
+    #     super(UserCreationForm, self).__init__(*args, **kwargs)
+    #     if user:
+    #         if user.is_superuser:
+    #             self.fields['organization'].queryset = Organization.objects.all()
+    #         else:
+    #             self.fields['organization'].queryset = Organization.objects.filter(id=user.organization.id)
+
+
+    # def save(self, commit=True):
+    #     user = super().save(commit=False)
+    #     user.set_password('password')  # Set your default password here
+    #     if commit:
+    #         user.save()
+    #         is_student = self.cleaned_data.get('is_student')
+    #         student, created = Student.objects.get_or_create(user=user, defaults={'is_student': is_student})
             
-            if not created:
-                # Update is_student if Member already exists
-                student.is_student = is_student
-                student.save()
-        return user
+    #         if not created:
+    #             # Update is_student if Member already exists
+    #             student.is_student = is_student
+    #             student.save()
+    #     return user
 
 # Student - User Change Form
 class UserChangeForm(forms.ModelForm):
@@ -102,7 +111,7 @@ class UserChangeForm(forms.ModelForm):
     
     class Meta:
         model = get_user_model()
-        fields = ('email','first_name','last_name','date_of_birth','phone_number','address','city','postal_code','country','gender','is_active','is_student')
+        fields = ('organization','email','first_name','last_name','date_of_birth','phone_number','address','city','postal_code','country','gender','is_active','is_student')
 
 
     def __init__(self, *args, **kwargs):

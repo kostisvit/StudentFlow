@@ -5,7 +5,7 @@ from .views import StudentListView
 from . import views
 
 urlpatterns = [
-    path('students/list', StudentListView.as_view(), name='students_list'),
+    #path('students/list', StudentListView.as_view(), name='students_list'),
     # path('students/subscriptions/', SubscriptionListView.as_view(), name='subscriptions_list'),
     # path('students/subscriptions/export', views.Export_data_subscription, name='subscriptions_list_export'),
     # path('students/subscription/new', SubscriptionCreateView.as_view(), name='subscriptions_new'),

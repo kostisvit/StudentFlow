@@ -4,19 +4,10 @@ from django.db import models
 from django.utils import timezone
 from datetime import datetime
 from django.utils.translation import gettext_lazy as _
-#from company.models import Company
 from django.urls import reverse
 from django.conf import settings
 from django_extensions.db.models import TimeStampedModel
-#from members.models import Course
-
-
-# class TimeStampMixin(models.Model):
-#     created_at = models.DateTimeField(default=datetime.now)
-#     updated_at = models.DateTimeField(auto_now=True)
-
-#     class Meta:
-#         abstract = True
+from organization.models import Organization
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -49,6 +40,7 @@ class User(TimeStampedModel,AbstractBaseUser, PermissionsMixin):
         OTHER = 'O', _('Other')
     #ompany = models.ForeignKey(Company, on_delete=models.CASCADE,null=True, blank=True)
     #course = models.ManyToManyField(Course, related_name='staff')
+    organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, blank=True)
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
