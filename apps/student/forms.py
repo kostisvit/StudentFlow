@@ -28,12 +28,7 @@ class StudentCreationForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = ('organization','email','first_name','last_name','date_of_birth','phone_number','address','city','postal_code','country','gender','is_active','is_student')
-        # labels = {
-        #     'course': 'Ειδικότητα',  # Set the label for the ManyToManyField
-        # }
-        # widgets = {
-        #     'course': forms.CheckboxSelectMultiple(), 
-        # }
+
     
     def __init__(self, *args, **kwargs):
         super(StudentCreationForm, self).__init__(*args, **kwargs)

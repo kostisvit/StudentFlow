@@ -34,7 +34,7 @@ class UserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('organization','first_name', 'last_name', 'email',  'is_staff', 'is_active','is_company_owner','date_of_birth','phone_number','address','city','country','gender','postal_code','groups', 'user_permissions')}
+            'fields': ('organization','first_name', 'last_name', 'email',  'is_staff', 'is_student','is_active','is_company_owner','date_of_birth','phone_number','address','city','country','gender','postal_code','groups', 'user_permissions')}
         ),
     )
     search_fields = ('email',)
