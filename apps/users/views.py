@@ -7,6 +7,8 @@ from django.views.generic import CreateView
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
+from django_filters.views import FilterView
+from .filters import UserStaffFillter
 
 
 UserModel = get_user_model()
@@ -42,30 +44,89 @@ def custom_logout(request):
     return redirect('login')
 
 
-# Student - User create
-class StudentUserCreateView(LoginRequiredMixin,CreateView):
+# Staff List View
+class UserStaffView(LoginRequiredMixin,FilterView):
+    model = get_user_model()
+    filterset_class = UserStaffFillter
+    context_object_name = 'users'
+    template_name = "app/staff/staff.html"
+    
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if  self.request.user.is_superuser:
+            queryset = get_user_model().objects.all()
+        else:
+            queryset = queryset.filter(is_staff=True,organization=self.request.user.organization)
+        return queryset
+
+
+# Staff Create View
+class UserStaffCreateView(LoginRequiredMixin,CreateView):
     model = get_user_model()
     form_class = UserCreationForm
-    template_name = "app/student/student_new.html"
+    template_name = "app/staff/staff_new.html"
     success_url = reverse_lazy('home')
     
     def form_invalid(self, form):
         print(form.errors)
         return super().form_invalid(form)
-    
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
+
+
+    # def get_queryset(self):
+    #     # Return only the courses associated with the current logged-in user
+    #     return self.request.user.courses.all()
+   
+    # def get_form_kwargs(self):
+    #     kwargs = super().get_form_kwargs()
+    #     kwargs['user'] = self.request.user
+    #     return kwargs
     
     def get_initial(self):
         initial = super().get_initial()
-        initial['is_student'] = True  # Set the initial value as needed
+        initial['is_staff'] = True  # Set the initial value as needed
         return initial
-    
+
     def form_valid(self, form):
-        form.cleaned_data['is_student'] = self.get_initial()['is_student']
+        # Retain the value of the disabled field
+        form.cleaned_data['is_staff'] = self.get_initial()['is_staff']
         return super().form_valid(form)
+
+# Staff Update View
+class UserUpdateView(LoginRequiredMixin,UpdateView):
+    model = get_user_model()
+    #fields = '__all__'
+    template_name = 'app/staff/staff_edit.html'
+    form_class = UserChangeForm
+    success_url = reverse_lazy('home')
+    
+
+
+
+# Student - User create
+# class StudentUserCreateView(LoginRequiredMixin,CreateView):
+#     model = get_user_model()
+#     form_class = UserCreationForm
+#     template_name = "app/student/student_new.html"
+#     success_url = reverse_lazy('home')
+    
+#     def form_invalid(self, form):
+#         print(form.errors)
+#         return super().form_invalid(form)
+    
+#     def get_form_kwargs(self):
+#         kwargs = super().get_form_kwargs()
+#         kwargs['user'] = self.request.user
+#         return kwargs
+    
+#     def get_initial(self):
+#         initial = super().get_initial()
+#         initial['is_student'] = True  # Set the initial value as needed
+#         return initial
+    
+#     def form_valid(self, form):
+#         form.cleaned_data['is_student'] = self.get_initial()['is_student']
+#         return super().form_valid(form)
 
 
 # Student - User Update
@@ -87,21 +148,17 @@ class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
     #         form.add_error(None, 'An error occurred while updating the member.')
     #         return super().form_invalid(form)
 
-from django_filters.views import FilterView
-from .filters import UserStaffFillter
 
 
-class UserStaffView(LoginRequiredMixin,FilterView):
-    model = get_user_model()
-    filterset_class = UserStaffFillter
-    context_object_name = 'users'
-    template_name = "app/staff/staff.html"
-    
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        if  self.request.user.is_superuser:
-            queryset = get_user_model().objects.all()
-        else:
-            queryset = queryset.filter(is_staff=True,organization=self.request.student.user.organization)
-        return queryset
+
+    # def form_valid(self, form):
+    #     try:
+    #         response = super().form_valid(form)
+    #         logger.info(f'Member "{self.object}" updated successfully.')
+    #         messages.success(self.request, 'Member updated successfully.')
+    #         return response
+    #     except Exception as e:
+    #         logger.error(f'Error updating book: {e}')
+    #         form.add_error(None, 'An error occurred while updating the member.')
+    #         return super().form_invalid(form)

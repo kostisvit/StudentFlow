@@ -2,7 +2,13 @@ from django.shortcuts import render
 from .models import Student
 from .filters import StudentFilter
 from django_filters.views import FilterView
+from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth import get_user_model
+from .forms import *
+from django.urls import reverse_lazy
+
+UserModel = get_user_model()
 
 
 
@@ -37,3 +43,30 @@ class StudentListView(LoginRequiredMixin,FilterView):
             # Apply different filter for regular users
             queryset = queryset.filter(user__organization=self.request.user.organization, is_student=True)  # Replace with your actual filter conditions for regular users
         return queryset
+
+
+
+# Student - User create
+class StudentUserCreateView(LoginRequiredMixin,CreateView):
+    model = get_user_model()
+    form_class = StudentCreationForm
+    template_name = "app/student/student_new.html"
+    success_url = reverse_lazy('home')
+    
+    def form_invalid(self, form):
+        print(form.errors)
+        return super().form_invalid(form)
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+    
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['is_student'] = True  # Set the initial value as needed
+        return initial
+    
+    def form_valid(self, form):
+        form.cleaned_data['is_student'] = self.get_initial()['is_student']
+        return super().form_valid(form)

@@ -1,9 +1,24 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User
+from student.models import Student
 from .forms import UserCreationForm, UserChangeForm
 
+
+class StudentInline(admin.StackedInline):
+    model = Student
+    can_delete = False
+    verbose_name_plural = 'student'
+    fk_name = 'user'
+
 class UserAdmin(UserAdmin):
+    inlines = (StudentInline,)
+
+    def get_inline_instances(self, request, obj=None):
+        if not obj:
+            return []
+        return super(UserAdmin, self).get_inline_instances(request, obj)
+    
     add_form = UserCreationForm
     form = UserChangeForm
     model = User
