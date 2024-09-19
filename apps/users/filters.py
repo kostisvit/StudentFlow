@@ -41,7 +41,7 @@ class UserStaffFillter(django_filters.FilterSet):
 
 
 class DocumentFilter(django_filters.FilterSet):
-    user = django_filters.ModelChoiceFilter(queryset=get_user_model().objects.all(),label=False, empty_label="---Επιλέξτε Καθηγητή---", widget=forms.Select(attrs={
+    user = django_filters.ModelChoiceFilter(queryset=get_user_model().objects.filter(is_staff=True),label=False, empty_label="---Επιλέξτε Καθηγητή---", widget=forms.Select(attrs={
             'class': 'form-select mt-1 block w-2/3 border border-gray-300 rounded-lg text-gray-700',  # Tailwind classes
         }))
         

@@ -69,7 +69,7 @@ class SubscriptionFilter(django_filters.FilterSet):
     course = django_filters.ModelChoiceFilter(queryset=Course.objects.all(), label=False,empty_label="---Επιλέξτε Μάθημα---", widget=forms.Select(attrs={
             'class': 'form-select mt-1 block w-2/3 border border-gray-300 rounded-lg text-gray-700',  # Tailwind classes
         }))
-    user = django_filters.ModelChoiceFilter(queryset=get_user_model().objects.all(),label=False, empty_label="---Επιλέξτε Καθηγητή---", widget=forms.Select(attrs={
+    user = django_filters.ModelChoiceFilter(queryset=get_user_model().objects.filter(is_staff=True),label=False, empty_label="---Επιλέξτε Καθηγητή---", widget=forms.Select(attrs={
             'class': 'form-select mt-1 block w-2/3 border border-gray-300 rounded-lg text-gray-700',  # Tailwind classes
         }))
     is_online = django_filters.ChoiceFilter(
