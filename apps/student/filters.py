@@ -69,7 +69,7 @@ class SubscriptionFilter(django_filters.FilterSet):
     course = django_filters.ModelChoiceFilter(queryset=Course.objects.all(), label=False,empty_label="---Επιλέξτε Μάθημα---", widget=forms.Select(attrs={
             'class': 'form-select mt-1 block w-2/3 border border-gray-300 rounded-lg text-gray-700',  # Tailwind classes
         }))
-    user = django_filters.ModelChoiceFilter(queryset=get_user_model().objects.filter(is_staff=True),label=False, empty_label="---Επιλέξτε Καθηγητή---", widget=forms.Select(attrs={
+    user = django_filters.ModelChoiceFilter(queryset=get_user_model().objects.all(),label=False, empty_label="---Επιλέξτε Καθηγητή---", widget=forms.Select(attrs={
             'class': 'form-select mt-1 block w-2/3 border border-gray-300 rounded-lg text-gray-700',  # Tailwind classes
         }))
     is_online = django_filters.ChoiceFilter(
@@ -93,7 +93,7 @@ class SubscriptionFilter(django_filters.FilterSet):
             if user.is_superuser:
                 company = user.organization
                 self.filters['course'].queryset = Course.objects.all()
-                self.filters['user'].queryset = get_user_model().objects.all()
+                self.filters['user'].queryset = get_user_model().objects.filter(is_staff=True)
             else:
                 self.filters['course'].queryset = Course.objects.filter(organization=user.organization.id)
                 self.filters['user'].queryset = get_user_model().objects.filter(organization=user.organization.id,is_staff=True)
