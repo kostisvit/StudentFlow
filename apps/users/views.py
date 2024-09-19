@@ -185,10 +185,16 @@ class DocumentListView(LoginRequiredMixin,FilterView):
     #     if not context['queryset']:
     #         context['message'] = "No documents found."
     #     return context
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['row_count'] = Document.objects.count()  # Count the rows
+        return context
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add a flag indicating if the members list is empty
+        context['documents_empty'] = not context['documents'].exists()
         return context
 
     def get_queryset(self):

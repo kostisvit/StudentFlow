@@ -41,7 +41,10 @@
                         <div class="relative inline-block text-left profile ml-5">
                             <div class="flex items-center space-x-4 cursor-pointer">
                                 <img class="w-10 h-10 rounded-full" src="https://via.placeholder.com/40" alt="Profile Picture">
-                                <span class="font-semibold text-gray-800  dark:text-white">John Doe</span>
+                                <span class="font-semibold text-gray-800  dark:text-white">
+                            {% if user.is_authenticated %}
+                                {{user.last_name}} {{user.first_name}}
+                            {% endif %}</span>
                             </div>
                             <div class="submenu absolute right-0 mt-2 w-48 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
                                 <div class="p-2">
@@ -59,9 +62,7 @@
     <div class="h-screen flex flex-1 bg-gray-50 dark:bg-gray-700">
         <div class="hidden md:flex md:w-64 md:flex-col">
             <div class="flex flex-col flex-grow pt-5 overflow-y-auto bg-white dark:bg-gray-700 dark:border-r-2 dark:border-r-gray-200">
-                <div class="flex items-center flex-shrink-0 px-4">
-                    <img class="w-auto h-8" src="https://landingfoliocom.imgix.net/store/collection/clarity-dashboard/images/logo.svg" alt="" />
-                </div>
+
                 <div class="px-4 mt-8">
                     <label for="" class="sr-only"> Search </label>
                     <div class="relative">

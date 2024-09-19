@@ -27,7 +27,7 @@ class StudentListView(LoginRequiredMixin,FilterView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Add a flag indicating if the members list is empty
+        # Add a flag indicating if the students list is empty
         context['students_empty'] = not context['students'].exists()
         return context
     

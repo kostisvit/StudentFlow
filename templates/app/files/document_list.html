@@ -46,7 +46,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for document in documents %}
+                {% for document in page_obj %}
                 <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                 <td class="px-6 py-4" data-label="Ονοματεπώνυμο"><a href="">{{ user.first_name }} {{ user.last_name }}</a></td>
                 <td class="px-6 py-4" data-label="Εταιρεία">{{ document.course }}</td>

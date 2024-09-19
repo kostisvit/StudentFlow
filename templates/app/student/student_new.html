@@ -2,24 +2,24 @@
 
 {% block content %}
 <div class="flex items-center justify-center min-h-screen">
-<form class="bg-white p-6 rounded shadow-md w-full " method="post" action="{% url 'student_new' %}">
+<form class="bg-white p-6 rounded shadow-md w-full dark:bg-gray-800 border-b dark:border-gray-700" method="post" action="{% url 'student_new' %}">
 {% csrf_token %}
         <!-- First Row -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <div>
-                <label for="organization" class="block text-sm font-medium text-gray-700">Οργανισμός</label>
+                <label for="organization" class="block text-sm font-medium text-gray-700 dark:text-white">Οργανισμός</label>
                 {{form.organization}}
             </div>
             <div>
-                <label for="first_name" class="block text-sm font-medium text-gray-700">Όνομα</label>
+                <label for="first_name" class="block text-sm font-medium text-gray-700 dark:text-white">Όνομα</label>
                 {{form.first_name}}
             </div>
             <div>
-                <label for="last_name" class="block text-sm font-medium text-gray-700">Επώνυμο</label>
+                <label for="last_name" class="block text-sm font-medium text-gray-700 dark:text-white">Επώνυμο</label>
                 {{form.last_name}}
             </div>
             <div>
-                <label for="gender" class="block text-sm font-medium text-gray-700">Φύλο</label>
+                <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-white">Φύλο</label>
                 {{form.gender}}
             </div>
         </div>
@@ -27,33 +27,33 @@
         <!-- Second Row -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
             <div>
-                <label for="address" class="block text-sm font-medium text-gray-700">Διεύθυνση</label>
+                <label for="address" class="block text-sm font-medium text-gray-700 dark:text-white">Διεύθυνση</label>
                 {{form.address}}
             </div>
             <div>
-                <label for="city" class="block text-sm font-medium text-gray-700">Πόλη</label>
+                <label for="city" class="block text-sm font-medium text-gray-700 dark:text-white">Πόλη</label>
                 {{form.city}}
             </div>
             <div>
-                <label for="country" class="block text-sm font-medium text-gray-700">Χώρα</label>
+                <label for="country" class="block text-sm font-medium text-gray-700 dark:text-white">Χώρα</label>
                 {{form.country}}
             </div>
             <div>
-                <label for="postal_code" class="block text-sm font-medium text-gray-700">Τ.Κ</label>
+                <label for="postal_code" class="block text-sm font-medium text-gray-700 dark:text-white">Τ.Κ</label>
                 {{form.postal_code}}
             </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
             <div>
-                <label for="date_of_birth" class="block text-sm font-medium text-gray-700">Ημ. Γέννησης</label>
+                <label for="date_of_birth" class="block text-sm font-medium text-gray-700 dark:text-white">Ημ. Γέννησης</label>
                 {{form.date_of_birth}}
             </div>
             <div>
-                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-white">Email</label>
                 {{form.email}}
             </div>
             <div>
-                <label for="phone_number" class="block text-sm font-medium text-gray-700">Τηλέφωνο</label>
+                <label for="phone_number" class="block text-sm font-medium text-gray-700 dark:text-white">Τηλέφωνο</label>
                 {{form.phone_number}}
             </div>
             
@@ -63,11 +63,11 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <div class="flex items-center">
                 {{form.is_active}}
-                <label for="is_active" class="ml-2 block text-sm font-medium text-gray-700">Ενεργός/ή</label>
+                <label for="is_active" class="ml-2 block text-sm font-medium text-gray-700 dark:text-white">Ενεργός/ή</label>
             </div>
             <div class="flex items-center">
                 {{form.is_student}}
-                <label for="is_student" class="ml-2 block text-sm font-medium text-gray-700">Μαθητής</label>
+                <label for="is_student" class="ml-2 block text-sm font-medium text-gray-700 dark:text-white">Μαθητής</label>
             </div>
             {% comment %} <div class="col-span-2">
                 <label for="additional_email" class="block text-sm font-medium text-gray-700">Additional Email</label>
