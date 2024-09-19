@@ -2,17 +2,11 @@
 {% load widget_tweaks %}
 
 {% block content %}
-<form method="get" id="filter-form" class="w-full max-w-lg mt-10 ml-5">
+<form method="get" action="#" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4 py-6">
     {% csrf_token %}
-    <div class="flex flex-wrap -mx-3 mb-2">
-        <div class="w-full md:w-2/3 px-3 mb-6 md:mb-0">
-        <input type="search" name="id_studentship_number" id="id_studentship_number" class="block w-full py-2 pl-10 border border-gray-300 rounded-lg focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm" placeholder="Κωδικός μαθητή" />  
-        </div>
-        <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
-            <input type="search" name="id_company" id="id_company" class="block w-full py-2 pl-10 border border-gray-300 rounded-lg focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm" placeholder="Οργανισμός" />  
-        </div>
-    </div>
-  </form>
+    {{ filter.form }}
+    <button type="submit" class="btn btn-warning btn-sm w-44">Filter</button>
+</form>
   <div class="divider divider-primary"></div>
 <!--Buttons-->
 <div class="ml-5 mt-10">

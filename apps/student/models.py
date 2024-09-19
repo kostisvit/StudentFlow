@@ -63,7 +63,7 @@ class Subscription(TimeStampedModel):
     is_paid = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.member.user}"
+        return f"{self.student.user}"
     
     def get_absolute_url_edit(self):
         return reverse("subscription_edit", args=[str(self.id)])

@@ -19,7 +19,7 @@ class UserStaffFillter(django_filters.FilterSet):
         }))
   is_active = django_filters.ChoiceFilter(
         choices=[(True, 'Online'), (False, 'Offline')],
-        empty_label='-----',
+        empty_label="---Κατάσταση---",
         label=False,
         widget=forms.Select(attrs={
             'class': 'form-select mt-1 block w-48 border border-gray-300 rounded-lg text-gray-700',  # Tailwind classes
