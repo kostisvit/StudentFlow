@@ -1,6 +1,23 @@
 {% extends "_base.html" %}
 
 {% block content %}
+
+<!-- Success Message -->
+<div  class="container mx-auto p-4">
+    {% if messages %}
+        <div id="success-message" class="mb-4">
+            {% for message in messages %}
+            <div role="alert" class="alert alert-success">
+                <!-- Display Success Message -->
+                    <p>{{ message }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    </div>
+</div>
+<!-- End Success Message -->
+
 <div class="flex items-center justify-center min-h-screen">
 <form class="bg-white p-6 rounded shadow-md w-full " method="post" action="{% url 'staff_new' %}">
 {% csrf_token %}
@@ -86,4 +103,18 @@
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Αποθήκευση</button>
     </form>
 </div>
+<!-- JavaScript to hide success message after 3 seconds -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const successMessage = document.getElementById('success-message');
+        if (successMessage) {
+            setTimeout(function() {
+                successMessage.style.opacity = 0;
+                setTimeout(function() {
+                    successMessage.style.display = 'none';
+                }, 600); // Matches the CSS transition time
+            }, 3000); // 3 seconds
+        }
+    });
+</script>
 {% endblock%}
