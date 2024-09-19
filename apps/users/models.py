@@ -8,6 +8,8 @@ from django.urls import reverse
 from django.conf import settings
 from django_extensions.db.models import TimeStampedModel
 from organization.models import Organization
+from .validators import validate_file_extension
+from student.models import Course
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -82,3 +84,22 @@ class User(TimeStampedModel,AbstractBaseUser, PermissionsMixin):
 
     def get_absolute_url_dashboard(self):
         return reverse('user_student_dashboard', args=[str(self.id)])
+
+
+
+# Saving files path
+def user_directory_path(instance, filename):
+    return f'{instance.user.last_name}_{instance.user.first_name}/{filename}'
+
+
+class UserFile(TimeStampedModel):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE,blank=True, null=True)
+    file = models.FileField(upload_to=user_directory_path,validators=[validate_file_extension])
+    filename = models.CharField(max_length=255, blank=True)
+    
+    def __str__(self):
+        return f"{self.user.email} - {self.file.name}"
+    
+    def get_absolute_url_delete(self):
+        return reverse("user_file_delete", kwargs={"pk": self.pk})

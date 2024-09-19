@@ -25,6 +25,6 @@ urlpatterns = [
     # path('users/ajax/user_search/', views.ajax_user_search, name='ajax_user_search'),
     # #upload file
     # path('users/upload_files/', upload_files, name='upload_files'),
-    # path('users/documents', DocumentListView.as_view(), name='document_list'),
+    path('users/documents', DocumentListView.as_view(), name='document_list'),
     # path('users/files/delete/<int:pk>/', UserFileDeleteView.as_view(), name='user_file_delete'),
 ]

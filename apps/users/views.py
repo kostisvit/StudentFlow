@@ -3,12 +3,13 @@ from django.contrib.auth import logout
 from .forms import EmailAuthenticationForm, UserCreationForm, UserChangeForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import CreateView
+from django.views.generic import CreateView,ListView
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
 from .filters import UserStaffFillter
+from .models import UserFile
 
 
 UserModel = get_user_model()
@@ -168,3 +169,23 @@ class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
     #         logger.error(f'Error updating book: {e}')
     #         form.add_error(None, 'An error occurred while updating the member.')
     #         return super().form_invalid(form)
+
+
+
+# File list
+class DocumentListView(LoginRequiredMixin,ListView):
+    model = get_user_model()
+    template_name = 'app/files/document_list.html'
+    context_object_name = 'documents'
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['row_count'] = UserFile.objects.count()  # Count the rows
+        return context
+
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return UserFile.objects.all()  # Staff can see all articles
+        else:
+            return UserFile.objects.filter(user__student__is_student=True, user__is_staff=False,user__student__organization=self.request.user.organization)
