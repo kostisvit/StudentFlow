@@ -8,8 +8,8 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
-from .filters import UserStaffFillter
-from .models import UserFile
+from .filters import UserStaffFillter, DocumentFilter
+from .models import Document
 
 
 UserModel = get_user_model()
@@ -172,20 +172,27 @@ class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
 
 
 
-# File list
-class DocumentListView(LoginRequiredMixin,ListView):
-    model = get_user_model()
+# Document list
+class DocumentListView(LoginRequiredMixin,FilterView):
+    model = Document
     template_name = 'app/files/document_list.html'
+    filterset_class = DocumentFilter
     context_object_name = 'documents'
     paginate_by = 10
 
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     if not context['queryset']:
+    #         context['message'] = "No documents found."
+    #     return context
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['row_count'] = UserFile.objects.count()  # Count the rows
+        context['row_count'] = Document.objects.count()  # Count the rows
         return context
 
     def get_queryset(self):
         if self.request.user.is_superuser:
-            return UserFile.objects.all()  # Staff can see all articles
+            return Document.objects.all()  # Staff can see all articles
         else:
-            return UserFile.objects.filter(user__student__is_student=True, user__is_staff=False,user__student__organization=self.request.user.organization)
+            return Document.objects.filter(user__student__is_student=True, user__is_staff=False,user__student__organization=self.request.user.organization)

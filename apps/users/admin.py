@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, UserFile
+from .models import User, Document
 from student.models import Student
 from .forms import UserCreationForm, UserChangeForm
 
@@ -42,6 +42,6 @@ class UserAdmin(UserAdmin):
 
 
 admin.site.register(User, UserAdmin)
-admin.site.register(UserFile)
+admin.site.register(Document)
 
 

@@ -97,3 +97,9 @@ class SubscriptionFilter(django_filters.FilterSet):
             else:
                 self.filters['course'].queryset = Course.objects.filter(organization=user.organization.id)
                 self.filters['user'].queryset = get_user_model().objects.filter(organization=user.organization.id,is_staff=True)
+
+
+
+
+
+    

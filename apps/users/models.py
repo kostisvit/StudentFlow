@@ -92,7 +92,7 @@ def user_directory_path(instance, filename):
     return f'{instance.user.last_name}_{instance.user.first_name}/{filename}'
 
 
-class UserFile(TimeStampedModel):
+class Document(TimeStampedModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE,blank=True, null=True)
     file = models.FileField(upload_to=user_directory_path,validators=[validate_file_extension])
@@ -102,4 +102,4 @@ class UserFile(TimeStampedModel):
         return f"{self.user.email} - {self.file.name}"
     
     def get_absolute_url_delete(self):
-        return reverse("user_file_delete", kwargs={"pk": self.pk})
+        return reverse("document_delete", kwargs={"pk": self.pk})

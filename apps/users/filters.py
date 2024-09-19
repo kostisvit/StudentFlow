@@ -1,6 +1,11 @@
 import django_filters
-from .models import User
+from .models import User, Document
+from student.models import Course
 from django import forms
+from django.contrib.auth import get_user_model
+
+
+UserModel = get_user_model()
 #from company.models import Company
 
 class UserStaffFillter(django_filters.FilterSet):
@@ -31,3 +36,19 @@ class UserStaffFillter(django_filters.FilterSet):
   class Meta:
     model = User
     fields = ['email','phone_number','is_active']
+
+
+
+
+class DocumentFilter(django_filters.FilterSet):
+    user = django_filters.ModelChoiceFilter(queryset=get_user_model().objects.all(),label=False, empty_label="---Επιλέξτε Καθηγητή---", widget=forms.Select(attrs={
+            'class': 'form-select mt-1 block w-2/3 border border-gray-300 rounded-lg text-gray-700',  # Tailwind classes
+        }))
+        
+    course = django_filters.ModelChoiceFilter(queryset=Course.objects.all(), label=False,empty_label="---Επιλέξτε Μάθημα---", widget=forms.Select(attrs={
+            'class': 'form-select mt-1 block w-2/3 border border-gray-300 rounded-lg text-gray-700',  # Tailwind classes
+        }))
+        
+    class Meta:
+        model = Document
+        fields = ['user','course']
