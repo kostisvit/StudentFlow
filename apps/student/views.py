@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Student
 from .filters import StudentFilter, SubscriptionFilter
 from django_filters.views import FilterView
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView,ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
 from .forms import *
@@ -120,3 +120,34 @@ class SubscriptionListView(LoginRequiredMixin, FilterView):
             # Apply different filter for regular users
             queryset = queryset.filter(student__user__organization=self.request.user.organization)  # Replace with your actual filter conditions for regular users
         return queryset.order_by('-end_date')
+
+# class CourseListView(ListView):
+#     model = Course
+#     template_name = 'app/course.html'
+#     context_object_name = 'courses'
+
+# class CourseCreateView(CreateView):
+#     model = Course
+#     form_class = CourseForm
+#     template_name = 'app/course_form_modal.html'
+#     success_url = reverse_lazy('home')
+    
+from django.shortcuts import redirect
+class CourseListView(ListView):
+    model = Course
+    template_name = 'app/course.html'
+    context_object_name = 'courses'
+    
+    # Override to add the form to the context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CourseForm()  # Inject the form into the context
+        return context
+
+    # Handle form submission (manual post method for CreateView functionality)
+    def post(self, request, *args, **kwargs):
+        form = CourseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('course_list')  # Redirect to course list after submission
+        return self.get(request, *args, form=form)

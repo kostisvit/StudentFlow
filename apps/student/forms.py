@@ -154,30 +154,20 @@ class SubscriptionUpdateForm(ModelForm):
 
 
 
-class CourceForm(forms.ModelForm):
-    organization = ModelChoiceField(queryset=Organization.objects.order_by('title'),widget=forms.Select(attrs={'class': 'form-control'}),label='Εταιρεία')
-    
+class CourseForm(forms.ModelForm):
+    organization = ModelChoiceField(queryset=Organization.objects.all(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),empty_label='---Επιλέξτε Οργανισμό---',label=False,required=True)
+    title = forms.CharField(label=False, widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700','placeholder':'Μάθημα'}),required=True)
+    description = forms.CharField(label=False, widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700','placeholder':'Περιγραφή'}),required=False)
+    is_online = forms.BooleanField(initial=True,label='Κατάσταση',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
     class Meta:
         model = Course
         fields = ['organization','title', 'description','is_online']
         widgets = {
-            'title': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Τίτλος',
-                'maxlength': '50',
-                'size': '20',
-            }),
-            'description': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Περιγραφή',
-                'maxlength': '50',
-                'size': '100',
-            }),
         }
     
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
-        super(CourceForm, self).__init__(*args, **kwargs)
+        super(CourseForm, self).__init__(*args, **kwargs)
         if user:
             if user.is_superuser:
                 # self.fields['member'].queryset = Member.objects.all()
