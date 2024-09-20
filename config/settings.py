@@ -82,6 +82,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'users.context_processor.users_count',
+                'student.context_processor.subscriptions_count',
+                'student.context_processor.subscriptions_closing_soon',
+                'student.context_processor.course_count'
             ],
         },
     },

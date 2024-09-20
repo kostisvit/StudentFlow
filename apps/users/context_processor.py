@@ -1,16 +1,16 @@
-from .models import CustomUser
+from .models import User
 #from members.models import Member
 
-# def users_count(request):
-#     #user = request.user
-#     if request.user.is_authenticated:
-#         if request.user.is_superuser:
-#             company = request.user.company
-#             data = CustomUser.objects.filter(member__is_student=True).count()
-#         else:
-#             data = CustomUser.objects.filter(member__user__company=request.user.company,member__is_student=True).count()
-#         return {
-#             'users_count' : data
-#         }
+def users_count(request):
+    #user = request.user
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            organization = request.user.organization
+            data = User.objects.filter(student__is_student=True).count()
+        else:
+            data = User.objects.filter(student__user__organization=request.user.organization,student__is_student=True).count()
+        return {
+            'users_count' : data
+        }
 
-#     return {'users_count': None}
+    return {'users_count': None}
