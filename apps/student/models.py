@@ -26,7 +26,7 @@ class Student(TimeStampedModel):
         return membership_number
     
     def get_absolute_url_edit(self):
-        return reverse("student_edit", args=[str(self.id)])
+        return reverse("student_edit", kwargs={'pk': self.pk})
     
     def get_absolute_url_delete(self):
         return reverse("student_delete", args=[str(self.id)])

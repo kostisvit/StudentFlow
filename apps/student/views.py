@@ -10,6 +10,11 @@ from django.urls import reverse_lazy
 
 UserModel = get_user_model()
 
+#fake view for testing
+from django.http import HttpResponse
+def fake_view(request):
+    return HttpResponse("This is a fake view for testing purposes.")
+
 # Member list view
 class StudentListView(LoginRequiredMixin,FilterView):
     model = Student
@@ -77,6 +82,10 @@ class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
     template_name = 'app/student/student_edit.html'
     form_class = StudentUserChangeForm
     success_url = reverse_lazy('home')
+
+    # def get_object(self):
+    #     student = Student.objects.get(user=self.request.user.organization)  # Fetch the Student object for the logged-in user
+    #     return student
 
 
 

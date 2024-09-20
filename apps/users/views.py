@@ -99,6 +99,7 @@ class UserStaffCreateView(LoginRequiredMixin,CreateView):
         messages.success(self.request, 'Your form has been submitted successfully!')
         return super().form_valid(form)
 
+
 # Staff Update View
 class UserUpdateView(LoginRequiredMixin,UpdateView):
     model = get_user_model()
@@ -107,7 +108,10 @@ class UserUpdateView(LoginRequiredMixin,UpdateView):
     form_class = UserChangeForm
     success_url = reverse_lazy('home')
     
-
+    # def get_form_kwargs(self):
+    #     kwargs = super().get_form_kwargs()
+    #     kwargs['user'] = self.request.user
+    #     return kwargs
 
 
 # Student - User create
