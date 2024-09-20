@@ -100,6 +100,9 @@ class Document(TimeStampedModel):
     
     def __str__(self):
         return f"{self.user.email} - {self.file.name}"
+
+    def get_absolute_url_edit(self):
+        return reverse("document_edit", kwargs={"pk": self.pk})
     
     def get_absolute_url_delete(self):
         return reverse("document_delete", kwargs={"pk": self.pk})

@@ -56,7 +56,7 @@ class UserStaffView(LoginRequiredMixin,FilterView):
     def get_queryset(self):
         queryset = super().get_queryset()
         if  self.request.user.is_superuser:
-            queryset = get_user_model().objects.all()
+            queryset = get_user_model().objects.filter(is_staff=True)
         else:
             queryset = queryset.filter(is_staff=True,organization=self.request.user.organization)
         return queryset
@@ -141,12 +141,12 @@ class UserUpdateView(LoginRequiredMixin,UpdateView):
 
 
 # Student - User Update
-class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
-    model = get_user_model()
-    #fields = '__all__'
-    template_name = 'app/student/student_edit.html'
-    form_class = UserChangeForm
-    success_url = reverse_lazy('home')
+# class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
+#     model = get_user_model()
+#     #fields = '__all__'
+#     template_name = 'app/student/student_edit.html'
+#     form_class = UserChangeForm
+#     success_url = reverse_lazy('home')
 
     # def form_valid(self, form):
     #     try:
