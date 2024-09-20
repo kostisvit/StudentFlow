@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Student
 from .filters import StudentFilter, SubscriptionFilter
 from django_filters.views import FilterView
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
 from .forms import *
@@ -67,6 +67,16 @@ class StudentUserCreateView(LoginRequiredMixin,CreateView):
     def form_valid(self, form):
         form.cleaned_data['is_student'] = self.get_initial()['is_student']
         return super().form_valid(form)
+
+
+
+# Member update view
+class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
+    model = get_user_model()
+    #fields = '__all__'
+    template_name = 'app/student/student_edit.html'
+    form_class = StudentUserChangeForm
+    success_url = reverse_lazy('home')
 
 
 

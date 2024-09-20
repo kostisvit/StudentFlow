@@ -7,9 +7,10 @@ from django.utils.translation import gettext_lazy as _
 from organization.models import Organization
 from django.forms import ModelChoiceField
 from .choices import gender_choice
-
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from student.models import Student
+
 
 UserModel = get_user_model()
 
@@ -23,7 +24,7 @@ class EmailAuthenticationForm(AuthenticationForm):
             raise ValidationError("Το email δεν υπάρχει, επικοινωνήστε με τον διαχειριστή. ")
         return email
 
-from student.models import Student
+
 
 # User New Form
 class UserCreationForm(forms.ModelForm):

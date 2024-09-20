@@ -1,12 +1,13 @@
 # urls.py
 from django.urls import path
-from .views import StudentListView,StudentUserCreateView, SubscriptionListView
+from .views import StudentListView,StudentUserCreateView, SubscriptionListView, StudentUserUpdateView
 #SubscriptionListView,SubscriptionCreateView,Export_data_subscription,courceview,delete_entry, SubscriptionUpdateView,SubscriptionDeleteView,compose_email,SubscriptionEndingListView
 from . import views
 
 urlpatterns = [
     path('students/list', StudentListView.as_view(), name='students_list'),
-    path('student/new/', StudentUserCreateView.as_view(), name='student_new' ),
+    path('students/new/', StudentUserCreateView.as_view(), name='student_new' ),
+    path('students/<int:pk>/update/', StudentUserUpdateView.as_view(), name='student_edit' ),
     path('students/subscriptions/', SubscriptionListView.as_view(), name='subscriptions_list'),
     # path('students/subscriptions/export', views.Export_data_subscription, name='subscriptions_list_export'),
     # path('students/subscription/new', SubscriptionCreateView.as_view(), name='subscriptions_new'),
