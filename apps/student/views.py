@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
 from .forms import *
 from django.urls import reverse_lazy
+from django.shortcuts import redirect
 
 UserModel = get_user_model()
 
@@ -132,10 +133,10 @@ class SubscriptionListView(LoginRequiredMixin, FilterView):
 #     template_name = 'app/course_form_modal.html'
 #     success_url = reverse_lazy('home')
     
-from django.shortcuts import redirect
-class CourseListView(ListView):
+
+class CourseListView(LoginRequiredMixin,ListView):
     model = Course
-    template_name = 'app/course.html'
+    template_name = 'app/student/course.html'
     context_object_name = 'courses'
     
     # Override to add the form to the context
