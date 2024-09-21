@@ -122,18 +122,9 @@ class SubscriptionListView(LoginRequiredMixin, FilterView):
             queryset = queryset.filter(student__user__organization=self.request.user.organization)  # Replace with your actual filter conditions for regular users
         return queryset.order_by('-end_date')
 
-# class CourseListView(ListView):
-#     model = Course
-#     template_name = 'app/course.html'
-#     context_object_name = 'courses'
 
-# class CourseCreateView(CreateView):
-#     model = Course
-#     form_class = CourseForm
-#     template_name = 'app/course_form_modal.html'
-#     success_url = reverse_lazy('home')
     
-
+# Course LIst with modal creating new course
 class CourseListView(LoginRequiredMixin,ListView):
     model = Course
     template_name = 'app/student/course.html'
