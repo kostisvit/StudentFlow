@@ -5,7 +5,7 @@ from django.utils import timezone
 from organization.models import Organization
 from django_extensions.db.models import TimeStampedModel
 from django.utils.translation import gettext_lazy as _
-
+from datetime import timedelta
 
 class Student(TimeStampedModel):
     user = models.OneToOneField("users.User", on_delete=models.CASCADE)
@@ -64,6 +64,23 @@ class Subscription(TimeStampedModel):
 
     def __str__(self):
         return f"{self.student.user}"
+
+    def save(self, *args, **kwargs):
+        # Ensure that end_date is calculated when creating a subscription
+        if not self.end_date:
+            self.end_date = timezone.now() + timedelta(days=self.days)
+        
+        super(Subscription, self).save(*args, **kwargs)
+
+    def renew(self):
+        """
+        Calls the renew_subscription function to renew the subscription.
+        """
+        from student.services.renew_subscription import renew_subscription
+        if self.is_paid:
+            renew_subscription(self)
+        else:
+            raise ValueError("Cannot renew subscription: Payment is not completed.")
     
     def get_absolute_url_edit(self):
         return reverse("subscription_edit", args=[str(self.id)])

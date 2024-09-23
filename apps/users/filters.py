@@ -13,13 +13,13 @@ class UserStaffFillter(django_filters.FilterSet):
         lookup_expr='icontains',
         label=False,
         widget=forms.TextInput(attrs={
-            'class': 'block  sm:w-1/2 py-2  border border-gray-300 text-gray-700 rounded-lg focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm',  # Tailwind classes
+            'class': 'block  text-center sm:w-1/2 py-2  border border-gray-300 text-gray-700 rounded-lg focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm',  # Tailwind classes
             'placeholder': 'Enter email',
         }))
   phone_number = django_filters.CharFilter(field_name='phone_number',
         label=False,
         widget=forms.TextInput(attrs={
-            'class': 'block  sm:w-1/2 py-2  border border-gray-300 text-gray-700 rounded-lg focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm',  # Tailwind classes
+            'class': 'block  text-center sm:w-1/2 py-2  border border-gray-300 text-gray-700 rounded-lg focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm',  # Tailwind classes
             'placeholder': 'Τηλέφωνο',
         }))
   is_active = django_filters.ChoiceFilter(
@@ -27,7 +27,7 @@ class UserStaffFillter(django_filters.FilterSet):
         empty_label="---Κατάσταση---",
         label=False,
         widget=forms.Select(attrs={
-            'class': 'form-select mt-1 block  border border-gray-300 rounded-lg text-gray-700',  # Tailwind classes
+            'class': 'form-select text-center mt-1 block  border border-gray-300 rounded-lg text-gray-700',  # Tailwind classes
         })
     )
 
@@ -42,11 +42,11 @@ class UserStaffFillter(django_filters.FilterSet):
 
 class DocumentFilter(django_filters.FilterSet):
     user = django_filters.ModelChoiceFilter(queryset=get_user_model().objects.filter(is_staff=True),label=False, empty_label="---Επιλέξτε Καθηγητή---", widget=forms.Select(attrs={
-            'class': 'form-select mt-1 block  border border-gray-300 rounded-lg text-gray-700',  # Tailwind classes
+            'class': 'form-select text-center mt-1 block  border border-gray-300 rounded-lg text-gray-700',  # Tailwind classes
         }))
         
     course = django_filters.ModelChoiceFilter(queryset=Course.objects.all(), label=False,empty_label="---Επιλέξτε Μάθημα---", widget=forms.Select(attrs={
-            'class': 'form-select mt-1 block  border border-gray-300 rounded-lg text-gray-700',  # Tailwind classes
+            'class': 'form-select text-center mt-1 block  border border-gray-300 rounded-lg text-gray-700',  # Tailwind classes
         }))
         
     class Meta:

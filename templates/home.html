@@ -8,18 +8,19 @@
       
       <!-- Card 1 -->
       <div class="bg-indigo-600 rounded-lg shadow-lg overflow-hidden flex flex-col justify-center items-center text-center p-4">
-
         <div class="p-4">
-          <h3 class="font-bold text-xl mb-2 text-white">Εγγραφές</h3>
-          <p class="text-white font-bold text-5xl">{{users_count}}</p>
+          <a href="{% url 'students_list' %}">
+            <h3 class="font-bold text-xl mb-2 text-white">Εγγραφές</h3>
+          <p class="text-white font-bold text-5xl">{{users_count}}</p></a>
         </div>
       </div>
       
       <!-- Card 2 -->
       <div class="bg-orange-600 rounded-lg shadow-lg overflow-hidden flex flex-col justify-center items-center text-center p-4">
         <div class="p-4">
-          <h3 class="font-bold text-xl mb-2 text-white">Συνδρομές</h3>
-          <p class="text-white font-bold text-5xl">{{subscriptions_count}}</p>
+          <a href="{% url 'subscriptions_list' %}">
+            <h3 class="font-bold text-xl mb-2 text-white">Συνδρομές</h3>
+          <p class="text-white font-bold text-5xl">{{subscriptions_count}}</p></a>
         </div>
       </div>
 
@@ -34,8 +35,9 @@
       <!-- Card 4 -->
       <div class="bg-sky-950 rounded-lg shadow-lg overflow-hidden flex flex-col justify-center items-center text-center p-4">
         <div class="p-4">
-          <h3 class="font-bold text-xl mb-2">Μαθήματα</h3>
-          <p class="text-white font-bold text-5xl">{{course_count}}</p>
+          <a href="{% url 'course_list' %}">
+            <h3 class="font-bold text-xl mb-2">Μαθήματα</h3>
+          <p class="text-white font-bold text-5xl">{{course_count}}</p></a>
         </div>
       </div>
 

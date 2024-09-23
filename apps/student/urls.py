@@ -9,7 +9,7 @@ urlpatterns = [
     path('students/new/', StudentUserCreateView.as_view(), name='student_new' ),
     path('students/<int:pk>/update/', StudentUserUpdateView.as_view(), name='student_edit' ),
     path('students/<int:pk>/delete/', views.fake_view,  name='student_delete'),
-    path('students/subscriptions/', SubscriptionListView.as_view(), name='subscriptions_list'),
+    path('students/subscriptions/list', SubscriptionListView.as_view(), name='subscriptions_list'),
     # path('students/subscriptions/export', views.Export_data_subscription, name='subscriptions_list_export'),
     # path('students/subscription/new', SubscriptionCreateView.as_view(), name='subscriptions_new'),
     # path('students/subscriptions/ending', SubscriptionEndingListView.as_view(), name='subscriptions_ending_list'),
@@ -19,6 +19,6 @@ urlpatterns = [
     # path('students/course/delete/<int:entry_id>/', views.delete_entry, name='delete_entry'),
     # path('students/send-email/', views.compose_email, name='send_email'),
     #path('email-search/', EmailSearchView.as_view(), name='email_search'),
-    path('courses/list', CourseListView.as_view(), name='course_list'),
+    path('students/courses/list', CourseListView.as_view(), name='course_list'),
     #path('course/add/', CourseCreateView.as_view(), name='add_course'),
 ]
