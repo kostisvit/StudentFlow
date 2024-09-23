@@ -19,7 +19,7 @@ def fake_view(request):
 # Member list view
 class StudentListView(LoginRequiredMixin,FilterView):
     model = Student
-    template_name = 'app/student/student.html'
+    template_name = 'app/student/student_list.html'
     context_object_name = 'students'
     filterset_class = StudentFilter
     paginate_by = 10
@@ -95,7 +95,7 @@ class SubscriptionListView(LoginRequiredMixin, FilterView):
     model = Subscription
     #fields = '__all__'
     filterset_class = SubscriptionFilter
-    template_name = 'app/student/subscriptions.html'
+    template_name = 'app/student/subscriptions_list.html'
     context_object_name = 'subscriptions'
     paginate_by = 10
     
@@ -127,7 +127,7 @@ class SubscriptionListView(LoginRequiredMixin, FilterView):
 # Course LIst with modal creating new course
 class CourseListView(LoginRequiredMixin,ListView):
     model = Course
-    template_name = 'app/student/course.html'
+    template_name = 'app/student/course_list.html'
     context_object_name = 'courses'
     
     # Override to add the form to the context

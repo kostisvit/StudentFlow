@@ -101,7 +101,7 @@ class UserStaffCreateView(LoginRequiredMixin,CreateView):
 
 
 # Staff Update View
-class UserUpdateView(LoginRequiredMixin,UpdateView):
+class UserStaffUpdateView(LoginRequiredMixin,UpdateView):
     model = get_user_model()
     #fields = '__all__'
     template_name = 'app/staff/staff_edit.html'
@@ -184,16 +184,6 @@ class DocumentListView(LoginRequiredMixin,FilterView):
     context_object_name = 'documents'
     paginate_by = 10
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     if not context['queryset']:
-    #         context['message'] = "No documents found."
-    #     return context
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['row_count'] = Document.objects.count()  # Count the rows
-        return context
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -201,6 +191,11 @@ class DocumentListView(LoginRequiredMixin,FilterView):
         context['documents_empty'] = not context['documents'].exists()
         return context
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['row_count'] = Document.objects.count()  # Count the rows
+        return context
+    
     def get_queryset(self):
         if self.request.user.is_superuser:
             return Document.objects.all()  # Staff can see all articles
