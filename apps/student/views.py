@@ -8,6 +8,9 @@ from django.contrib.auth import get_user_model
 from .forms import *
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
+from django.utils import timezone
+from datetime import timedelta
+
 
 UserModel = get_user_model()
 
@@ -121,6 +124,34 @@ class SubscriptionListView(LoginRequiredMixin, FilterView):
             # Apply different filter for regular users
             queryset = queryset.filter(student__user__organization=self.request.user.organization)  # Replace with your actual filter conditions for regular users
         return queryset.order_by('-end_date')
+
+
+
+# Subscriptions ending date list
+class SubscriptionEndsListView(LoginRequiredMixin, FilterView):
+    model = Subscription
+    filterset_class = SubscriptionFilter
+    template_name = 'app/student/subscription_ends_list.html'
+    context_object_name = 'subscriptions'
+    paginate_by = 10
+
+
+    def get_filterset_kwargs(self, filterset_class):
+        # Get the default kwargs from the parent method
+        kwargs = super().get_filterset_kwargs(filterset_class)
+        # Add the current user to the kwargs
+        kwargs['user'] = self.request.user
+        return kwargs
+    
+    def get_queryset(self):
+        # Get today's date
+        today = timezone.now().date()
+        # Calculate the date 5 days from now
+        cutoff_date = today + timedelta(days=15)
+        # Filter queryset where end_date is less than or equal to the cutoff date
+        queryset = super().get_queryset().filter(end_date__lte=cutoff_date)
+        return queryset
+
 
 
     
