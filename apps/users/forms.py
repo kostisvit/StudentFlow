@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import User
+from .models import User, Vacation
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
@@ -130,8 +130,14 @@ class UserChangeForm(UserChangeForm):
             self.fields['is_student'].initial = user.student.is_student
 
 
-class 
-
+class VacationStaffForm(forms.ModelForm):
+    user = forms.ModelChoiceField(queryset=get_user_model().objects.filter(is_staff=True),label=False,empty_label='---Επέλεξε Καθηγητή---',widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),required=True)
+    start_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date','class': 'block w-full rounded-md border-0 py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6','placeholder': 'YYYY-MM-DD',}),label='Έναρξη',required=True)
+    end_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date','class': 'block w-full rounded-md border-0 py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6','placeholder': 'YYYY-MM-DD',}),label='Λήξη',required=True)
+    
+    class Meta:
+        model = Vacation
+        fields = ('user','start_date','end_date')
 
 # Email Authentication
 class EmailAuthenticationForm(AuthenticationForm):

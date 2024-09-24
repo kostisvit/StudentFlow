@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
-from .forms import EmailAuthenticationForm, UserCreationForm, UserChangeForm
+from .forms import EmailAuthenticationForm, UserCreationForm, UserChangeForm, VacationStaffForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView,ListView
@@ -214,3 +214,17 @@ class VacationStaffListView(LoginRequiredMixin, FilterView):
         context = super().get_context_data(**kwargs)
         context['vacations_empty'] = not context['vacations'].exists()
         return context
+
+    # Override to add the form to the context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = VacationStaffForm()  # Inject the form into the context
+        return context
+
+    # Handle form submission (manual post method for CreateView functionality)
+    def post(self, request, *args, **kwargs):
+        form = VacationStaffForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('vacation_list')  # Redirect to course list after submission
+        return self.get(request, *args, form=form)
