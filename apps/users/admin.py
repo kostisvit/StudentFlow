@@ -41,9 +41,12 @@ class UserAdmin(UserAdmin):
     ordering = ('email',)
 
 
+class VacationsAdmin(admin.ModelAdmin):
+    readonly_fields = ('days',)  # Make 'days' read-only
+    list_display = ('user', 'start_date', 'end_date', 'days')
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Document)
-admin.site.register(Vacation)
+admin.site.register(Vacation,VacationsAdmin)
 
 

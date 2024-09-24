@@ -10,6 +10,8 @@ from django_extensions.db.models import TimeStampedModel
 from organization.models import Organization
 from .validators import validate_file_extension
 from student.models import Course
+from users.services.calculate_vacations_days import calculate_vacations_days
+
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -114,9 +116,14 @@ class Vacation(TimeStampedModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     start_date = models.DateField(null=False)
     end_date = models.DateField(null=False)
-    days = models.PositiveIntegerField(null=False)
+    days = models.PositiveIntegerField(default=0, editable=False)
     
     class Meta:
         verbose_name = 'Vacations'
         verbose_name_plural = 'Vacations'
-    
+
+    def save(self, *args, **kwargs):
+        
+        self.days = calculate_vacations_days(self.start_date, self.end_date)
+        super(Vacation, self).save(*args, **kwargs)  # Call the parent save() method
+

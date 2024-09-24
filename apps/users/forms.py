@@ -130,6 +130,8 @@ class UserChangeForm(UserChangeForm):
             self.fields['is_student'].initial = user.student.is_student
 
 
+class 
+
 
 # Email Authentication
 class EmailAuthenticationForm(AuthenticationForm):
