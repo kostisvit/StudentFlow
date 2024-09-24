@@ -10,6 +10,7 @@ from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
 from .filters import UserStaffFillter, DocumentFilter, VacationFilter
 from .models import Document, Vacation
+from .password_change import *
 
 
 UserModel = get_user_model()

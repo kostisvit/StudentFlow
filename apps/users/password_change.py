@@ -16,4 +16,4 @@ def password_change(request):
             return redirect('login')  # Redirect to a success page
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'users/password_change.html', {'form': form})
+    return render(request, 'app/accounts/password_change.html', {'form': form})
