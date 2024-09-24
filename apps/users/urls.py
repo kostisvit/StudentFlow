@@ -11,7 +11,7 @@ from .views import *
 
 
 urlpatterns = [
-    path('login/', views.custom_login_view, name='login'),
+    path('accounts/login/', views.custom_login_view, name='login'),
     path('logout/', views.custom_logout, name='logout'),
     #path('sentry-debug/', trigger_error),
     path('users/staff', UserStaffView.as_view(), name='staff_list'),

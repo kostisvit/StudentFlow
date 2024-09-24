@@ -15,6 +15,18 @@
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form class="space-y-6" method="POST" action="{% url 'login' %}">
       {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-error" role="alert">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+      {% endif %}
       <div>
         <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
         <div class="mt-2">
