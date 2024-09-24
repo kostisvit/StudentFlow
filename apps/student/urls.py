@@ -15,10 +15,8 @@ urlpatterns = [
     path('students/subscriptions/ends', SubscriptionEndsListView.as_view(), name='subscriptions_ends_list'),
     # path('students/subscription/<int:pk>/update/', SubscriptionUpdateView.as_view(), name='subscription_edit'),
     # path('students/subscription/<int:pk>/delete/', SubscriptionDeleteView.as_view(), name='subscription_delete'),
-    # path('students/course/new', views.courceview, name='course_list_new'),
     # path('students/course/delete/<int:entry_id>/', views.delete_entry, name='delete_entry'),
     # path('students/send-email/', views.compose_email, name='send_email'),
     #path('email-search/', EmailSearchView.as_view(), name='email_search'),
     path('students/courses/list', CourseListView.as_view(), name='course_list'),
-    #path('course/add/', CourseCreateView.as_view(), name='add_course'),
 ]

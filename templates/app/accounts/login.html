@@ -1,9 +1,11 @@
 {% load static %}
+{% load static tailwind_tags %}
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Tailwind Django Project</title>
-  <link href="{% static 'css/dist/styles.css' %}" rel="stylesheet">
+  {% tailwind_css %}
+  
 </head>
 <!-- component -->
 <div class="bg-white flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
