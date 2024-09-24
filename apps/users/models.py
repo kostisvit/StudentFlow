@@ -106,3 +106,17 @@ class Document(TimeStampedModel):
     
     def get_absolute_url_delete(self):
         return reverse("document_delete", kwargs={"pk": self.pk})
+
+
+
+
+class Vacation(TimeStampedModel):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    start_date = models.DateField(null=False)
+    end_date = models.DateField(null=False)
+    days = models.PositiveIntegerField(null=False)
+    
+    class Meta:
+        verbose_name = 'Vacations'
+        verbose_name_plural = 'Vacations'
+    

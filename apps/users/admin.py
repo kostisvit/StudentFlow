@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, Document
+from .models import User, Document, Vacation
 from student.models import Student
 from .forms import UserCreationForm, UserChangeForm
 
@@ -41,7 +41,9 @@ class UserAdmin(UserAdmin):
     ordering = ('email',)
 
 
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Document)
+admin.site.register(Vacation)
 
 
