@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
 from .filters import UserStaffFillter, DocumentFilter
-from .models import Document
+from .models import Document, Vacation
 
 
 UserModel = get_user_model()
@@ -201,3 +201,11 @@ class DocumentListView(LoginRequiredMixin,FilterView):
             return Document.objects.all()  # Staff can see all articles
         else:
             return Document.objects.filter(user__student__is_student=True, user__is_staff=False,user__student__organization=self.request.user.organization)
+
+
+class VacationStaffListView(LoginRequiredMixin, FilterView):
+    model = Vacation
+    template_name = 'app/staff/vacation_list.html'
+    #filterset_class = VacationFilter
+    context_object_name = 'vacations'
+    paginate_by = 10
