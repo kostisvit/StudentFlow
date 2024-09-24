@@ -1,5 +1,5 @@
 import django_filters
-from .models import User, Document
+from .models import User, Document, Vacation
 from student.models import Course
 from django import forms
 from django.contrib.auth import get_user_model
@@ -38,6 +38,21 @@ class UserStaffFillter(django_filters.FilterSet):
     fields = ['email','phone_number','is_active']
 
 
+
+class VacationFilter(django_filters.FilterSet):
+        user = django_filters.ModelChoiceFilter(queryset=get_user_model().objects.filter(is_staff=True),label=False, empty_label="---Επιλέξτε Καθηγητή---", widget=forms.Select(attrs={
+            'class': 'form-select text-center mt-1 block  border border-gray-300 rounded-lg text-gray-700',  # Tailwind classes
+        }))
+        
+        year = django_filters.NumberFilter(field_name="start_date", lookup_expr='year',label=False,widget=forms.TextInput(attrs={
+            'class': 'block   text-center sm:w-1/2 py-2  border border-gray-300 text-gray-700 rounded-lg focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm',  # Tailwind classes
+            'placeholder': 'Έτος',
+        }))
+        
+        class Meta:
+            model = Vacation
+            fields = ['user','year']
+    
 
 
 class DocumentFilter(django_filters.FilterSet):

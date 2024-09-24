@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
-from .filters import UserStaffFillter, DocumentFilter
+from .filters import UserStaffFillter, DocumentFilter, VacationFilter
 from .models import Document, Vacation
 
 
@@ -187,7 +187,6 @@ class DocumentListView(LoginRequiredMixin,FilterView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Add a flag indicating if the members list is empty
         context['documents_empty'] = not context['documents'].exists()
         return context
 
@@ -206,6 +205,11 @@ class DocumentListView(LoginRequiredMixin,FilterView):
 class VacationStaffListView(LoginRequiredMixin, FilterView):
     model = Vacation
     template_name = 'app/staff/vacation_list.html'
-    #filterset_class = VacationFilter
+    filterset_class = VacationFilter
     context_object_name = 'vacations'
     paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['vacations_empty'] = not context['vacations'].exists()
+        return context

@@ -1,5 +1,21 @@
 {% extends "_base.html" %}
+{% load widget_tweaks %}
 
 {% block content %}
+<!--Filter Form-->
+<form method="get" action="#" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-3">
+    {% csrf_token %}
+    {{ filter.form }}
+    <button type="submit" class="btn btn-warning sm:w-44">Αναζήτηση</button>
+</form>
+<!--End Filter Form-->
 
+<div class="divider divider-primary"></div>
+
+{% if vacations_empty %}
+<div class="mt-10 text-center font-mono text-lg font-bold">
+  <p>No vacations found.</p>
+</div>
+{% else %}
+{% endif %}
 {% endblock %}

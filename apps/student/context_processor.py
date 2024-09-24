@@ -11,7 +11,7 @@ def subscriptions_count(request):
             data = Subscription.objects.filter(is_online=True).count()
         else:
             # Return only the user's data
-            data = Subscription.objects.filter(is_online=True,member__user__company=request.user.company).count()
+            data = Subscription.objects.filter(is_online=True,student__user__organization=request.user.organization).count()
         return {
             'subscriptions_count': data
         }
