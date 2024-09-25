@@ -210,10 +210,10 @@ class VacationStaffListView(LoginRequiredMixin, FilterView):
     context_object_name = 'vacations'
     paginate_by = 10
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['vacations_empty'] = not context['vacations'].exists()
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['vacations_empty'] = not context['vacations'].exists()
+    #     return context
 
     # Override to add the form to the context
     def get_context_data(self, **kwargs):

@@ -92,6 +92,14 @@ class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
     #     return student
 
 
+# Course LIst with modal creating new course
+# class SubscriptionCreateView(LoginRequiredMixin,ListView):
+#     model = Subscription
+#     template_name = 'app/student/subscriptions_list.html'
+#     context_object_name = 'subscriptions'
+    
+
+
 
 # Subscription list 
 class SubscriptionListView(LoginRequiredMixin, FilterView):
@@ -108,12 +116,26 @@ class SubscriptionListView(LoginRequiredMixin, FilterView):
         # Add the current user to the kwargs
         kwargs['user'] = self.request.user
         return kwargs
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     # Add a flag indicating if the members list is empty
+    #     context['subscriptions_empty'] = not context['subscriptions'].exists()
+    #     return context
     
+    # Override to add the form to the context
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Add a flag indicating if the members list is empty
-        context['subscriptions_empty'] = not context['subscriptions'].exists()
+        context['form'] = SubscriptioForm()  # Inject the form into the context
         return context
+
+    # Handle form submission (manual post method for CreateView functionality)
+    def post(self, request, *args, **kwargs):
+        form = SubscriptioForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('subscriptions_list')  # Redirect to course list after submission
+        return self.get(request, *args, form=form)
     
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -124,6 +146,9 @@ class SubscriptionListView(LoginRequiredMixin, FilterView):
             # Apply different filter for regular users
             queryset = queryset.filter(student__user__organization=self.request.user.organization)  # Replace with your actual filter conditions for regular users
         return queryset.order_by('-end_date')
+
+
+
 
 
 
