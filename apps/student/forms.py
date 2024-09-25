@@ -45,8 +45,12 @@ class StudentCreationForm(forms.ModelForm):
 
 
     def save(self, commit=True):
-        # Save the User model first
+        # Save the User model first, without committing to the database yet
         user = super().save(commit=False)
+
+        # Set a default password for the user
+        default_password = "defaultpassword123"  # Set your default password here
+        user.set_password(default_password)
 
         # Check if commit is True, then save the user instance
         if commit:
