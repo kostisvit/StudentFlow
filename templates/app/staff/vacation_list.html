@@ -46,6 +46,9 @@
         <td class="px-6 py-4" data-label="Εταιρεία">{{ vacation.start_date|date:"d M Y" }}</td>
         <td class="px-6 py-4" data-label="Εταιρεία">{{ vacation.end_date|date:"d M Y" }}</td>
         <td class="px-6 py-4" data-label="Εταιρεία">{{ vacation.days }}</td>
+        <td class="px-6 py-4" data-label="Ενέργειες">
+            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Edit</a>
+            <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a></td>
         {% empty %}
           <tr>
             <td colspan="4" class="border px-4 py-2 text-center">No courses available</td>

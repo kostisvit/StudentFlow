@@ -11,7 +11,7 @@ from django_filters.views import FilterView
 from .filters import UserStaffFillter, DocumentFilter, VacationFilter
 from .models import Document, Vacation
 from .password_change import *
-
+from django.contrib import messages
 
 UserModel = get_user_model()
 
@@ -62,7 +62,7 @@ class UserStaffView(LoginRequiredMixin,FilterView):
             queryset = queryset.filter(is_staff=True,organization=self.request.user.organization)
         return queryset
 
-from django.contrib import messages
+
 
 # Staff Create View
 class UserStaffCreateView(LoginRequiredMixin,CreateView):
