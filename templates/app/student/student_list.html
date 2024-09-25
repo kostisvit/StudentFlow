@@ -10,12 +10,19 @@
     </div>
 </form>
   <div class="divider divider-primary"></div>
-<!--Buttons-->
+{% comment %} <!--Buttons-->
 <div class="flex flex-col sm:flex-row sm:space-x-1 space-y-1 sm:space-y-0">
     <a href="{% url 'student_new' %}" class="text-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Νέα εγγραφή<a/>
     <a href="#" class="text-center text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800">Export<a/>
     <a href="#" class="text-center text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-800 dark:hover:bg-purple-700 focus:outline-none dark:focus:ring-purple-800">Upload File<a/>
 </div>
+<!--End Buttons--> {% endcomment %}
+<!--Buttons-->
+<div class="flex flex-col sm:flex-row sm:space-x-1 space-y-1 sm:space-y-0 mt-3">
+    <button onclick="openModal()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add New Course</button>
+    <a href="#" class="text-center lg:text-left text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800">Export<a/>
+    <a href="#" class="text-center text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-800 dark:hover:bg-purple-700 focus:outline-none dark:focus:ring-purple-800">Upload File<a/>
+    </div>
 <!--End Buttons-->
 
 {% if students_empty %}
@@ -65,7 +72,7 @@
                 {% endif %}
                 <td class="px-6 py-4" data-label="Ενέργειες">
                     <a href="{{student.user.get_absolute_url_edit}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Edit</a>
-                    <a href="{{student.get_absolute_url_delete}}" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a></td>
+                    <a href="{{student.user.get_absolute_url_delete}}" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a></td>
             </tr>
                 </tr>
                 {% endfor %}
@@ -88,4 +95,87 @@
         </div>
 </div>
 {% endif %}
+<div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-7xl relative">
+      <!-- Close Button -->
+      <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700" onclick="closeModal()">✕</button>
+  
+      <!-- Form -->
+      <h2 class="text-lg font-bold mb-6 text-gray-700">Add Course</h2>
+      <form method="POST">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {% csrf_token %}
+          
+          <div>
+            <label for="organization" class="block text-sm font-medium text-gray-700 dark:text-white">Οργανισμός<span class="text-red-600 ml-2">*</span></label>
+            {{form.organization}} 
+        </div>
+        <div>
+            <label for="first_name" class="block text-sm font-medium text-gray-700 dark:text-white">Όνομα<span class="text-red-600 ml-2">*</span></label>
+            {{form.first_name}}
+        </div>
+        <div>
+            <label for="last_name" class="block text-sm font-medium text-gray-700 dark:text-white">Επώνυμο<span class="text-red-600 ml-2">*</span></label>
+            {{form.last_name}}
+        </div>
+        <div>
+            <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-white">Φύλο<span class="text-red-600 ml-2">*</span></label>
+            {{form.gender}}
+        </div>
+          <!-- Add more fields as necessary... -->
+          <div>
+            <label for="address" class="block text-sm font-medium text-gray-700 dark:text-white">Διεύθυνση<span class="text-red-600 ml-2">*</span></label>
+            {{form.address}}
+        </div>
+        <div>
+            <label for="city" class="block text-sm font-medium text-gray-700 dark:text-white">Πόλη</label>
+            {{form.city}}
+        </div>
+        <div>
+            <label for="country" class="block text-sm font-medium text-gray-700 dark:text-white">Χώρα</label>
+            {{form.country}}
+        </div>
+        <div>
+            <label for="postal_code" class="block text-sm font-medium text-gray-700 dark:text-white">Τ.Κ</label>
+            {{form.postal_code}}
+        </div>
+        <div>
+            <label for="date_of_birth" class="block text-sm font-medium text-gray-700 dark:text-white">Ημ. Γέννησης<span class="text-red-600 ml-2">*</span></label>
+            {{form.date_of_birth}}
+        </div>
+        <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-white">Email<span class="text-red-600 ml-2">*</span></label>
+            {{form.email}}
+        </div>
+        <div>
+            <label for="phone_number" class="block text-sm font-medium text-gray-700 dark:text-white">Τηλέφωνο<span class="text-red-600 ml-2">*</span></label>
+            {{form.phone_number}}
+        </div>
+        <div class="flex items-center">
+            {{form.is_active}}
+            <label for="is_active" class="ml-2 block text-sm font-medium text-gray-700 dark:text-white">Ενεργός/ή</label>
+        </div>
+        <div class="flex items-center">
+            {{form.is_student}}
+            <label for="is_student" class="ml-2 block text-sm font-medium text-gray-700 dark:text-white">Μαθητής</label>
+        </div>
+          <!-- Submit Button at the end, spanning all 4 columns -->
+          <div class="col-span-4 mt-4 flex justify-end">
+            <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded">Αποθήκευση</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+<script>
+    function openModal() {
+        document.getElementById("modal").classList.remove("hidden");
+        document.getElementById("modal").classList.add("flex");
+    }
+
+    function closeModal() {
+        document.getElementById("modal").classList.remove("flex");
+        document.getElementById("modal").classList.add("hidden");
+    }
+</script>
 {% endblock %}

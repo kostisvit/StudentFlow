@@ -34,11 +34,19 @@ class StudentListView(LoginRequiredMixin,FilterView):
         kwargs['user'] = self.request.user
         return kwargs
     
+    # Override to add the form to the context
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Add a flag indicating if the students list is empty
-        context['students_empty'] = not context['students'].exists()
+        context['form'] = StudentCreationForm()  # Inject the form into the context
         return context
+
+    # Handle form submission (manual post method for CreateView functionality)
+    def post(self, request, *args, **kwargs):
+        form = StudentCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('students_list')  # Redirect to course list after submission
+        return self.get(request, *args, form=form)
     
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -77,30 +85,18 @@ class StudentUserCreateView(LoginRequiredMixin,CreateView):
         form.cleaned_data['is_student'] = self.get_initial()['is_student']
         return super().form_valid(form)
 
-
+from django.shortcuts import get_object_or_404
 
 # Member update view
 class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
-    model = get_user_model()
+    model = Student
     #fields = '__all__'
     template_name = 'app/student/student_edit.html'
     form_class = StudentUserChangeForm
     success_url = reverse_lazy('home')
 
-    # def get_object(self):
-    #     student = Student.objects.get(user=self.request.user.organization)  # Fetch the Student object for the logged-in user
-    #     return student
 
-
-# Course LIst with modal creating new course
-# class SubscriptionCreateView(LoginRequiredMixin,ListView):
-#     model = Subscription
-#     template_name = 'app/student/subscriptions_list.html'
-#     context_object_name = 'subscriptions'
     
-
-
-
 # Subscription list 
 class SubscriptionListView(LoginRequiredMixin, FilterView):
     model = Subscription
