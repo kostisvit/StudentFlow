@@ -107,19 +107,23 @@ class StudentUserChangeForm(forms.ModelForm):
     def save(self, commit=True):
         student = super(StudentUserChangeForm, self).save(commit=False)
         # Save the first name back to the related User model
+        student.user.organization = self.cleaned_data['organization']
+        student.user.date_of_birth = self.cleaned_data['date_of_birth']
+        student.user.gender = self.cleaned_data['gender']
         student.user.first_name = self.cleaned_data['first_name']
+        student.user.last_name = self.cleaned_data['last_name']
+        student.user.phone_number = self.cleaned_data['phone_number']
+        student.user.address = self.cleaned_data['address']
+        student.user.city = self.cleaned_data['city']
+        student.user.country = self.cleaned_data['country']
+        student.user.postal_code = self.cleaned_data['postal_code']
+        student.user.is_active = self.cleaned_data['is_active']
+        student.user.email = self.cleaned_data['email']
         if commit:
             student.user.save()
             student.save()
         return student
-    # def __init__(self, *args, **kwargs):
-    #     # Get the user instance from kwargs (if it's provided)
-    #     user = kwargs.get('instance', None)
-    #     super().__init__(*args, **kwargs)
-        
-    # def __init__(self, *args, **kwargs):
-    #     super(StudentUserChangeForm, self).__init__(*args, **kwargs)
-    #     self.fields['is_staff'].widget.attrs['disabled'] = True
+
 
 
 

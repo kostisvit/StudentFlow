@@ -22,7 +22,7 @@
     <button onclick="openModal()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add New Course</button>
     <a href="#" class="text-center lg:text-left text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800">Export<a/>
     <a href="#" class="text-center text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-800 dark:hover:bg-purple-700 focus:outline-none dark:focus:ring-purple-800">Upload File<a/>
-    </div>
+</div>
 <!--End Buttons-->
 
 {% if students_empty %}
@@ -79,20 +79,21 @@
             </tbody>
         </table>
     <div>
-        <!-- Cards for smaller screens -->
-        <div class="block sm:hidden space-y-4">
-            {% for student in page_obj %}
-            <div class="border p-4 rounded-lg shadow-md bg-white">
-                <p><span class="font-bold text-gray-700">Ονοματεπώνυμο:</span> {{ student.user.first_name }} {{ student.user.last_name }}</p>
-                <p><span class="font-bold text-gray-700">Εταιρεία:</span> {{ student.user.organization }}</p>
-                <p><span class="font-bold text-gray-700">Email:</span> {{ student.user.email }}</p>
-                <p><span class="font-bold text-gray-700">Τηλ. Επικ.:</span> {{ student.user.phone_number }}</p>
-                <p><span class="font-bold text-gray-700">Φύλλο:</span> {{ student.user.gender }}</p>
-                <p><span class="font-bold text-gray-700">Εγγραφή:</span> {{ student.user.created|date:'d/m/Y' }}</p>
-                <p><span class="font-bold text-gray-700">Κωδ.Μέλους:</span> #{{ student.membership_number }}</p>
+            <!-- Cards for smaller screens -->
+            <div class="block sm:hidden space-y-4">
+                {% for student in page_obj %}
+                <div class="border p-4 rounded-lg shadow-md bg-white">
+                    <p><span class="font-bold text-gray-700">Ονοματεπώνυμο:</span> {{ student.user.first_name }} {{ student.user.last_name }}</p>
+                    <p><span class="font-bold text-gray-700">Εταιρεία:</span> {{ student.user.organization }}</p>
+                    <p><span class="font-bold text-gray-700">Email:</span> {{ student.user.email }}</p>
+                    <p><span class="font-bold text-gray-700">Τηλ. Επικ.:</span> {{ student.user.phone_number }}</p>
+                    <p><span class="font-bold text-gray-700">Φύλλο:</span> {{ student.user.gender }}</p>
+                    <p><span class="font-bold text-gray-700">Εγγραφή:</span> {{ student.user.created|date:'d/m/Y' }}</p>
+                    <p><span class="font-bold text-gray-700">Κωδ.Μέλους:</span> #{{ student.membership_number }}</p>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
+   
 </div>
 {% endif %}
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
