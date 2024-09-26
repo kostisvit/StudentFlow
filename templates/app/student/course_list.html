@@ -62,7 +62,7 @@
 
                 <!-- Form -->
                 <h2 class="text-lg font-bold mb-4 text-gray-700">Add Course</h2>
-                <form method="POST">
+                <form method="POST" id="course-post">
                     <div class="space-y-4">
                     {% csrf_token %}
                     {{ form.as_p }}
@@ -76,9 +76,12 @@
     </div>
 
     <!-- Modal -->
-    <div id="modal1" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
-        <div id="modal-content">
-            <!-- Form will be injected here -->
+    <div id="modal_update" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3 relative">
+            <div id="modal-content">
+            <!-- Form will b{{ form.as_p }}e injected here -->
+
+            </div>
         </div>
     </div>
 
@@ -95,40 +98,53 @@
     </script>
 
     <script>
-        document.querySelectorAll('.open-modal').forEach(button => {
-            button.addEventListener('click', function() {
-                const courseId = this.getAttribute('data-id');
-                fetch(`/courses/${courseId}/update/`)  // URL to your update view
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById('modal-content').innerHTML = data;
-                        document.getElementById('modal1').style.display = 'block';
-                    });
-            });
+    // Open Modal
+    document.querySelectorAll('.open-modal').forEach(button => {
+        button.addEventListener('click', function() {
+            const courseId = this.getAttribute('data-id');
+            fetch(`/courses/${courseId}/update/`)  // URL to your update view
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('modal-content').innerHTML = data;
+                    document.getElementById('modal_update').style.display = 'block';
+
+                    // Attach the event listener for the close button after the content is loaded
+                    const closeButton = document.querySelector('.close-modal-update');
+                    if (closeButton) {
+                        closeButton.addEventListener('click', closeModalUpdate);
+                    }
+                });
         });
-        
-        document.getElementById('modal1').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const form = document.getElementById('update-form');
-            const formData = new FormData(form);
-        
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'  // This lets Django know it's an AJAX request
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Handle success (e.g., refresh the item list or close modal)
-                    alert(data.message);
-                    location.reload();  // Refresh to see changes
-                }
-            });
+    });
+
+    // Handle Form Submission via AJAX
+    document.getElementById('modal_update').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const form = document.getElementById('update-form');
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'  // This lets Django know it's an AJAX request
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                location.reload();  // Refresh to see changes
+            }
         });
-        </script>
+    });
+
+    // Close Modal Functionality
+    function closeModalUpdate() {
+        document.getElementById('modal_update').style.display = 'none';  // Hide the modal
+    }
+</script>
+
 </body>
 </html>
 

@@ -10,6 +10,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.utils import timezone
 from datetime import timedelta
+from .forms import CourseForm 
 
 
 UserModel = get_user_model()
@@ -19,7 +20,7 @@ from django.http import HttpResponse, JsonResponse
 def fake_view(request):
     return HttpResponse("This is a fake view for testing purposes.")
 
-# Member list view
+# Student list view
 class StudentListView(LoginRequiredMixin,FilterView):
     model = Student
     template_name = 'app/student/student_list.html'
@@ -87,13 +88,14 @@ class StudentUserCreateView(LoginRequiredMixin,CreateView):
 
 from django.shortcuts import get_object_or_404
 
-# Member update view
+# Student update view
 class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
     model = Student
     #fields = '__all__'
     template_name = 'app/student/student_edit.html'
     form_class = StudentUserChangeForm
     success_url = reverse_lazy('home')
+
 
 
 
@@ -189,6 +191,7 @@ class CourseListView(LoginRequiredMixin,ListView):
         context['form'] = CourseForm()  # Inject the form into the context
         return context
 
+
     # Handle form submission (manual post method for CreateView functionality)
     def post(self, request, *args, **kwargs):
         form = CourseForm(request.POST)
@@ -199,12 +202,9 @@ class CourseListView(LoginRequiredMixin,ListView):
 
 
 
-from django.views.generic import UpdateView
-from django.urls import reverse_lazy
 
-from .forms import CourseForm  # Assume you have a form for your model
-
-class CourseUpdateView(UpdateView):
+# Course update
+class CourseUpdateView(LoginRequiredMixin,UpdateView):
     model = Course
     form_class = CourseUpdateForm
     template_name = 'app/student/course_update.html'  # This will be rendered in the modal
@@ -214,9 +214,3 @@ class CourseUpdateView(UpdateView):
         # Ensure you retrieve the object based on the primary key from the URL or modal
         obj = get_object_or_404(Course, pk=self.kwargs['pk'])
         return obj
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        if self.request.is_ajax():
-            return JsonResponse({'success': True, 'message': 'Item updated successfully!'})
-        return response

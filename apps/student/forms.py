@@ -157,7 +157,7 @@ class SubscriptioForm(ModelForm):
                 self.fields['user'].queryset = get_user_model().objects.filter(organization=user.organization.id,is_staff=True)
 
 
-
+# Subscriptio Update form
 class SubscriptionUpdateForm(ModelForm):
     student = ModelChoiceField(queryset=Student.objects.order_by('user'),widget=forms.Select(attrs={'class': 'form-control'}),label='Μαθητής')
     course = ModelChoiceField(queryset=Course.objects.order_by('title'),widget=forms.Select(attrs={'class': 'form-control'}),label='Course')
@@ -187,7 +187,7 @@ class SubscriptionUpdateForm(ModelForm):
                 self.fields['course'].queryset = Course.objects.filter(organization=user.organization.id)
 
 
-
+# Course form
 class CourseForm(forms.ModelForm):
     organization = ModelChoiceField(queryset=Organization.objects.all(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),empty_label='---Επιλέξτε Οργανισμό---',label=False,required=True)
     title = forms.CharField(label=False, widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700','placeholder':'Μάθημα'}),required=True)
@@ -211,7 +211,7 @@ class CourseForm(forms.ModelForm):
                 self.fields['organization'].queryset = Organization.objects.filter(user__organization=user.organization.id).distinct()
 
 
-
+# Course update form
 class CourseUpdateForm(forms.ModelForm):
     organization = ModelChoiceField(queryset=Organization.objects.all(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),empty_label='---Επιλέξτε Οργανισμό---',label=False,required=True)
     title = forms.CharField(label=False, widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700','placeholder':'Μάθημα'}),required=True)

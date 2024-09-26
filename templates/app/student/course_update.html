@@ -1,7 +1,7 @@
 <!-- item_update_form.html -->
-<div class="bg-white p-6 rounded-lg shadow-lg w-1/3 relative">
+
     <!-- Close Button -->
-    <button class="absolute top-2 right-2" onclick="closeModal()">✕</button>
+     <button class="absolute top-2 right-2 close-modal-update">✕</button>
 
     <!-- Form -->
     <h2 class="text-lg font-bold mb-4 text-gray-700">Update Course</h2>
@@ -9,10 +9,8 @@
         <div class="space-y-4">
         {% csrf_token %}
         {{ form.as_p }}
-        <div class="mt-4 flex justify-end">
-            <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded">Αποθήκευση</button>
+            <div class="mt-4 flex justify-end">
+                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded">Αποθήκευση</button>
+            </div>
         </div>
-</div>
     </form>
-</div>
-</div>
