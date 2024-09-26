@@ -1,6 +1,6 @@
 # urls.py
 from django.urls import path
-from .views import StudentListView,StudentUserCreateView, SubscriptionListView, StudentUserUpdateView,CourseListView,SubscriptionEndsListView
+from .views import StudentListView,StudentUserCreateView, SubscriptionListView, StudentUserUpdateView,CourseListView,SubscriptionEndsListView,CourseUpdateView
 #SubscriptionListView,SubscriptionCreateView,Export_data_subscription,courceview,delete_entry, SubscriptionUpdateView,SubscriptionDeleteView,compose_email,SubscriptionEndingListView
 from . import views
 
@@ -19,4 +19,5 @@ urlpatterns = [
     # path('students/send-email/', views.compose_email, name='send_email'),
     #path('email-search/', EmailSearchView.as_view(), name='email_search'),
     path('students/courses/list', CourseListView.as_view(), name='course_list'),
+    path('courses/<int:pk>/update/', CourseUpdateView.as_view(), name='course_edit' ),
 ]

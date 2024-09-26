@@ -87,6 +87,31 @@ class StudentUserChangeForm(forms.ModelForm):
         exclude = ['user',] 
         fields = ('organization','email','first_name','last_name','date_of_birth','phone_number','address','city','postal_code','country','gender','is_active','is_student')
 
+    def __init__(self, *args, **kwargs):
+        super(StudentUserChangeForm, self).__init__(*args, **kwargs)
+        # Populate the first_name field with the value from the related User model
+        if self.instance and self.instance.pk:
+            self.fields['organization'].initial = self.instance.user.organization
+            self.fields['date_of_birth'].initial = self.instance.user.date_of_birth
+            self.fields['gender'].initial = self.instance.user.gender
+            self.fields['first_name'].initial = self.instance.user.first_name
+            self.fields['last_name'].initial = self.instance.user.last_name
+            self.fields['phone_number'].initial = self.instance.user.phone_number
+            self.fields['address'].initial = self.instance.user.address
+            self.fields['city'].initial = self.instance.user.city
+            self.fields['country'].initial = self.instance.user.country
+            self.fields['postal_code'].initial = self.instance.user.postal_code
+            self.fields['is_active'].initial = self.instance.user.is_active
+            self.fields['email'].initial = self.instance.user.email
+    
+    def save(self, commit=True):
+        student = super(StudentUserChangeForm, self).save(commit=False)
+        # Save the first name back to the related User model
+        student.user.first_name = self.cleaned_data['first_name']
+        if commit:
+            student.user.save()
+            student.save()
+        return student
     # def __init__(self, *args, **kwargs):
     #     # Get the user instance from kwargs (if it's provided)
     #     user = kwargs.get('instance', None)
@@ -173,6 +198,30 @@ class CourseForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super(CourseForm, self).__init__(*args, **kwargs)
+        if user:
+            if user.is_superuser:
+                # self.fields['member'].queryset = Member.objects.all()
+                self.fields['organization'].queryset = Organization.objects.all()
+            else:
+                # self.fields['member'].queryset = Member.objects.filter(user__company=user.company.id,is_student=True)
+                self.fields['organization'].queryset = Organization.objects.filter(user__organization=user.organization.id).distinct()
+
+
+
+class CourseUpdateForm(forms.ModelForm):
+    organization = ModelChoiceField(queryset=Organization.objects.all(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),empty_label='---Επιλέξτε Οργανισμό---',label=False,required=True)
+    title = forms.CharField(label=False, widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700','placeholder':'Μάθημα'}),required=True)
+    description = forms.CharField(label=False, widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700','placeholder':'Περιγραφή'}),required=False)
+    is_online = forms.BooleanField(initial=True,label='Κατάσταση',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
+    class Meta:
+        model = Course
+        fields = ['organization','title', 'description','is_online']
+        widgets = {
+        }
+    
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(CourseUpdateForm, self).__init__(*args, **kwargs)
         if user:
             if user.is_superuser:
                 # self.fields['member'].queryset = Member.objects.all()

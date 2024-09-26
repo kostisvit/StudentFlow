@@ -15,7 +15,7 @@ from datetime import timedelta
 UserModel = get_user_model()
 
 #fake view for testing
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 def fake_view(request):
     return HttpResponse("This is a fake view for testing purposes.")
 
@@ -94,6 +94,7 @@ class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
     template_name = 'app/student/student_edit.html'
     form_class = StudentUserChangeForm
     success_url = reverse_lazy('home')
+
 
 
     
@@ -195,3 +196,27 @@ class CourseListView(LoginRequiredMixin,ListView):
             form.save()
             return redirect('course_list')  # Redirect to course list after submission
         return self.get(request, *args, form=form)
+
+
+
+from django.views.generic import UpdateView
+from django.urls import reverse_lazy
+
+from .forms import CourseForm  # Assume you have a form for your model
+
+class CourseUpdateView(UpdateView):
+    model = Course
+    form_class = CourseUpdateForm
+    template_name = 'app/student/course_update.html'  # This will be rendered in the modal
+    success_url = reverse_lazy('course_list')  # Redirect after successful update
+
+    def get_object(self, queryset=None):
+        # Ensure you retrieve the object based on the primary key from the URL or modal
+        obj = get_object_or_404(Course, pk=self.kwargs['pk'])
+        return obj
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        if self.request.is_ajax():
+            return JsonResponse({'success': True, 'message': 'Item updated successfully!'})
+        return response

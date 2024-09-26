@@ -71,7 +71,7 @@
                 </td>
                 {% endif %}
                 <td class="px-6 py-4" data-label="Ενέργειες">
-                    <a href="{{student.user.get_absolute_url_edit}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Edit</a>
+                    <a href="{% url 'student_edit' student.pk %}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Edit</a>
                     <a href="{{student.user.get_absolute_url_delete}}" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a></td>
             </tr>
                 </tr>

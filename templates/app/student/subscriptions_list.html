@@ -95,7 +95,26 @@
               <form method="POST">
                   <div class="space-y-4">
                   {% csrf_token %}
-                  {{ form.as_p }}
+                  <div>
+                    <label for="organization" class="block text-sm font-medium text-gray-700 dark:text-white">Καθηγητής<span class="text-red-600 ml-2">*</span></label>
+                    {{form.user}} 
+                  </div>
+                  <div>
+                    <label for="organization" class="block text-sm font-medium text-gray-700 dark:text-white">Μάθημα<span class="text-red-600 ml-2">*</span></label>
+                    {{form.course}} 
+                  </div>
+                  <div>
+                    <label for="organization" class="block text-sm font-medium text-gray-700 dark:text-white">Μαθητής<span class="text-red-600 ml-2">*</span></label>
+                    {{form.student}} 
+                  </div>
+                  <div>
+                    <label for="organization" class="block text-sm font-medium text-gray-700 dark:text-white">Έναρξη<span class="text-red-600 ml-2">*</span></label>
+                    {{form.start_date}} 
+                  </div>
+                  <div>
+                    <label for="organization" class="block text-sm font-medium text-gray-700 dark:text-white">Κατάσταση<span class="text-red-600 ml-2">*</span></label>
+                    {{form.is_online}} 
+                  </div>
                   <div class="mt-4 flex justify-end">
                       <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded">Αποθήκευση</button>
                   </div>

@@ -22,6 +22,7 @@
                         <th scope="col" class="px-6 py-3">Description</th>
                         <th scope="col" class="px-6 py-3">Organization</th>
                         <th scope="col" class="px-6 py-3">Is Online?</th>
+                        <th scope="col" class="px-6 py-3">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,6 +32,7 @@
                         <td class="px-6 py-4" data-label="Title">{{ course.description }}</td>
                         <td class="px-6 py-4" data-label="Organization">{{ course.organization }}</td>
                         <td class="px-6 py-4" data-label="Is Online?">{{ course.is_online|yesno:"Yes,No" }}</td>
+                        <td><button class="open-modal" data-id="{{ course.id }}">Edit</button></td>
                     </tr>
                     {% empty %}
                     <tr>
@@ -73,6 +75,13 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div id="modal1" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
+        <div id="modal-content">
+            <!-- Form will be injected here -->
+        </div>
+    </div>
+
     <script>
         function openModal() {
             document.getElementById("modal").classList.remove("hidden");
@@ -84,6 +93,42 @@
             document.getElementById("modal").classList.add("hidden");
         }
     </script>
+
+    <script>
+        document.querySelectorAll('.open-modal').forEach(button => {
+            button.addEventListener('click', function() {
+                const courseId = this.getAttribute('data-id');
+                fetch(`/courses/${courseId}/update/`)  // URL to your update view
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('modal-content').innerHTML = data;
+                        document.getElementById('modal1').style.display = 'block';
+                    });
+            });
+        });
+        
+        document.getElementById('modal1').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = document.getElementById('update-form');
+            const formData = new FormData(form);
+        
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'  // This lets Django know it's an AJAX request
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Handle success (e.g., refresh the item list or close modal)
+                    alert(data.message);
+                    location.reload();  // Refresh to see changes
+                }
+            });
+        });
+        </script>
 </body>
 </html>
 
