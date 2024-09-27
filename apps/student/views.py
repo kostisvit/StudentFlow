@@ -12,6 +12,8 @@ from django.shortcuts import redirect
 from django.utils import timezone
 from datetime import timedelta
 from .forms import CourseForm 
+from .send_email_view import compose_email
+from django.shortcuts import get_object_or_404
 
 
 UserModel = get_user_model()
@@ -61,7 +63,7 @@ class StudentListView(LoginRequiredMixin,FilterView):
         return queryset
 
 
-
+from django.contrib import messages
 # Student - User create
 class StudentUserCreateView(LoginRequiredMixin,CreateView):
     model = get_user_model()
@@ -87,7 +89,11 @@ class StudentUserCreateView(LoginRequiredMixin,CreateView):
         form.cleaned_data['is_student'] = self.get_initial()['is_student']
         return super().form_valid(form)
 
-from django.shortcuts import get_object_or_404
+    def form_valid(self, form):
+        # Add a success message after a successful form submission
+        messages.success(self.request, 'Your form has been submitted successfully!')
+        return super().form_valid(form)
+
 
 # Student update view
 class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
