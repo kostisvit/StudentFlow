@@ -11,6 +11,7 @@ from django_filters.views import FilterView
 from .filters import UserStaffFillter, DocumentFilter, VacationFilter
 from .models import Document, Vacation
 from .password_change import *
+from .export import Staff_export
 from django.contrib import messages
 
 UserModel = get_user_model()
@@ -205,7 +206,7 @@ class DocumentListView(LoginRequiredMixin,FilterView):
 
 class VacationStaffListView(LoginRequiredMixin, FilterView):
     model = Vacation
-    template_name = 'app/staff/vacation_list.html'
+    template_name = 'app/staff/staff_vacation_list.html'
     filterset_class = VacationFilter
     context_object_name = 'vacations'
     paginate_by = 10

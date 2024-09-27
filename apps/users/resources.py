@@ -3,7 +3,7 @@ from .models import User
 #from company.models import Company
 from import_export.widgets import ForeignKeyWidget
 
-class MemberResource(resources.ModelResource):
+class UserResource(resources.ModelResource):
     first_name = fields.Field(attribute="first_name",column_name="Όνομα",)
     last_name = fields.Field(attribute="last_name",column_name="Επώνυμο",)
     date_of_birth = fields.Field(attribute="date_of_birth",column_name="Ημ.Γένν.",)

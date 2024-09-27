@@ -6,6 +6,7 @@ from django.views.generic import CreateView, UpdateView,ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
 from .forms import *
+from .export import *
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.utils import timezone
@@ -182,7 +183,7 @@ class SubscriptionEndsListView(LoginRequiredMixin, FilterView):
 # Course LIst with modal creating new course
 class CourseListView(LoginRequiredMixin,ListView):
     model = Course
-    template_name = 'app/student/course_list.html'
+    template_name = 'app/student/student_course_list.html'
     context_object_name = 'courses'
     
     # Override to add the form to the context
@@ -207,7 +208,7 @@ class CourseListView(LoginRequiredMixin,ListView):
 class CourseUpdateView(LoginRequiredMixin,UpdateView):
     model = Course
     form_class = CourseUpdateForm
-    template_name = 'app/student/course_update.html'  # This will be rendered in the modal
+    template_name = 'app/student/student_course_update.html'  # This will be rendered in the modal
     success_url = reverse_lazy('course_list')  # Redirect after successful update
 
     def get_object(self, queryset=None):
