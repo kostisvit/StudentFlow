@@ -132,12 +132,12 @@ class SubscriptionListView(LoginRequiredMixin, FilterView):
     # Override to add the form to the context
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = SubscriptioForm()  # Inject the form into the context
+        context['form'] = SubscriptionForm()  # Inject the form into the context
         return context
 
     # Handle form submission (manual post method for CreateView functionality)
     def post(self, request, *args, **kwargs):
-        form = SubscriptioForm(request.POST)
+        form = SubscriptionForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('subscriptions_list')  # Redirect to course list after submission
@@ -191,7 +191,15 @@ class CourseListView(LoginRequiredMixin,ListView):
     model = Course
     template_name = 'app/student/student_course_list.html'
     context_object_name = 'courses'
-    
+
+    # def get_form_kwargs(self):
+    #     """Override this method to pass the current user into the form."""
+    #     # Get the existing form kwargs
+    #     kwargs = super().get_form_kwargs()
+    #     # Add the current user to the kwargs
+    #     kwargs['user'] = self.request.user
+    #     return kwargs
+     
     # Override to add the form to the context
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

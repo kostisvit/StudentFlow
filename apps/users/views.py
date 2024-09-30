@@ -47,13 +47,27 @@ def custom_logout(request):
     return redirect('login')
 
 
+
 # Staff List View
 class UserStaffView(LoginRequiredMixin,FilterView):
     model = get_user_model()
     filterset_class = UserStaffFillter
     context_object_name = 'users'
     template_name = "app/staff/staff.html"
-    
+
+    # Override to add the form to the context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = UserCreationForm()  # Inject the form into the context
+        return context
+
+    # Handle form submission (manual post method for CreateView functionality)
+    def post(self, request, *args, **kwargs):
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('staff_list')  # Redirect to course list after submission
+        return self.get(request, *args, form=form)
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -66,15 +80,15 @@ class UserStaffView(LoginRequiredMixin,FilterView):
 
 
 # Staff Create View
-class UserStaffCreateView(LoginRequiredMixin,CreateView):
-    model = get_user_model()
-    form_class = UserCreationForm
-    template_name = "app/staff/staff_new.html"
-    success_url = reverse_lazy('staff_new')
+# class UserStaffCreateView(LoginRequiredMixin,CreateView):
+#     model = get_user_model()
+#     form_class = UserCreationForm
+#     template_name = "app/staff/staff_new.html"
+#     success_url = reverse_lazy('staff_new')
     
-    def form_invalid(self, form):
-        print(form.errors)
-        return super().form_invalid(form)
+#     def form_invalid(self, form):
+#         print(form.errors)
+#         return super().form_invalid(form)
 
 
     # def get_queryset(self):

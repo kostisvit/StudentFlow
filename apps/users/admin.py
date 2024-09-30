@@ -22,7 +22,7 @@ class UserAdmin(UserAdmin):
     add_form = UserCreationForm
     form = UserChangeForm
     model = User
-    list_display = ('email', 'first_name', 'last_name', 'is_staff', 'is_active','gender','is_company_owner')
+    list_display = ('email', 'first_name', 'last_name', 'is_staff', 'is_active','gender','is_company_owner','organization')
     list_filter = ('is_staff', 'is_active')
     readonly_fields = ()
     fieldsets = (

@@ -128,9 +128,9 @@ class StudentUserChangeForm(forms.ModelForm):
 
 
 # Subscriptio form
-class SubscriptioForm(ModelForm):
-    student = ModelChoiceField(queryset=Student.objects.order_by('user'),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),label='Μαθητής',required=True)
-    course = ModelChoiceField(queryset=Course.objects.order_by('title'),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),label='Course',required=True)
+class SubscriptionForm(ModelForm):
+    student = ModelChoiceField(queryset=Student.objects.none(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),label='Μαθητής',required=True)
+    course = ModelChoiceField(queryset=Course.objects.none(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),label='Course',required=True)
     user = ModelChoiceField(queryset=get_user_model().objects.order_by('last_name'),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),label='Καθηγητής',required=True)
     start_date = forms.DateField(initial=date.today,widget=forms.DateInput(attrs={'type': 'date','class': 'block w-full rounded-md border-0 py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6','placeholder': 'YYYY-MM-DD',}),required=True,label='Έναρξη')
     #end_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date','class': 'block w-full rounded-md border-0 py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6','placeholder': 'YYYY-MM-DD',}),required=False)
@@ -141,20 +141,26 @@ class SubscriptioForm(ModelForm):
         fields = ("user","student","course","start_date","is_online")
 
     def __init__(self, *args, **kwargs):
-        super(SubscriptioForm, self).__init__(*args, **kwargs)
-        self.fields['end_date'].disabled = True
-        
-    def __init__(self, *args, **kwargs):
+        # Access the request or user from kwargs
         user = kwargs.pop('user', None)
-        super(SubscriptioForm, self).__init__(*args, **kwargs)
-        if user:
-            if user.is_superuser:
-                self.fields['student'].queryset = Student.objects.all()
-                self.fields['course'].queryset = Course.objects.all()
-            else:
-                self.fields['student'].queryset = Student.objects.filter(user__organization=user.organization.id,is_student=True)
-                self.fields['course'].queryset = Course.objects.filter(organization=user.organization.id)
-                self.fields['user'].queryset = get_user_model().objects.filter(organization=user.organization.id,is_staff=True)
+        super(SubscriptionForm, self).__init__(*args, **kwargs)
+        #     self.fields['end_date'].disabled = True
+
+        # For superusers, show all students and courses
+        if user and user.is_superuser:
+            self.fields['student'].queryset = Student.objects.all()
+            self.fields['course'].queryset = Course.objects.all()
+            #self.fields['user'].queryset = get_user_model().objects.all()
+            
+        else:
+            # Filter students and courses by 'is_online' field for non-superusers
+            self.fields['student'].queryset = Student.objects.filter(user__is_staff=False)
+            self.fields['course'].queryset = Course.objects.filter(is_online=True)
+            #self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True)
+
+        # Ensure that the 'user' field (teachers) is always ordered by last name
+        self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True).order_by('last_name')
+
 
 
 # Subscriptio Update form
