@@ -44,6 +44,7 @@ class Student(TimeStampedModel):
 
 class Course(TimeStampedModel):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE,null=True, blank=True,related_name='courses')
+    user = models.ForeignKey("users.User", on_delete=models.CASCADE,default='1')
     title = models.CharField(max_length=100)
     description = models.TextField()
     is_online = models.BooleanField(default=True)

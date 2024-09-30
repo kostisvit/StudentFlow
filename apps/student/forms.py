@@ -154,7 +154,7 @@ class SubscriptionForm(ModelForm):
             
         else:
             # Filter students and courses by 'is_online' field for non-superusers
-            self.fields['student'].queryset = Student.objects.filter(user__is_staff=False)
+            self.fields['student'].queryset = Student.objects.filter(user__is_staff=False,user__is_active=True)
             self.fields['course'].queryset = Course.objects.filter(is_online=True)
             #self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True)
 
@@ -196,26 +196,27 @@ class SubscriptionUpdateForm(ModelForm):
 # Course form
 class CourseForm(forms.ModelForm):
     organization = ModelChoiceField(queryset=Organization.objects.all(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),empty_label='---Επιλέξτε Οργανισμό---',label=False,required=True)
+    user = ModelChoiceField(queryset=get_user_model().objects.order_by('last_name'),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),empty_label='---Επιλέξτε Καθηγητή---',label=False)
     title = forms.CharField(label=False, widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700','placeholder':'Μάθημα'}),required=True)
     description = forms.CharField(label=False, widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700','placeholder':'Περιγραφή'}),required=False)
     is_online = forms.BooleanField(initial=True,label='Κατάσταση',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
     class Meta:
         model = Course
-        fields = ['organization','title', 'description','is_online']
+        fields = ['organization','user','title', 'description','is_online']
         widgets = {
         }
     
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super(CourseForm, self).__init__(*args, **kwargs)
-        if user:
-            if user.is_superuser:
+        if user and user.is_superuser:
                 # self.fields['member'].queryset = Member.objects.all()
-                self.fields['organization'].queryset = Organization.objects.all()
-            else:
+            self.fields['organization'].queryset = Organization.objects.all().distinct()
+        else:
                 # self.fields['member'].queryset = Member.objects.filter(user__company=user.company.id,is_student=True)
-                self.fields['organization'].queryset = Organization.objects.filter(user__organization=user.organization.id).distinct()
-
+            self.fields['organization'].queryset = Organization.objects.all().distinct()
+            # Ensure that the 'user' field (teachers) is always ordered by last name
+        self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True).order_by('last_name')
 
 # Course update form
 class CourseUpdateForm(forms.ModelForm):

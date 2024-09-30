@@ -70,7 +70,7 @@ class StudentUserCreateView(LoginRequiredMixin,CreateView):
     form_class = StudentCreationForm
     template_name = "app/student/student_new.html"
     success_url = reverse_lazy('home')
-    
+
     def form_invalid(self, form):
         print(form.errors)
         return super().form_invalid(form)
