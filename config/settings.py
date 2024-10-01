@@ -162,3 +162,21 @@ AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
+
+
+# Email backend (for development, use the console backend)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# SMTP server details
+EMAIL_HOST = ''  # Or your email provider's SMTP server
+EMAIL_PORT = 587  # Or the port used by your email provider
+EMAIL_USE_TLS = True  # Use TLS for secure connection
+EMAIL_USE_SSL = False  # Use SSL if required (not with TLS)
+EMAIL_HOST_USER = 'your-email@gmail.com'  # Your email address
+EMAIL_HOST_PASSWORD = 'your-email-password'  # Your email password
+
+# Default from email
+DEFAULT_FROM_EMAIL = 'your-email@gmail.com'
+
+# Optional settings
+EMAIL_TIMEOUT = 10  # Timeout for the email server connection (in seconds)

@@ -122,12 +122,6 @@ class SubscriptionListView(LoginRequiredMixin, FilterView):
         # Add the current user to the kwargs
         kwargs['user'] = self.request.user
         return kwargs
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     # Add a flag indicating if the members list is empty
-    #     context['subscriptions_empty'] = not context['subscriptions'].exists()
-    #     return context
     
     # Override to add the form to the context
     def get_context_data(self, **kwargs):
@@ -191,14 +185,6 @@ class CourseListView(LoginRequiredMixin,ListView):
     model = Course
     template_name = 'app/student/student_course_list.html'
     context_object_name = 'courses'
-
-    # def get_form_kwargs(self):
-    #     """Override this method to pass the current user into the form."""
-    #     # Get the existing form kwargs
-    #     kwargs = super().get_form_kwargs()
-    #     # Add the current user to the kwargs
-    #     kwargs['user'] = self.request.user
-    #     return kwargs
      
     # Override to add the form to the context
     def get_context_data(self, **kwargs):
