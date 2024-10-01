@@ -246,74 +246,86 @@
     
     <!-- Modal Container Send Mail-->
         <div id="modal-email" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
-            <div class="bg-white p-6 rounded-lg shadow-lg w-2/3 relative">
-                <!-- Close Button -->
-                <button class="absolute top-2 right-2" onclick="closeModal()">✕</button>
+            <div class=" p-6 rounded-lg w-2/3 relative">
 
                 <!-- Form -->
                 <div class="bg-white p-8 rounded-lg shadow-lg  mt-5 pt-5 container mx-auto w-3/4">
-            <h2 class="text-2xl font-bold mb-6 text-center text-indigo-600">Αποστολή Email</h2>
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            
-            <!-- Email Field -->
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Προς</label>
-                <input type="email" name="email" id="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-            </div>
-            
-            <!-- CC Field -->
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="cc">Κοινοποίηση</label>
-                <input type="text" name="cc" id="cc" placeholder="Οι διευθύνσεις χωρίζονται με κόμμα" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
+                  <!-- Close Button inside the form -->
+                  <div class="flex justify-end">
+                    <button type="button" onclick="closeModal()" class="text-red-600 font-bold text-2xl px-4 py-2 rounded-md focus:outline-none">✕</button>
+                  </div>
+                <h2 class="text-2xl font-bold mb-6 text-center text-indigo-600">Αποστολή Email</h2>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <!-- Email Field -->
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Προς</label>
+                        <input type="email" name="email" id="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                    
+                    <!-- CC Field -->
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="cc">Κοινοποίηση</label>
+                        <input type="text" name="cc" id="cc" placeholder="Οι διευθύνσεις χωρίζονται με κόμμα" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
 
-            <!-- BCC Field -->
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="bcc">Ιδιαίτ. Κοινοποίηση</label>
-                <input type="text" name="bcc" id="bcc" placeholder="Οι διευθύνσεις χωρίζονται με κόμμα" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
+                    <!-- BCC Field -->
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="bcc">Ιδιαίτ. Κοινοποίηση</label>
+                        <input type="text" name="bcc" id="bcc" placeholder="Οι διευθύνσεις χωρίζονται με κόμμα" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
 
-            <!-- Subject Field -->
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="subject">Θέμα</label>
-                <input type="text" name="subject" id="subject" maxlength="100" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-            </div>
+                    <!-- Subject Field -->
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="subject">Θέμα</label>
+                        <input type="text" name="subject" id="subject" maxlength="100" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
 
-            <!-- Attachments Field -->
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="attachments">Επιλέξτε αρχείο</label>
-                <input type="file" name="attachments" id="attachments" multiple class="block w-56 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-            </div>
+                    <!-- Attachments Field -->
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="attachments">Επιλέξτε αρχείο</label>
+                        <input type="file" name="attachments" id="attachments" multiple class="block w-56 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                    </div>
 
-            <!-- Message Field -->
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="message">Μήνυμα</label>
-                <textarea name="message" id="message" rows="4" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
-            </div>
+                    <!-- Message Field -->
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="message">Μήνυμα</label>
+                        <textarea name="message" id="message" rows="4" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+                    </div>
 
-            <!-- Submit Button -->
-            <div class="flex items-center justify-center">
-                <button type="submit" class="bg-indigo-600 text-white font-medium rounded-lg py-2 px-4 shadow-md hover:bg-indigo-700 focus:outline-none ">
-                    Αποστολή
-                </button>
-            </div>
-        </form>
-    </div>
+                    <!-- Submit Button -->
+                    <div class="flex items-center justify-center">
+                        <button type="submit" class="bg-indigo-600 text-white font-medium rounded-lg py-2 px-4 shadow-md hover:bg-indigo-700 focus:outline-none ">
+                            Αποστολή
+                        </button>
+                    </div>
+                </form>
+              </div>
             </div>
         </div>
     </div>
     
     <script>
-        function openModal() {
-            document.getElementById("modal-email").classList.remove("hidden");
-            document.getElementById("modal-email").classList.add("flex");
-        }
-
-        function closeModal() {
-            document.getElementById("modal-email").classList.remove("flex");
-            document.getElementById("modal-email").classList.add("hidden");
-        }
+      function openModal() {
+        const modal = document.getElementById("modal-email");
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+    
+        // Add an event listener to close the modal when clicking outside
+        modal.addEventListener('click', function(event) {
+            // Check if the click is outside the modal content
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+    }
+    
+    function closeModal() {
+        const modal = document.getElementById("modal-email");
+        modal.classList.remove("flex");
+        modal.classList.add("hidden");
+    }
     </script>
       <!--End Modal Container Send Mail-->
     <script>
