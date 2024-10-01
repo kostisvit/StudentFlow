@@ -7,6 +7,7 @@ from . import views
 urlpatterns = [
     path('students/list', StudentListView.as_view(), name='students_list'),
     path('students/new/', StudentUserCreateView.as_view(), name='student_new' ),
+    path('students/export', views.Student_Export_data, name='students_list_export'),
     path('students/<int:pk>/update/', StudentUserUpdateView.as_view(), name='student_edit' ),
     path('students/<int:pk>/delete/', views.fake_view,  name='student_delete'),
     path('students/subscriptions/list', SubscriptionListView.as_view(), name='subscriptions_list'),

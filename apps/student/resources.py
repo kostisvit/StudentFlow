@@ -16,3 +16,19 @@ class SubscriptionResource(resources.ModelResource):
             'start_date': {'format': '%d/%m/%Y'},
             'end_date': {'format': '%d/%m/%Y'},
         }
+
+
+class StudentExportResource(resources.ModelResource):
+    first_name = fields.Field(attribute="first_name",column_name="Όνομα",)
+    last_name = fields.Field(attribute="last_name",column_name="Επώνυμο",)
+    date_of_birth = fields.Field(attribute="date_of_birth",column_name="Ημ.Γένν.",)
+    #company = fields.Field(column_name='company_name',attribute='company',widget=ForeignKeyWidget(Company, 'name'))
+
+    class Meta:
+        model = Student
+        fields = ('user__first_name', 'user__last_name', 'user__date_of_birth','user__email', 'user__phone_number', 'user__address','user__city','user__postal_code','user__country','user__gender', 'membership_date','user__is_active')
+        export_order = ('first_name', 'last_name', 'date_of_birth','email', 'phone_number', 'address','city','postal_code','country','gender', 'membership_date','active')
+        widgets = {
+            'date_of_birth': {'format': '%d/%m/%Y'},
+            'membership_date': {'format': '%d/%m/%Y'},
+        }
