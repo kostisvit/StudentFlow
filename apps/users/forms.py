@@ -163,43 +163,45 @@ class EmailAuthenticationForm(AuthenticationForm):
 
 
 
-# from .validators import validate_file_extension
-# from .models import Course
+from .validators import validate_file_extension
+from .models import Course, Document
 
 
-# class MultipleUserFileForm(forms.Form):
-#     user = forms.ModelChoiceField(queryset=CustomUser.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}), label="Select User")
-#     course = forms.ModelChoiceField(queryset=Course.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}), label="Select Course")
-#     file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
-#     filename = forms.CharField(label='Όνομα αρχείου',required=False)
+class MultipleUserFileForm(forms.ModelForm):
+    user = forms.ModelChoiceField(queryset=get_user_model().objects.all(),widget=forms.Select(attrs={'class': 'form-control'}), label="Select User",required=True)
+    course = forms.ModelChoiceField(queryset=Course.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}), label="Select Course",required=True)
+    file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=True)
+    filename = forms.CharField(label='Όνομα αρχείου',required=False)
+
+    class Meta:
+        model = Document
+        fields = ['user', 'file']
 
 
-#     def __init__(self, *args, **kwargs):
-#         logged_in_user = kwargs.pop('logged_in_user', None)
-#         super().__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        logged_in_user = kwargs.pop('logged_in_user', None)
+        super().__init__(*args, **kwargs)
 
-#         # Apply different queryset based on the logged-in user
-#         if logged_in_user and logged_in_user.is_superuser:
-#             self.fields['user'].queryset = CustomUser.objects.all()
-#             self.fields['course'].queryset = Course.objects.all()
-#         else:
-#             self.fields['user'].queryset = CustomUser.objects.filter(
-#                 company=logged_in_user.company, is_staff=False
-#             )
-#             self.fields['course'].queryset = Course.objects.filter(company=logged_in_user.company.id)
+        # Apply different queryset based on the logged-in user
+        if logged_in_user and logged_in_user.is_superuser:
+            self.fields['user'].queryset = get_user_model().objects.filter(is_staff=False, is_active=True)
+            self.fields['course'].queryset = Course.objects.all()
+        else:
+            self.fields['user'].queryset = get_user_model().objects.filter(organization=logged_in_user.organization, is_staff=False)
+            self.fields['course'].queryset = Course.objects.filter(is_online=True)
 
-#         # Add Bootstrap error class handling
-#         for field_name in self.fields:
-#             field = self.fields[field_name]
-#             if self.errors.get(field_name):
-#                 field.widget.attrs.update({'class': 'form-control is-invalid'})
-#             else:
-#                 field.widget.attrs.update({'class': 'form-control'})
+        # Add Bootstrap error class handling
+        for field_name in self.fields:
+            field = self.fields[field_name]
+            if self.errors.get(field_name):
+                field.widget.attrs.update({'class': 'form-control is-invalid'})
+            else:
+                field.widget.attrs.update({'class': 'form-control'})
 
-#     def clean_file(self):
-#         files = self.files.getlist('file')  # Get the list of uploaded files
-#         for file in files:
-#             validate_file_extension(file)  # Validate each file individually
-#         return files
+    def clean_file(self):
+        files = self.files.getlist('file')  # Get the list of uploaded files
+        for file in files:
+            validate_file_extension(file)  # Validate each file individually
+        return files
 
 

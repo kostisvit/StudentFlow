@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
-from .forms import EmailAuthenticationForm, UserCreationForm, UserChangeForm, VacationStaffForm
+from .forms import EmailAuthenticationForm, UserCreationForm, UserChangeForm, VacationStaffForm, MultipleUserFileForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView,ListView, TemplateView
@@ -190,7 +190,28 @@ class UserStaffUpdateView(LoginRequiredMixin,UpdateView):
     #         form.add_error(None, 'An error occurred while updating the member.')
     #         return super().form_invalid(form)
 
+# Upload File to User
+@login_required
+def upload_files(request):
+    logged_in_user = request.user  # Get the logged-in user
 
+    if request.method == 'POST':
+        form = MultipleUserFileForm(request.POST, request.FILES, logged_in_user=logged_in_user)
+        if form.is_valid():
+            selected_user = form.cleaned_data['user']
+            filename = form.cleaned_data['filename']
+            course = form.cleaned_data['course']
+            file = request.FILES.getlist('file')
+            for file in file:
+                Document.objects.create(user=selected_user, file=file,filename=filename,course=course)
+            messages.success(request, 'Files uploaded successfully!')
+            return redirect('upload_files')  # Redirect to a success page
+        else:
+            messages.error(request, 'Please correct the errors below and try again.')
+    else:
+        form = MultipleUserFileForm(logged_in_user=logged_in_user)
+
+    return render(request, 'app/files/document_upload.html', {'form': form})
 
 # Document list
 class DocumentListView(LoginRequiredMixin,FilterView):
@@ -199,12 +220,6 @@ class DocumentListView(LoginRequiredMixin,FilterView):
     filterset_class = DocumentFilter
     context_object_name = 'documents'
     paginate_by = 10
-
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['documents_empty'] = not context['documents'].exists()
-        return context
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -216,6 +231,8 @@ class DocumentListView(LoginRequiredMixin,FilterView):
             return Document.objects.all()  # Staff can see all articles
         else:
             return Document.objects.filter(user__student__is_student=True, user__is_staff=False,user__student__organization=self.request.user.organization)
+
+
 
 
 class VacationStaffListView(LoginRequiredMixin, FilterView):
