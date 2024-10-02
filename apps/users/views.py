@@ -3,7 +3,7 @@ from django.contrib.auth import logout
 from .forms import EmailAuthenticationForm, UserCreationForm, UserChangeForm, VacationStaffForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import CreateView,ListView
+from django.views.generic import CreateView,ListView, TemplateView
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
@@ -243,3 +243,12 @@ class VacationStaffListView(LoginRequiredMixin, FilterView):
             form.save()
             return redirect('vacation_list')  # Redirect to course list after submission
         return self.get(request, *args, form=form)
+
+
+
+class UpdateListView(LoginRequiredMixin,ListView):
+    model = ''
+    template_name = 'app/update_list.html'
+    context_object_name = 'updates'
+    
+    
