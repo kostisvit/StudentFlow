@@ -11,6 +11,7 @@ class StudentInline(admin.StackedInline):
     verbose_name_plural = 'student'
     fk_name = 'user'
 
+
 class UserAdmin(UserAdmin):
     inlines = (StudentInline,)
 

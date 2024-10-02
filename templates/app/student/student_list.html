@@ -35,6 +35,7 @@
                 </tr>
                 <tr>
                     <th scope="col" class="px-6 py-3">Ονοματεπώνυμο</th>
+                    <th scope="col" class="px-6 py-3">Μάθημα</th>
                     <th scope="col" class="px-6 py-3">Εταιρεία</th>
                     <th scope="col" class="px-6 py-3">Email</th>
                     <th scope="col" class="px-6 py-3">Τηλ. Επικ.</th>
@@ -48,7 +49,8 @@
             <tbody>
                 {% for student in page_obj %}
                 <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                    <td class="px-6 py-4" data-label="Ονοματεπώνυμο"><a href="">{{ student.user.first_name }} {{ student.user.last_name }}</a></td>
+                <td class="px-6 py-4" data-label="Ονοματεπώνυμο"><a href="">{{ student.user.first_name }} {{ student.user.last_name }}</a></td>
+                <td class="px-6 py-4" data-label="Εταιρεία">{{ student.course }}</td>
                 <td class="px-6 py-4" data-label="Εταιρεία">{{ student.user.organization }}</td>
                 <td class="px-6 py-4" data-label="Email">{{ student.user.email }}</td>
                 <td class="px-6 py-4" data-label="Τηλ. Επικ.">{{ student.user.phone_number }}</td>
@@ -115,6 +117,10 @@
         <div>
             <label for="last_name" class="block text-sm font-medium text-gray-700 dark:text-white">Επώνυμο<span class="text-red-600 ml-2">*</span></label>
             {{form.last_name}}
+        </div>
+        <div>
+            <label for="course" class="block text-sm font-medium text-gray-700 dark:text-white">Μάθημα<span class="text-red-600 ml-2">*</span></label>
+            {{form.course}}
         </div>
         <div>
             <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-white">Φύλο<span class="text-red-600 ml-2">*</span></label>

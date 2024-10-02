@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import Student, Course, Subscription
 
 class StudentModelAdmin(admin.ModelAdmin):
-    list_display = ("user","organization","is_student","membership_number","created","modified")
+    list_display = ("user","organization","course","is_student","membership_number","created","modified")
     list_filter = ("organization","is_student")
     readonly_fields = ('membership_number',)
     search_fields = ("user",)

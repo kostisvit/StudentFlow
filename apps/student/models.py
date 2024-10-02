@@ -10,6 +10,7 @@ from datetime import timedelta
 class Student(TimeStampedModel):
     user = models.OneToOneField("users.User", on_delete=models.CASCADE)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE,null=True, blank=True)
+    course = models.ForeignKey("student.Course", on_delete=models.CASCADE,null=True, blank=True)
     is_student = models.BooleanField(default=False,null=True, blank=True)
     membership_number = models.CharField(max_length=10, unique=True, blank=True)
     

@@ -84,6 +84,12 @@ class StudentUserCreateView(LoginRequiredMixin,CreateView):
         initial = super().get_initial()
         initial['is_student'] = True  # Set the initial value as needed
         return initial
+
+    def form_valid(self, form):
+        """Override to handle the selected course and assign it to the user."""
+        user = form.save(commit=False)
+        course = form.cleaned_data.get('course_title')
+        user.save()
     
     def form_valid(self, form):
         form.cleaned_data['is_student'] = self.get_initial()['is_student']
@@ -103,7 +109,34 @@ class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
     form_class = StudentUserChangeForm
     success_url = reverse_lazy('home')
 
+    # def form_invalid(self, form):
+    #     print(form.errors)
+    #     return super().form_invalid(form)
+    
+    # def get_form_kwargs(self):
+    #     kwargs = super().get_form_kwargs()
+    #     kwargs['user'] = self.request.user
+    #     return kwargs
+    
+    # def get_initial(self):
+    #     initial = super().get_initial()
+    #     initial['is_student'] = True  # Set the initial value as needed
+    #     return initial
 
+    # def form_valid(self, form):
+    #     """Override to handle the selected course and assign it to the user."""
+    #     user = form.save(commit=False)
+    #     course = form.cleaned_data.get('course_title')
+    #     user.save()
+    
+    # def form_valid(self, form):
+    #     form.cleaned_data['is_student'] = self.get_initial()['is_student']
+    #     return super().form_valid(form)
+
+    # def form_valid(self, form):
+    #     # Add a success message after a successful form submission
+    #     messages.success(self.request, 'Your form has been changed successfully!')
+    #     return super().form_valid(form)
 
 
     

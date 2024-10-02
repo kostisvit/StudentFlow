@@ -25,9 +25,11 @@ class StudentCreationForm(forms.ModelForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'autocomplete': 'off','class':'block w-full rounded-md border-0 py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'}))
     #is_staff = forms.BooleanField(initial=True,label='Καθηγητής',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
     is_student = forms.BooleanField(initial=True,label='Μαθητής',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
+    course = ModelChoiceField(queryset=Course.objects.all(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),label='Οργανισμός',required=True)
+    
     class Meta:
         model = get_user_model()
-        fields = ('organization','email','first_name','last_name','date_of_birth','phone_number','address','city','postal_code','country','gender','is_active','is_student')
+        fields = ('organization','email','first_name','last_name','date_of_birth','phone_number','address','city','postal_code','country','gender','is_active','is_student','course')
 
     
     def __init__(self, *args, **kwargs):
@@ -57,9 +59,15 @@ class StudentCreationForm(forms.ModelForm):
             user.save()
 
         # Create or update the related Student profile
+        organization = self.cleaned_data.get('organization')
         is_student = self.cleaned_data.get('is_student', True)
+        course = self.cleaned_data.get('course')  # Get the selected course title from the form
+
+        # Create or update the Student profile
         student_profile, created = Student.objects.get_or_create(user=user)
+        student_profile.organization = organization
         student_profile.is_student = is_student
+        student_profile.course = course  # Assign the selected course to the student's profile
         student_profile.save()
 
         return user
@@ -81,48 +89,52 @@ class StudentUserChangeForm(forms.ModelForm):
     is_active = forms.BooleanField(label='Κατάσταση',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}), initial=True,required=False)
     email = forms.EmailField(widget=forms.EmailInput(attrs={'autocomplete': 'off','class':'block w-full rounded-md border-0 py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'}))
     is_student = forms.BooleanField(label='Μαθητής',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
+    course = ModelChoiceField(queryset=Course.objects.all(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),label='Οργανισμός',required=True)
 
     class Meta:
         model = Student
         exclude = ['user',] 
-        fields = ('organization','email','first_name','last_name','date_of_birth','phone_number','address','city','postal_code','country','gender','is_active','is_student')
+        fields = ('organization','email','first_name','last_name','date_of_birth','phone_number','address','city','postal_code','country','gender','is_active','is_student','course')
 
     def __init__(self, *args, **kwargs):
-        super(StudentUserChangeForm, self).__init__(*args, **kwargs)
-        # Populate the first_name field with the value from the related User model
-        if self.instance and self.instance.pk:
-            self.fields['organization'].initial = self.instance.user.organization
-            self.fields['date_of_birth'].initial = self.instance.user.date_of_birth
-            self.fields['gender'].initial = self.instance.user.gender
-            self.fields['first_name'].initial = self.instance.user.first_name
-            self.fields['last_name'].initial = self.instance.user.last_name
-            self.fields['phone_number'].initial = self.instance.user.phone_number
-            self.fields['address'].initial = self.instance.user.address
-            self.fields['city'].initial = self.instance.user.city
-            self.fields['country'].initial = self.instance.user.country
-            self.fields['postal_code'].initial = self.instance.user.postal_code
-            self.fields['is_active'].initial = self.instance.user.is_active
-            self.fields['email'].initial = self.instance.user.email
-    
+            super(StudentUserChangeForm, self).__init__(*args, **kwargs)
+            # Populate the fields with the value from the related User model
+            if self.instance and self.instance.pk:
+                self.fields['organization'].initial = self.instance.user.organization
+                self.fields['date_of_birth'].initial = self.instance.user.date_of_birth
+                self.fields['gender'].initial = self.instance.user.gender
+                self.fields['first_name'].initial = self.instance.user.first_name
+                self.fields['last_name'].initial = self.instance.user.last_name
+                self.fields['phone_number'].initial = self.instance.user.phone_number
+                self.fields['address'].initial = self.instance.user.address
+                self.fields['city'].initial = self.instance.user.city
+                self.fields['country'].initial = self.instance.user.country
+                self.fields['postal_code'].initial = self.instance.user.postal_code
+                self.fields['is_active'].initial = self.instance.user.is_active
+                self.fields['email'].initial = self.instance.user.email
+                self.fields['course'].initial = self.instance.course  # Initialize course field
+
     def save(self, commit=True):
-        student = super(StudentUserChangeForm, self).save(commit=False)
-        # Save the first name back to the related User model
-        student.user.organization = self.cleaned_data['organization']
-        student.user.date_of_birth = self.cleaned_data['date_of_birth']
-        student.user.gender = self.cleaned_data['gender']
-        student.user.first_name = self.cleaned_data['first_name']
-        student.user.last_name = self.cleaned_data['last_name']
-        student.user.phone_number = self.cleaned_data['phone_number']
-        student.user.address = self.cleaned_data['address']
-        student.user.city = self.cleaned_data['city']
-        student.user.country = self.cleaned_data['country']
-        student.user.postal_code = self.cleaned_data['postal_code']
-        student.user.is_active = self.cleaned_data['is_active']
-        student.user.email = self.cleaned_data['email']
-        if commit:
-            student.user.save()
-            student.save()
-        return student
+            student = super(StudentUserChangeForm, self).save(commit=False)
+            # Save the fields back to the related User model
+            student.user.organization = self.cleaned_data['organization']
+            student.user.date_of_birth = self.cleaned_data['date_of_birth']
+            student.user.gender = self.cleaned_data['gender']
+            student.user.first_name = self.cleaned_data['first_name']
+            student.user.last_name = self.cleaned_data['last_name']
+            student.user.phone_number = self.cleaned_data['phone_number']
+            student.user.address = self.cleaned_data['address']
+            student.user.city = self.cleaned_data['city']
+            student.user.country = self.cleaned_data['country']
+            student.user.postal_code = self.cleaned_data['postal_code']
+            student.user.is_active = self.cleaned_data['is_active']
+            student.user.email = self.cleaned_data['email']
+            student.course = self.cleaned_data['course']  # Save course field
+
+            if commit:
+                student.user.save()
+                student.save()
+            return student
 
 
 
