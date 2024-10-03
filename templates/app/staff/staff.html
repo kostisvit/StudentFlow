@@ -62,10 +62,10 @@
                 <td class="flex justify-center items-center h-10" data-label="Κατάσταση"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="text-red-600 size-6">
                     <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-2.625 6c-.54 0-.828.419-.936.634a1.96 1.96 0 0 0-.189.866c0 .298.059.605.189.866.108.215.395.634.936.634.54 0 .828-.419.936-.634.13-.26.189-.568.189-.866 0-.298-.059-.605-.189-.866-.108-.215-.395-.634-.936-.634Zm4.314.634c.108-.215.395-.634.936-.634.54 0 .828.419.936.634.13.26.189.568.189.866 0 .298-.059.605-.189.866-.108.215-.395.634-.936.634-.54 0-.828-.419-.936-.634a1.96 1.96 0 0 1-.189-.866c0-.298.059-.605.189-.866Zm-4.34 7.964a.75.75 0 0 1-1.061-1.06 5.236 5.236 0 0 1 3.73-1.538 5.236 5.236 0 0 1 3.695 1.538.75.75 0 1 1-1.061 1.06 3.736 3.736 0 0 0-2.639-1.098 3.736 3.736 0 0 0-2.664 1.098Z" clip-rule="evenodd" />
                 </svg>
-                </td>
+                </td> 
                 {% endif %}
                 <td class="px-6 py-4" data-label="Ενέργειες">
-                    <a href="{{user.get_absolute_url_edit}}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800">Edit</a>
+                    <a href="{% url 'user_student_edit' user.pk %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800">Edit</a>
                     <a href="{{user.get_absolute_url_delete}}" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">Delete</a></td>
                 </tr>
                 </tr>
@@ -105,24 +105,24 @@
   
       <!-- Form -->
       <h2 class="text-lg font-bold mb-6 text-gray-700">Νέα εγγραφή Προσωπικού</h2>
-      <form class="bg-white p-6 rounded shadow-md w-full dark:bg-gray-800 border-b dark:border-gray-700 " method="post" >
+      <form class="bg-white p-6 rounded  w-full dark:bg-gray-800 border-b dark:border-gray-700 " method="post" >
         {% csrf_token %}
                 <!-- First Row -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                     <div>
-                        <label for="organization" class="block text-sm font-medium text-gray-700 dark:text-white">Οργανισμός</label>
+                        <label for="organization" class="block text-sm font-medium text-gray-700 dark:text-white">Οργανισμός<span class="text-red-600 ml-2">*</span></label>
                         {{form.organization}}
                     </div>
                     <div>
-                        <label for="first_name" class="block text-sm font-medium text-gray-700 dark:text-white">Όνομα</label>
+                        <label for="first_name" class="block text-sm font-medium text-gray-700 dark:text-white">Όνομα<span class="text-red-600 ml-2">*</span></label>
                         {{form.first_name}}
                     </div>
                     <div>
-                        <label for="last_name" class="block text-sm font-medium text-gray-700 dark:text-white">Επώνυμο</label>
+                        <label for="last_name" class="block text-sm font-medium text-gray-700 dark:text-white">Επώνυμο<span class="text-red-600 ml-2">*</span></label>
                         {{form.last_name}}
                     </div>
                     <div>
-                        <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-white">Φύλο</label>
+                        <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-white">Φύλο<span class="text-red-600 ml-2">*</span></label>
                         {{form.gender}}
                     </div>
                 </div>
@@ -130,7 +130,7 @@
                 <!-- Second Row -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                     <div>
-                        <label for="address" class="block text-sm font-medium text-gray-700 dark:text-white">Διεύθυνση</label>
+                        <label for="address" class="block text-sm font-medium text-gray-700 dark:text-white">Διεύθυνση<span class="text-red-600 ml-2">*</span></label>
                         {{form.address}}
                     </div>
                     <div>
@@ -142,7 +142,7 @@
                         {{form.country}}
                     </div>
                     <div>
-                        <label for="postal_code" class="block text-sm font-medium text-gray-700 dark:text-white">Τ.Κ</label>
+                        <label for="postal_code" class="block text-sm font-medium text-gray-700 dark:text-white">Τ.Κ<span class="text-red-600 ml-2">*</span></label>
                         {{form.postal_code}}
                     </div>
                 </div>
@@ -152,12 +152,16 @@
                         {{form.date_of_birth}}
                     </div>
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-white">Email</label>
+                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-white">Email<span class="text-red-600 ml-2">*</span></label>
                         {{form.email}}
                     </div>
                     <div>
-                        <label for="phone_number" class="block text-sm font-medium text-gray-700 dark:text-white">Τηλέφωνο</label>
+                        <label for="phone_number" class="block text-sm font-medium text-gray-700 dark:text-white">Τηλέφωνο<span class="text-red-600 ml-2">*</span></label>
                         {{form.phone_number}}
+                    </div>
+                    <div>
+                        <label for="courses" class="block text-sm font-medium text-gray-700 dark:text-white">Μαθήματα</label>
+                        {{form.courses}}
                     </div>
                     
                 </div>

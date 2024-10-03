@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Student, Course, Subscription
+from .models import Student, Course, Subscription, Enrollment
 
 class StudentModelAdmin(admin.ModelAdmin):
     list_display = ("user","organization","course","is_student","membership_number","created","modified")
@@ -14,6 +14,10 @@ class CourseModelAdmin(admin.ModelAdmin):
     list_display_links = ("title","description",)
 
 
+class EnrollmentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'course', 'enrollment_date', 'is_online')
+    list_filter = ('is_online', 'course')
+    search_fields = ('user__email', 'course__name')
 
 class SubscriptionModelAdmin(admin.ModelAdmin):
     list_display = ("user","student","course","is_online","formatted_start_date","is_paid","formatted_end_date","created","modified")
@@ -47,4 +51,5 @@ class SubscriptionModelAdmin(admin.ModelAdmin):
 
 admin.site.register(Student,StudentModelAdmin)
 admin.site.register(Course,CourseModelAdmin)
+admin.site.register(Enrollment,EnrollmentAdmin)
 admin.site.register(Subscription,SubscriptionModelAdmin)

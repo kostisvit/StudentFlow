@@ -54,6 +54,21 @@ class Course(TimeStampedModel):
         return self.title
 
 
+
+class Enrollment(models.Model):
+    user = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    enrollment_date = models.DateField(auto_now_add=True)
+    is_online = models.BooleanField(default=True)
+
+    class Meta:
+        unique_together = ('user', 'course')  # Ensure that each user can enroll only once per course
+
+    def __str__(self):
+        return f"{self.user.email} enrolled in {self.course.name}"
+
+
+
 class Subscription(TimeStampedModel):
     user = models.ForeignKey("users.User", on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)

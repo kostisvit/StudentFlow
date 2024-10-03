@@ -124,6 +124,10 @@ class UserStaffUpdateView(LoginRequiredMixin,UpdateView):
     form_class = UserChangeForm
     success_url = reverse_lazy('home')
     
+    def get_object(self):
+        # Ensuring the user can only update their own profile
+        return self.request.user
+    
     # def get_form_kwargs(self):
     #     kwargs = super().get_form_kwargs()
     #     kwargs['user'] = self.request.user

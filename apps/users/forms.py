@@ -5,11 +5,11 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
 from organization.models import Organization
-from django.forms import ModelChoiceField
+from django.forms import ModelChoiceField,ModelMultipleChoiceField
 from .choices import gender_choice
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from student.models import Student
+from student.models import Student, Enrollment, Course
 
 
 UserModel = get_user_model()
@@ -29,24 +29,31 @@ class EmailAuthenticationForm(AuthenticationForm):
 # User New Form
 class UserCreationForm(forms.ModelForm):
     organization = ModelChoiceField(queryset=Organization.objects.all(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),label='Οργανισμός',required=True)
-    date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'type': 'date','class': 'block w-full rounded-md border-0 py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6','placeholder': 'YYYY-MM-DD',}),label='Ημ. Γέννησης',required=True)
-    gender = forms.ChoiceField(choices=gender_choice,widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),label='Φύλο')
-    first_name = forms.CharField(label='Όνομα', widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}))
-    last_name = forms.CharField(label='Επώνυμο',widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}))
-    phone_number = forms.CharField(label='Τηλ. Επικ.',widget=forms.TextInput(attrs={'class':'block w-full rounded-md border-0 py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'}),required=False)
+    date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'type': 'date','class': 'block w-full rounded-md border-0 py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6','placeholder': 'YYYY-MM-DD',}),label='Ημ. Γέννησης',required=False)
+    gender = forms.ChoiceField(choices=gender_choice,widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),label='Φύλο',required=True)
+    first_name = forms.CharField(label='Όνομα', widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),required=True)
+    last_name = forms.CharField(label='Επώνυμο',widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),required=True)
+    phone_number = forms.CharField(label='Τηλ. Επικ.',widget=forms.TextInput(attrs={'class':'block w-full rounded-md border-0 py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'}),required=True)
     address = forms.CharField(label='Διεύθυνση',widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),required=True)
     city = forms.CharField(label='Πόλη',widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),required=False)
     country = forms.CharField(label='Χώρα',initial='Ελλάδα',widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),required=False)
-    postal_code = forms.CharField(label='ΤΚ',widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700' }))
+    postal_code = forms.CharField(label='ΤΚ',widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700' }),required=True)
     is_active = forms.BooleanField(label='Κατάσταση',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}), initial=True,required=False)
     email = forms.EmailField(widget=forms.EmailInput(attrs={'autocomplete': 'off','class':'block w-full rounded-md border-0 py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'}),required=True)
     is_staff = forms.BooleanField(initial=True,label='Καθηγητής',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
     is_company_owner = forms.BooleanField(label='Ιδιοκτήτης', initial=False, widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
     is_student = forms.BooleanField(initial=False,label='Μαθητής',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
+    courses = ModelMultipleChoiceField(
+        queryset=Course.objects.all(),
+        widget=forms.SelectMultiple(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),
+        label='Μαθήματα',
+        required=False
+    )
+    
     
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
-        fields = ('organization','email','first_name','last_name','date_of_birth','phone_number','address','city','postal_code','country','gender','is_active','is_staff','is_company_owner','is_student')
+        fields = ('organization','email','first_name','last_name','date_of_birth','phone_number','address','city','postal_code','country','gender','is_active','is_staff','is_company_owner','is_student','courses')
 
     
     def __init__(self, *args, **kwargs):
@@ -56,6 +63,19 @@ class UserCreationForm(forms.ModelForm):
             self.fields['password1'] = forms.CharField(widget=forms.PasswordInput(), required=False)
         if 'password2' not in self.fields:
             self.fields['password2'] = forms.CharField(widget=forms.PasswordInput(), required=False)
+
+    def __init__(self, *args, **kwargs):
+        # Capture the user from the form arguments
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+        # Filter courses based on user type
+        if user and user.is_superuser:
+            # Superuser: Show all courses
+            self.fields['courses'].queryset = Course.objects.filter(is_online=True)
+        else:
+            # Regular user: Only show courses where is_online=True
+            self.fields['courses'].queryset = Course.objects.filter(is_online=True)
 
 
     def save(self, commit=True):
@@ -70,6 +90,11 @@ class UserCreationForm(forms.ModelForm):
                 # Update is_student if Member already exists
                 student.is_student = is_student
                 student.save()
+                # Save enrollments for the selected courses
+        courses = self.cleaned_data.get('courses')
+        if courses:
+            for course in courses:
+                Enrollment.objects.get_or_create(user=user, course=course)
         return user
 
     
@@ -114,20 +139,50 @@ class UserChangeForm(UserChangeForm):
     is_staff = forms.BooleanField(initial=True,label='Καθηγητής',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
     is_company_owner = forms.BooleanField(label='Ιδιοκτήτης', initial=False, widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
     is_student = forms.BooleanField(initial=False,label='Μαθητής',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
-    
-    class Meta:
+    courses = ModelMultipleChoiceField(
+        queryset=Course.objects.all(),
+        widget=forms.SelectMultiple(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),
+        label='Μαθήματα',
+        required=False
+    )
+        
+    class Meta():
         model = get_user_model()
-        fields = ('organization','email','first_name','last_name','date_of_birth','phone_number','address','city','postal_code','country','gender','is_active','is_staff','is_company_owner','is_student')
+        fields = ('organization','email','first_name','last_name','date_of_birth','phone_number','address','city','postal_code','country','gender','is_active','is_staff','is_company_owner','is_student','courses')
 
 
     def __init__(self, *args, **kwargs):
         # Get the user instance from kwargs (if it's provided)
         user = kwargs.get('instance', None)
-        super().__init__(*args, **kwargs)
-
+        super(UserChangeForm, self).__init__(*args, **kwargs)
+        # Populate the 'courses' field with the user's current enrollments
+        if self.instance and self.instance.pk:
+            enrolled_courses = Course.objects.filter(enrollment__user=self.instance)
+            self.fields['courses'].initial = enrolled_courses
+            
         # Pre-fill the organization field from the Student model
         if user and hasattr(user, 'student'):
             self.fields['is_student'].initial = user.student.is_student
+
+    def save(self, commit=True):
+        # Get the user instance
+        user = super().save(commit=False)
+
+        # Save the user if commit=True
+        if commit:
+            user.save()
+
+        # Get the selected courses
+        selected_courses = self.cleaned_data['courses']
+
+        # Clear the existing enrollments for the user
+        Enrollment.objects.filter(user=user).delete()
+
+        # Create new enrollments for the selected courses
+        for course in selected_courses:
+            Enrollment.objects.get_or_create(user=user, course=course)
+
+        return user
 
 
 class VacationStaffForm(forms.ModelForm):
