@@ -124,7 +124,7 @@ class UserChangeForm(UserChangeForm):
     )
         
     class Meta():
-        model = get_user_model()
+        model = User
         fields = ('organization','email','first_name','last_name','date_of_birth','phone_number','address','city','postal_code','country','gender','is_active','is_staff','is_company_owner','is_student','courses')
 
 
