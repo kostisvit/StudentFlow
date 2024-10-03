@@ -123,76 +123,8 @@ class UserStaffUpdateView(LoginRequiredMixin,UpdateView):
     template_name = 'app/staff/staff_edit.html'
     form_class = UserChangeForm
     success_url = reverse_lazy('home')
-    
-    def get_object(self):
-        # Ensuring the user can only update their own profile
-        return self.request.user
-    
-    # def get_form_kwargs(self):
-    #     kwargs = super().get_form_kwargs()
-    #     kwargs['user'] = self.request.user
-    #     return kwargs
 
 
-# Student - User create
-# class StudentUserCreateView(LoginRequiredMixin,CreateView):
-#     model = get_user_model()
-#     form_class = UserCreationForm
-#     template_name = "app/student/student_new.html"
-#     success_url = reverse_lazy('home')
-    
-#     def form_invalid(self, form):
-#         print(form.errors)
-#         return super().form_invalid(form)
-    
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs['user'] = self.request.user
-#         return kwargs
-    
-#     def get_initial(self):
-#         initial = super().get_initial()
-#         initial['is_student'] = True  # Set the initial value as needed
-#         return initial
-    
-#     def form_valid(self, form):
-#         form.cleaned_data['is_student'] = self.get_initial()['is_student']
-#         return super().form_valid(form)
-
-
-# Student - User Update
-# class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
-#     model = get_user_model()
-#     #fields = '__all__'
-#     template_name = 'app/student/student_edit.html'
-#     form_class = UserChangeForm
-#     success_url = reverse_lazy('home')
-
-    # def form_valid(self, form):
-    #     try:
-    #         response = super().form_valid(form)
-    #         logger.info(f'Member "{self.object}" updated successfully.')
-    #         messages.success(self.request, 'Member updated successfully.')
-    #         return response
-    #     except Exception as e:
-    #         logger.error(f'Error updating book: {e}')
-    #         form.add_error(None, 'An error occurred while updating the member.')
-    #         return super().form_invalid(form)
-
-
-
-
-
-    # def form_valid(self, form):
-    #     try:
-    #         response = super().form_valid(form)
-    #         logger.info(f'Member "{self.object}" updated successfully.')
-    #         messages.success(self.request, 'Member updated successfully.')
-    #         return response
-    #     except Exception as e:
-    #         logger.error(f'Error updating book: {e}')
-    #         form.add_error(None, 'An error occurred while updating the member.')
-    #         return super().form_invalid(form)
 
 # Upload File to User
 @login_required

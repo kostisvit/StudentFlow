@@ -97,29 +97,6 @@ class UserCreationForm(forms.ModelForm):
                 Enrollment.objects.get_or_create(user=user, course=course)
         return user
 
-    
-    # def save(self, commit=True):
-    #     user = super(UserCreationForm, self).save(commit=False)
-    #     if not self.cleaned_data["password1"]:  # If no password is provided
-    #         user.set_password('passw0rd')  # Set a default password here
-    #     if commit:
-    #         user.save()
-    #     return user 
-
-    # def __init__(self, *args, **kwargs):
-    #     super(UserCreationForm, self).__init__(*args, **kwargs)
-    #     self.fields['is_student'].widget.attrs['disabled'] = True
-    
-    # def __init__(self, *args, **kwargs):
-    #     user = kwargs.pop('user', None)
-    #     super(UserCreationForm, self).__init__(*args, **kwargs)
-    #     if user:
-    #         if user.is_superuser:
-    #             self.fields['organization'].queryset = Organization.objects.all()
-    #         else:
-    #             self.fields['organization'].queryset = Organization.objects.filter(id=user.organization.id)
-
-
 
 
 # Student - User Change Form
