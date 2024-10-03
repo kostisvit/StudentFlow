@@ -1,8 +1,8 @@
 {% extends "_base.html" %}
 
 {% block content %}
-<div class="flex items-center justify-center mt-5">
-    <form class="bg-white p-6 rounded shadow-md w-full dark:bg-gray-800 border-b dark:border-gray-700" method="post">
+<div class="flex items-center justify-center mt-5 px-5">
+    <form class="bg-white p-6 rounded shadow-md w-full dark:bg-gray-800 border-b dark:border-gray-700 " method="post" >
     {% csrf_token %}
             <!-- First Row -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -19,17 +19,13 @@
                     {{form.last_name}}
                 </div>
                 <div>
-                    <label for="course" class="block text-sm font-medium text-gray-700 dark:text-white">Μάθημα<span class="text-red-600 ml-2">*</span></label>
-                    {{form.course}}
-                </div>
-                <div>
                     <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-white">Φύλο</label>
                     {{form.gender}}
                 </div>
             </div>
     
             <!-- Second Row -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <div>
                     <label for="address" class="block text-sm font-medium text-gray-700 dark:text-white">Διεύθυνση</label>
                     {{form.address}}
@@ -47,7 +43,7 @@
                     {{form.postal_code}}
                 </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <div>
                     <label for="date_of_birth" class="block text-sm font-medium text-gray-700 dark:text-white">Ημ. Γέννησης</label>
                     {{form.date_of_birth}}
@@ -71,7 +67,7 @@
                 </div>
                 <div class="flex items-center">
                     {{form.is_student}}
-                    <label for="is_student" class="ml-2 block text-sm font-medium text-gray-700 dark:text-white">Μαθητής</label>
+                    <label for="is_staff" class="ml-2 block text-sm font-medium text-gray-700 dark:text-white">Μαθητής</label>
                 </div>
                 {% comment %} <div class="col-span-2">
                     <label for="additional_email" class="block text-sm font-medium text-gray-700">Additional Email</label>
@@ -79,7 +75,21 @@
                 </div> {% endcomment %}
             </div>
     
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Αποθήκευση</button>
+            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50">Αποθήκευση</button>
         </form>
     </div>
+    <!-- JavaScript to hide success message after 3 seconds -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const successMessage = document.getElementById('success-message');
+            if (successMessage) {
+                setTimeout(function() {
+                    successMessage.style.opacity = 0;
+                    setTimeout(function() {
+                        successMessage.style.display = 'none';
+                    }, 600); // Matches the CSS transition time
+                }, 3000); // 3 seconds
+            }
+        });
+    </script>
 {% endblock%}

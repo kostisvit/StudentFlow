@@ -36,24 +36,24 @@
             <table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                     <tr>
-                        <th colspan="9" class="text-center">Documents</th>
+                        <th colspan="9" class="text-center text-2xl font-bold">Αρχεία Μαθητών</th>
                     </tr>
                     <tr>
-                        <th scope="col" class="px-6 py-3">User</th>
-                        <th scope="col" class="px-6 py-3">Course</th>
-                        <th scope="col" class="px-6 py-3">File</th>
-                        <th scope="col" class="px-6 py-3">Filename</th>
+                        <th scope="col" class="px-6 py-3">Μαθητής</th>
+                        <th scope="col" class="px-6 py-3">Μάθημα</th>
+                        <th scope="col" class="px-6 py-3">Αρχείο</th>
+                        <th scope="col" class="px-6 py-3">Όνομα Αρχείου</th>
                         <th scope="col" class="px-6 py-3">Download</th>
-                        <th scope="col" class="px-6 py-3">Actions</th>
+                        <th scope="col" class="px-6 py-3">Ενέργειες</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for document in page_obj %}
                     <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                    <td class="px-6 py-4" data-label="Ονοματεπώνυμο"><a href="">{{ user.first_name }} {{ user.last_name }}</a></td>
-                    <td class="px-6 py-4" data-label="Εταιρεία">{{ document.course }}</td>
-                    <td class="px-6 py-4" data-label="File">{{ document.file.name|filename }}</td>
-                    <td class="px-6 py-4" data-label="Τηλ. Επικ.">{{ document.filename }}</td>
+                    <td class="px-6 py-4" data-label="Μαθητής"><a href="">{{ user.first_name }} {{ user.last_name }}</a></td>
+                    <td class="px-6 py-4" data-label="Μάθημα">{{ document.course }}</td>
+                    <td class="px-6 py-4" data-label="Αρχείο">{{ document.file.name|filename }}</td>
+                    <td class="px-6 py-4" data-label="Όνομα Αρχείου">{{ document.filename }}</td>
                     <td data-label="Download"><a href="{{ document.file.url }}" download class="btn btn-primary btn-sm text-white">Download</a></td>
                     <td class="px-6 py-4" data-label="Ενέργειες">
                         <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Edit</a>

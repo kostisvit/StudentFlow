@@ -211,12 +211,12 @@ def upload_files(request):
     else:
         form = MultipleUserFileForm(logged_in_user=logged_in_user)
 
-    return render(request, 'app/files/document_upload.html', {'form': form})
+    return render(request, 'app/files/student_document_upload.html', {'form': form})
 
 # Document list
 class DocumentListView(LoginRequiredMixin,FilterView):
     model = Document
-    template_name = 'app/files/document_list.html'
+    template_name = 'app/files/student_document_list.html'
     filterset_class = DocumentFilter
     context_object_name = 'documents'
     paginate_by = 10
