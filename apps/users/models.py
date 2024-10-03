@@ -89,15 +89,15 @@ class User(TimeStampedModel,AbstractBaseUser, PermissionsMixin):
 
 
 
-# Saving files path
-def user_directory_path(instance, filename):
+# Saving students files path
+def student_directory_path(instance, filename):
     return f'{instance.user.last_name}_{instance.user.first_name}/{filename}'
 
 
 class Document(TimeStampedModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE,blank=True, null=True)
-    file = models.FileField(upload_to=user_directory_path,validators=[validate_file_extension])
+    file = models.FileField(upload_to=student_directory_path,validators=[validate_file_extension])
     filename = models.CharField(max_length=255, blank=True)
     
     def __str__(self):
@@ -109,6 +109,27 @@ class Document(TimeStampedModel):
     def get_absolute_url_delete(self):
         return reverse("document_delete", kwargs={"pk": self.pk})
 
+
+# Saving employee file path
+def user_directory_path(instance, filename):
+    return f'employee/{instance.user.last_name}_{instance.user.first_name}/{filename}'
+    
+class EmployeeDocument(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, blank=True, null=True)
+    file = models.FileField(upload_to=user_directory_path, validators=[validate_file_extension])
+    filename = models.CharField(max_length=255, blank=True, null=True)
+    
+    def __str__(self):
+        return f"{self.user.email} - {self.file.name}"
+        
+    def get_absolute_url_edit(self):
+        from django.core.urlresolvers import reverse
+        return reverse('user_document_edit', kwargs={'pk': self.pk})
+    
+    def get_absolute_url_delete(self):
+        from django.core.urlresolvers import reverse
+        return reverse('user_document_delete', kwargs={'pk': self.pk})
 
 
 

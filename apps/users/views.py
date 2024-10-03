@@ -79,41 +79,6 @@ class UserStaffView(LoginRequiredMixin,FilterView):
 
 
 
-# Staff Create View
-# class UserStaffCreateView(LoginRequiredMixin,CreateView):
-#     model = get_user_model()
-#     form_class = UserCreationForm
-#     template_name = "app/staff/staff_new.html"
-#     success_url = reverse_lazy('staff_new')
-    
-#     def form_invalid(self, form):
-#         print(form.errors)
-#         return super().form_invalid(form)
-
-
-    # def get_queryset(self):
-    #     # Return only the courses associated with the current logged-in user
-    #     return self.request.user.courses.all()
-   
-    # def get_form_kwargs(self):
-    #     kwargs = super().get_form_kwargs()
-    #     kwargs['user'] = self.request.user
-    #     return kwargs
-    
-    # def get_initial(self):
-    #     initial = super().get_initial()
-    #     initial['is_staff'] = True  # Set the initial value as needed
-    #     return initial
-
-    # def form_valid(self, form):
-    #     # Retain the value of the disabled field
-    #     form.cleaned_data['is_staff'] = self.get_initial()['is_staff']
-    #     return super().form_valid(form)
-
-    # def form_valid(self, form):
-    #     # Add a success message after a successful form submission
-    #     messages.success(self.request, 'Your form has been submitted successfully!')
-    #     return super().form_valid(form)
 
 
 # Staff Update View
