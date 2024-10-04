@@ -6,14 +6,14 @@ from .views import *
 
 # Members defined as user (example users/export)
 
-# def trigger_error(request):
-#     division_by_zero = 1 / 0
+def trigger_error(request):
+    division_by_zero = 1 / 0
 
 
 urlpatterns = [
     path('accounts/login/', views.custom_login_view, name='login'),
     path('logout/', views.custom_logout, name='logout'),
-    #path('sentry-debug/', trigger_error),
+    path('sentry-debug/', trigger_error),
     path('users/staff', UserStaffView.as_view(), name='staff_list'),
     path('users/staff/vacations', VacationStaffListView.as_view(), name='vacations_list'),
     path('users/<int:pk>/edit/', UserStaffUpdateView.as_view(), name='user_student_edit'),
