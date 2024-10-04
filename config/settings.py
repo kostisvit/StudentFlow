@@ -20,7 +20,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://studentflow-app.onrender.com/','127.0.0.1','studentflow-app.onrender.com']
+ALLOWED_HOSTS = ['https://studentflow-app.onrender.com/','studentflow-app.onrender.com']
 
 CSRF_TRUSTED_ORIGINS = ["https://studentflow-app.onrender.com/","https://studentflow-app.onrender.com","https://www.studentflow.gr","https://studentflow.gr"]
 
