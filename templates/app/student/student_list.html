@@ -50,7 +50,7 @@
                 {% for student in page_obj %}
                 <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                 <td class="px-6 py-4" data-label="Ονοματεπώνυμο"><a href="">{{ student.user.first_name }} {{ student.user.last_name }}</a></td>
-                <td class="px-6 py-4" data-label="Εταιρεία">{{ student.course }}</td>
+                <td class="px-6 py-4" data-label="Μάθημα">{{ student.course }}</td>
                 <td class="px-6 py-4" data-label="Εταιρεία">{{ student.user.organization }}</td>
                 <td class="px-6 py-4" data-label="Email">{{ student.user.email }}</td>
                 <td class="px-6 py-4" data-label="Τηλ. Επικ.">{{ student.user.phone_number }}</td>
@@ -83,6 +83,7 @@
                 {% for student in page_obj %}
                 <div class="border p-4 rounded-lg shadow-md bg-white">
                     <p><span class="font-bold text-gray-700">Ονοματεπώνυμο:</span> {{ student.user.first_name }} {{ student.user.last_name }}</p>
+                    <p><span class="font-bold text-gray-700">Μάθημα:</span> {{ student.course }}</p>
                     <p><span class="font-bold text-gray-700">Εταιρεία:</span> {{ student.user.organization }}</p>
                     <p><span class="font-bold text-gray-700">Email:</span> {{ student.user.email }}</p>
                     <p><span class="font-bold text-gray-700">Τηλ. Επικ.:</span> {{ student.user.phone_number }}</p>
