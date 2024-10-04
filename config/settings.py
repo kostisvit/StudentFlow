@@ -1,4 +1,5 @@
 import os, sys, environ
+import sentry_sdk
 
 from pathlib import Path
 
@@ -19,7 +20,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://studentflow-app.onrender.com/']
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -181,3 +182,16 @@ DEFAULT_FROM_EMAIL = 'your-email@gmail.com'
 
 # Optional settings
 EMAIL_TIMEOUT = 10  # Timeout for the email server connection (in seconds)
+
+
+# Log files
+sentry_sdk.init(
+    dsn="https://c878d209dd70a40db3b3e72b4b683f55@o4507922303811584.ingest.de.sentry.io/4508062974148688",
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for tracing.
+    traces_sample_rate=1.0,
+    # Set profiles_sample_rate to 1.0 to profile 100%
+    # of sampled transactions.
+    # We recommend adjusting this value in production.
+    profiles_sample_rate=1.0,
+)
