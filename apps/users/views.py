@@ -13,6 +13,9 @@ from .models import Document, Vacation
 from .password_change import *
 from .export import Staff_export
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
+from .models import User
+
 
 UserModel = get_user_model()
 
@@ -78,17 +81,19 @@ class UserStaffView(LoginRequiredMixin,FilterView):
         return queryset
 
 
-
-
-
-# Staff Update View
-class UserStaffUpdateView(LoginRequiredMixin,UpdateView):
-    model = get_user_model()
-    #fields = '__all__'
-    template_name = 'app/staff/staff_edit.html'
-    form_class = UserChangeForm
-    success_url = reverse_lazy('home')
-
+# Staff Update Function View
+def staff_update(request, pk):
+    post = get_object_or_404(User, pk=pk)
+    if request.method == "POST":
+        form = UserChangeForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('staff_list')
+    else:
+        form = UserChangeForm(instance=post)
+    return render(request, 'app/staff/staff_edit.html', {'form': form})
 
 
 # Upload File to User
