@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.conf import settings
 from django_extensions.db.models import TimeStampedModel
 from organization.models import Organization
-from .validators import validate_file_extension
+from .validators import validate_file_extension, file_size_validator
 from student.models import Course
 from users.services.calculate_vacations_days import calculate_vacations_days
 
@@ -97,7 +97,7 @@ def student_directory_path(instance, filename):
 class Document(TimeStampedModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE,blank=True, null=True)
-    file = models.FileField(upload_to=student_directory_path,validators=[validate_file_extension])
+    file = models.FileField(upload_to=student_directory_path,validators=[validate_file_extension,file_size_validator])
     filename = models.CharField(max_length=255, blank=True)
     
     def __str__(self):
@@ -117,7 +117,7 @@ def user_directory_path(instance, filename):
 class EmployeeDocument(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, blank=True, null=True)
-    file = models.FileField(upload_to=user_directory_path, validators=[validate_file_extension])
+    file = models.FileField(upload_to=user_directory_path, validators=[validate_file_extension,file_size_validator])
     filename = models.CharField(max_length=255, blank=True, null=True)
     
     def __str__(self):
