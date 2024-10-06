@@ -8,7 +8,20 @@
 
             <form method="POST" enctype="multipart/form-data" class="space-y-5">
                 {% csrf_token %}
-                
+                            {% if messages %}
+                                <div id="message-container">
+                                    {% for message in messages %}
+                                        <div class="p-4 mb-4 text-sm rounded-lg
+                                            {% if message.tags == 'success' %}
+                                                text-green-700 bg-green-100 dark:bg-green-200 dark:text-green-800
+                                            {% elif message.tags == 'error' %}
+                                                text-red-700 bg-red-100 dark:bg-red-200 dark:text-red-800
+                                            {% endif %}
+                                            transition-opacity duration-600 ease-in-out opacity-100" role="alert">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                            {% endif %}
                 <!-- User Dropdown -->
                 <div>
                     <label for="user" class="block text-sm font-medium text-gray-700">Μαθητής<span class="text-red-600 ml-2">*</span></label>
@@ -50,4 +63,21 @@
         </div>
     </div>
 </body>
+    <script>
+        // Select the message container
+        const messageContainer = document.getElementById('message-container');
+        // Set a timeout to fade out messages after 3 seconds
+        setTimeout(() => {
+            const messages = messageContainer.querySelectorAll('div');
+            messages.forEach(msg => {
+                // Remove opacity and fade out
+                msg.classList.remove('opacity-100');
+                msg.classList.add('opacity-0');
+                // Optionally, remove the element from the DOM after fading out
+                setTimeout(() => {
+                    msg.remove();
+                }, 600); // Match the duration of the opacity transition
+            });
+        }, 3000); // 3000 ms = 3 seconds
+    </script>
 {% endblock %}

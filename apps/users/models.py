@@ -91,7 +91,7 @@ class User(TimeStampedModel,AbstractBaseUser, PermissionsMixin):
 
 # Saving students files path
 def student_directory_path(instance, filename):
-    return f'{instance.user.last_name}_{instance.user.first_name}/{filename}'
+    return f'student/{instance.user.last_name}_{instance.user.first_name}/{filename}'
 
 
 class Document(TimeStampedModel):

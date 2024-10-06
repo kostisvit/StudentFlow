@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
-from .forms import EmailAuthenticationForm, UserCreationForm, UserChangeForm, VacationStaffForm, MultipleUserFileForm
+from .forms import EmailAuthenticationForm, UserCreationForm, UserChangeForm, VacationStaffForm, MultipleUserFileForm, StaffMultipleUserFileForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView,ListView, TemplateView
@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
 from .filters import UserStaffFillter, DocumentFilter, VacationFilter
-from .models import Document, Vacation
+from .models import Document, Vacation, EmployeeDocument
 from .password_change import *
 from .export import Staff_export
 from django.contrib import messages
@@ -82,6 +82,7 @@ class UserStaffView(LoginRequiredMixin,FilterView):
 
 
 # Staff Update Function View
+@login_required
 def staff_update(request, pk):
     post = get_object_or_404(User, pk=pk)
     if request.method == "POST":
@@ -98,7 +99,7 @@ def staff_update(request, pk):
 
 # Upload File to User
 @login_required
-def upload_files(request):
+def student_upload_files(request):
     logged_in_user = request.user  # Get the logged-in user
 
     if request.method == 'POST':
@@ -111,13 +112,46 @@ def upload_files(request):
             for file in file:
                 Document.objects.create(user=selected_user, file=file,filename=filename,course=course)
             messages.success(request, 'Files uploaded successfully!')
-            return redirect('upload_files')  # Redirect to a success page
+            return redirect('student_upload_files')  # Redirect to a success page
         else:
             messages.error(request, 'Please correct the errors below and try again.')
     else:
         form = MultipleUserFileForm(logged_in_user=logged_in_user)
 
     return render(request, 'app/files/student_document_upload.html', {'form': form})
+
+
+
+# Upload File Staff
+def staff_upload_files(request):
+    logged_in_user = request.user  # Get the logged-in user
+
+    if request.method == 'POST':
+        form = StaffMultipleUserFileForm(request.POST, request.FILES, logged_in_user=logged_in_user)
+
+        if form.is_valid():
+            # Extract valid data
+            selected_user = form.cleaned_data['user']
+            filename = form.cleaned_data['filename']
+            course = form.cleaned_data['course']
+            files = form.cleaned_data['file']  # This will be the list of uploaded files
+
+            # Iterate through files and create EmployeeDocument entries
+            for file in files:
+                EmployeeDocument.objects.create(user=selected_user, file=file, filename=filename, course=course)
+
+            messages.success(request, 'Files uploaded successfully!')
+            return redirect('staff_upload_files')  # Redirect after success
+        else:
+            # Log errors to the console
+            print("Form Errors:", form.errors)
+            messages.error(request, 'Please correct the errors below and try again.')
+
+    else:
+        form = StaffMultipleUserFileForm(logged_in_user=logged_in_user)
+
+    return render(request, 'app/files/staff_document_upload.html', {'form': form})
+
 
 # Document list
 class DocumentListView(LoginRequiredMixin,FilterView):
@@ -138,6 +172,25 @@ class DocumentListView(LoginRequiredMixin,FilterView):
         else:
             return Document.objects.filter(user__student__is_student=True, user__is_staff=False,user__student__organization=self.request.user.organization)
 
+
+# Document list
+class StaffDocumentListView(LoginRequiredMixin,FilterView):
+    model = EmployeeDocument
+    template_name = 'app/files/staff_document_list.html'
+    filterset_class = DocumentFilter
+    context_object_name = 'staff_documents'
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['row_count'] = EmployeeDocument.objects.count()  # Count the rows
+        return context
+    
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return EmployeeDocument.objects.all()  # Staff can see all articles
+        else:
+            return EmployeeDocument.objects.filter(user__student__is_student=True, user__is_staff=False,user__student__organization=self.request.user.organization)
 
 
 

@@ -1,0 +1,89 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<body class="bg-gray-100">
+    <div class="container mx-auto p-5">
+        <div class="bg-white rounded-lg shadow-lg p-8 max-w-2xl mx-auto">
+            <h1 class="text-2xl font-bold mb-6 text-center text-gray-700">Μεταφόρτωση αρχείου</h1>
+
+            <form method="POST" enctype="multipart/form-data" class="space-y-5" action="{% url 'staff_upload_files' %}">
+                {% csrf_token %}
+                            {% if messages %}
+                                <div id="message-container">
+                                    {% for message in messages %}
+                                        <div class="p-4 mb-4 text-sm rounded-lg
+                                            {% if message.tags == 'success' %}
+                                                text-green-700 bg-green-100 dark:bg-green-200 dark:text-green-800
+                                            {% elif message.tags == 'error' %}
+                                                text-red-700 bg-red-100 dark:bg-red-200 dark:text-red-800
+                                            {% endif %}
+                                            transition-opacity duration-600 ease-in-out opacity-100" role="alert">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                            {% endif %}
+
+                <!-- User Dropdown -->
+                <div>
+                    <label for="user" class="block text-sm font-medium text-gray-700">Καθηγητής<span class="text-red-600 ml-2">*</span></label>
+                    <select id="user" name="user" class="mt-1 block w-full rounded-md border-gray-300 text-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        {% for user in form.user.field.queryset %}
+                            <option value="{{ user.id }}">{{ user.last_name }} {{ user.first_name }}</option>
+                        {% endfor %}
+                    </select>
+                    
+                </div>
+
+                <!-- Course Dropdown -->
+                <div>
+                    <label for="course" class="block text-sm font-medium text-gray-700">Μάθημα<span class="text-red-600 ml-2">*</span></label>
+                    <select id="course" name="course" class="mt-1 block w-full text-gray-700 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        {% for course in form.course.field.queryset %}
+                            <option value="{{ course.id }}">{{ course.title }} - {{course.is_online|yesno:"Online,Offline"}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Filename Field -->
+                <div>
+                    <label for="filename" class="block text-sm font-medium text-gray-700">Όνομα αρχείου</label>
+                    <input type="text" name="filename" id="filename" class="mt-1 text-gray-700 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                </div>
+
+                <!-- File Upload Field -->
+                <div>
+                    <label for="file" class="block text-sm font-medium text-gray-700">Αρχείο<span class="text-red-600 ml-2">*</span></label>
+                    <input type="file" name="file" id="file" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                </div>
+        {% if form.file.errors %}
+            <p class="mt-2 text-sm text-red-600">
+                {{ form.file.errors|striptags }}
+            </p>
+        {% endif %}
+                <!-- Submit Button -->
+                <div>
+                    <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Upload</button>
+                </div>
+            </form>
+            <p class="text-left text-gray-700" >* Επιτρεπόμενα αρχεία με κατάληξη .pdf, .doc, .docs. Μέγιστο μέγεθος αρχείου 10MB.</p>
+        </div>
+    </div>
+</body>
+    <script>
+        // Select the message container
+        const messageContainer = document.getElementById('message-container');
+        // Set a timeout to fade out messages after 3 seconds
+        setTimeout(() => {
+            const messages = messageContainer.querySelectorAll('div');
+            messages.forEach(msg => {
+                // Remove opacity and fade out
+                msg.classList.remove('opacity-100');
+                msg.classList.add('opacity-0');
+                // Optionally, remove the element from the DOM after fading out
+                setTimeout(() => {
+                    msg.remove();
+                }, 600); // Match the duration of the opacity transition
+            });
+        }, 3000); // 3000 ms = 3 seconds
+    </script>
+{% endblock %}

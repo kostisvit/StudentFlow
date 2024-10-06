@@ -197,7 +197,7 @@ class EmailAuthenticationForm(AuthenticationForm):
 
 
 from .validators import validate_file_extension
-from .models import Course, Document
+from .models import Course, Document,EmployeeDocument
 
 
 class MultipleUserFileForm(forms.ModelForm):
@@ -223,18 +223,62 @@ class MultipleUserFileForm(forms.ModelForm):
             self.fields['user'].queryset = get_user_model().objects.filter(organization=logged_in_user.organization, is_staff=False)
             self.fields['course'].queryset = Course.objects.filter(is_online=True)
 
-        # Add Bootstrap error class handling
-        for field_name in self.fields:
-            field = self.fields[field_name]
-            if self.errors.get(field_name):
-                field.widget.attrs.update({'class': 'form-control is-invalid'})
-            else:
-                field.widget.attrs.update({'class': 'form-control'})
-
     def clean_file(self):
         files = self.files.getlist('file')  # Get the list of uploaded files
         for file in files:
             validate_file_extension(file)  # Validate each file individually
+        return files
+
+
+class StaffMultipleUserFileForm(forms.ModelForm):
+    user = forms.ModelChoiceField(
+        queryset=get_user_model().objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label="Select User",
+        required=True
+    )
+    course = forms.ModelChoiceField(
+        queryset=Course.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label="Select Course",
+        required=True
+    )
+    file = forms.FileField(
+        widget=forms.ClearableFileInput(attrs={'multiple': False}),
+        required=True
+    )
+    filename = forms.CharField(label='Όνομα αρχείου', required=False)
+
+    class Meta:
+        model = EmployeeDocument
+        fields = ['user', 'file']
+
+    def __init__(self, *args, **kwargs):
+        logged_in_user = kwargs.pop('logged_in_user', None)
+        super().__init__(*args, **kwargs)
+
+        # Apply different queryset based on the logged-in user
+        if logged_in_user and logged_in_user.is_superuser:
+            self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True, is_active=True)
+            self.fields['course'].queryset = Course.objects.all()
+        else:
+            self.fields['user'].queryset = get_user_model().objects.filter(organization=logged_in_user.organization, is_staff=False)
+            self.fields['course'].queryset = Course.objects.filter(is_online=True)
+
+    def clean_file(self):
+        files = self.files.getlist('file')  # Get list of uploaded files
+        if not files:
+            raise ValidationError("Please upload at least one file.")
+
+        for file in files:
+            if not file:
+                raise ValidationError("The provided file is not valid.")
+            
+            # Assuming you have validate_file_extension defined
+            from .validators import file_size_validator
+
+            file_size_validator(file)
+
         return files
 
 
