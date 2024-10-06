@@ -65,7 +65,7 @@ class Enrollment(models.Model):
         unique_together = ('user', 'course')  # Ensure that each user can enroll only once per course
 
     def __str__(self):
-        return f"{self.user.email} enrolled in {self.course.name}"
+        return f"{self.user.email} enrolled in {self.course.title}"
 
 
 
