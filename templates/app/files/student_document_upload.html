@@ -50,19 +50,34 @@
 
                 <!-- File Upload Field -->
                 <div>
-                    <label for="file" class="block text-sm font-medium text-gray-700">Αρχείο<span class="text-red-600 ml-2">*</span></label>
-                    <input type="file" name="file" id="file" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                    <label for="file-upload" class="block text-sm font-medium text-gray-700">Αρχείο<span class="text-red-600 ml-2">*</span></label>
+                    <input type="file" id="file-upload" name="file" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
                 </div>
 
                 <!-- Submit Button -->
                 <div>
-                    <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Upload</button>
+                    <button type="submit" id="upload-button" class="w-full py-2 px-4 bg-indigo-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-700 disabled:opacity-50" disabled>Upload</button>
                 </div>
             </form>
-            <p class="text-left text-gray-700" >* Επιτρεπόμενα αρχεία με κατάληξη .pdf, .doc, .docs. Μέγιστο μέγεθος αρχείου 10MB.</p>
+            <p class="text-left text-gray-700" >* Επιτρεπόμενα αρχεία με κατάληξη .pdf, .doc, .docs, .xls, .xlsx. Μέγιστο μέγεθος αρχείου 10MB.</p>
         </div>
     </div>
 </body>
+    <script>
+        // Select the file input and the upload button
+        const fileInput = document.getElementById('file-upload');
+        const uploadButton = document.getElementById('upload-button');
+
+        // Event listener to check the file input
+        fileInput.addEventListener('change', function() {
+            // Enable the upload button if a file is selected, disable otherwise
+            if (fileInput.files.length > 0) {
+                uploadButton.disabled = false; // Enable the button
+            } else {
+                uploadButton.disabled = true; // Disable the button
+            }
+        });
+    </script>
     <script>
         // Select the message container
         const messageContainer = document.getElementById('message-container');

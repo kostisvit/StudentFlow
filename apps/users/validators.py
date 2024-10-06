@@ -6,7 +6,7 @@ def validate_file_extension(value):
 # Ensure you're handling both single file and list of files
     files = value if isinstance(value, list) else [value]  # If it's a list, use it; otherwise, wrap single file in a list
 
-    valid_extensions = ['.pdf', '.doc', '.docx']  # Define allowed extensions
+    valid_extensions = ['.pdf', '.doc', '.docx', '.xlx', '.xlsx']  # Define allowed extensions
     for file in files:
         ext = os.path.splitext(file.name)[1]  # Extract file extension
         if ext.lower() not in valid_extensions:
