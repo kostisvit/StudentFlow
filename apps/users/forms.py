@@ -75,7 +75,7 @@ class UserCreationForm(forms.ModelForm):
             self.fields['courses'].queryset = Course.objects.filter(is_online=True)
         else:
             # Regular user: Only show courses where is_online=True
-            self.fields['courses'].queryset = Course.objects.filter(is_online=True)
+            self.fields['courses'].queryset = Course.objects.filter(is_online=True,organization=self.instance.organization)
 
 
     def save(self, commit=True):
@@ -172,6 +172,18 @@ class VacationStaffForm(forms.ModelForm):
         model = Vacation
         fields = ('user','start_date','end_date')
 
+    def save(self, commit=True):
+        # Call the superclass's save method to handle the default saving behavior
+        vacation = super().save(commit=False)
+        
+        # Add any additional processing or logic here
+        # For example, you can set some additional fields on the vacation instance if needed
+        
+        if commit:
+            vacation.save()  # Save the instance to the database
+        
+        return vacation
+
 # Email Authentication
 class EmailAuthenticationForm(AuthenticationForm):
     username = forms.EmailField(label="Email", max_length=254)
@@ -220,7 +232,7 @@ class MultipleUserFileForm(forms.ModelForm):
             self.fields['user'].queryset = get_user_model().objects.filter(is_staff=False, is_active=True)
             self.fields['course'].queryset = Course.objects.all()
         else:
-            self.fields['user'].queryset = get_user_model().objects.filter(organization=logged_in_user.organization, is_staff=False)
+            self.fields['user'].queryset = get_user_model().objects.filter(organization=logged_in_user.organization, is_staff=False, is_active=True)
             self.fields['course'].queryset = Course.objects.filter(is_online=True)
 
     def clean_file(self):
@@ -262,7 +274,7 @@ class StaffMultipleUserFileForm(forms.ModelForm):
             self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True, is_active=True)
             self.fields['course'].queryset = Course.objects.all()
         else:
-            self.fields['user'].queryset = get_user_model().objects.filter(organization=logged_in_user.organization, is_staff=False)
+            self.fields['user'].queryset = get_user_model().objects.filter(organization=logged_in_user.organization, is_staff=True,is_active=True)
             self.fields['course'].queryset = Course.objects.filter(is_online=True)
 
     def clean_file(self):

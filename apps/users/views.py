@@ -178,7 +178,7 @@ class StaffDocumentListView(LoginRequiredMixin,FilterView):
     model = EmployeeDocument
     template_name = 'app/files/staff_document_list.html'
     filterset_class = DocumentFilter
-    context_object_name = 'staff_documents'
+    context_object_name = 'documents'
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
@@ -190,7 +190,7 @@ class StaffDocumentListView(LoginRequiredMixin,FilterView):
         if self.request.user.is_superuser:
             return EmployeeDocument.objects.all()  # Staff can see all articles
         else:
-            return EmployeeDocument.objects.filter(user__student__is_student=True, user__is_staff=False,user__student__organization=self.request.user.organization)
+            return EmployeeDocument.objects.filter(user__organization=self.request.user.organization)
 
 
 
@@ -217,10 +217,14 @@ class VacationStaffListView(LoginRequiredMixin, FilterView):
         form = VacationStaffForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('vacation_list')  # Redirect to course list after submission
+            return redirect('vacations_list')  # Redirect to course list after submission
         return self.get(request, *args, form=form)
 
-
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return Vacation.objects.all()  # Staff can see all articles
+        else:
+            return Vacation.objects.filter(user__organization=self.request.user.organization)
 
 class UpdateListView(LoginRequiredMixin,ListView):
     model = ''

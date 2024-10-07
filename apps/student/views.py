@@ -30,7 +30,7 @@ class StudentListView(LoginRequiredMixin,FilterView):
     context_object_name = 'students'
     filterset_class = StudentFilter
     paginate_by = 10
-    
+
     def get_filterset_kwargs(self, filterset_class):
         # Get the default kwargs from the parent method
         kwargs = super().get_filterset_kwargs(filterset_class)
@@ -234,7 +234,11 @@ class CourseListView(LoginRequiredMixin,ListView):
             return redirect('course_list')  # Redirect to course list after submission
         return self.get(request, *args, form=form)
 
-
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return Course.objects.all()  # Staff can see all articles
+        else:
+            return Course.objects.filter(user__organization=self.request.user.organization)
 
 
 # Course update
