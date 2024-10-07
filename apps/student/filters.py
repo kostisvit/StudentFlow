@@ -91,7 +91,7 @@ class SubscriptionFilter(django_filters.FilterSet):
         if user and hasattr(user, 'organization'):
             # Assuming CustomUser has a direct company field
             if user.is_superuser:
-                company = user.organization
+                organization = user.organization
                 self.filters['course'].queryset = Course.objects.all()
                 self.filters['user'].queryset = get_user_model().objects.filter(is_staff=True)
             else:

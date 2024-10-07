@@ -41,9 +41,10 @@ class StudentCreationForm(forms.ModelForm):
         super(StudentCreationForm, self).__init__(*args, **kwargs)
         if user:
             if user.is_superuser:
-                self.fields['organization'].queryset = Organization.objects.all()
+                organization = user.organization
+                self.fields['course'].queryset = Course.objects.all()
             else:
-                self.fields['organization'].queryset = Organization.objects.filter(id=user.organization.id)
+                self.fields['course'].queryset = Course.objects.filter(organization=user.organization.id)
 
 
     def save(self, commit=True):

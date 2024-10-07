@@ -75,7 +75,7 @@ class UserCreationForm(forms.ModelForm):
             self.fields['courses'].queryset = Course.objects.filter(is_online=True)
         else:
             # Regular user: Only show courses where is_online=True
-            self.fields['courses'].queryset = Course.objects.filter(is_online=True,organization=self.instance.organization)
+            self.fields['courses'].queryset = Course.objects.filter(is_online=True)
 
 
     def save(self, commit=True):
