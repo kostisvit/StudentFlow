@@ -21,7 +21,7 @@ def renew_subscription(subscription):
         start_date=subscription.end_date + timedelta(days=1),  # New subscription starts the day after the current end_date
         days=subscription.days,
         end_date=subscription.end_date + timedelta(days=subscription.days),
-        is_paid=subscription.is_paid  # Ensure the new subscription is not marked as paid initially
+        is_paid=subscription.is_paid
         )
 
     

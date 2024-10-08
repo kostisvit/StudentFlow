@@ -8,11 +8,10 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def Export_data_subscription(request):
     if request.method == 'POST':
-        # Get selected option from form
         file_format = request.POST['file-format']
         #user = request.user
         student_resource = SubscriptionResource()
-        #member_resource.user = user
+
         dataset = student_resource.export()
         if file_format == 'CSV':
             response = HttpResponse(dataset.csv, content_type='text/csv')
@@ -34,11 +33,11 @@ def Export_data_subscription(request):
 @login_required
 def Student_Export_data(request):
     if request.method == 'POST':
-        # Get selected option from form
+
         file_format = request.POST['file-format']
         #user = request.user
         student_resource = StudentExportResource()
-        #member_resource.user = user
+
         dataset = student_resource.export()
         if file_format == 'CSV':
             response = HttpResponse(dataset.csv, content_type='text/csv')

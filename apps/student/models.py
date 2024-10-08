@@ -62,7 +62,7 @@ class Enrollment(models.Model):
     is_online = models.BooleanField(default=True)
 
     class Meta:
-        unique_together = ('user', 'course')  # Ensure that each user can enroll only once per course
+        unique_together = ('user', 'course')
 
     def __str__(self):
         return f"{self.user.email} enrolled in {self.course.title}"
@@ -83,7 +83,6 @@ class Subscription(TimeStampedModel):
         return f"{self.student.user}"
 
     def save(self, *args, **kwargs):
-        # Ensure that end_date is calculated when creating a subscription
         if not self.end_date:
             self.end_date = timezone.now() + timedelta(days=self.days)
         

@@ -23,7 +23,6 @@ class StudentCreationForm(forms.ModelForm):
     postal_code = forms.CharField(label='ΤΚ',widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),required=True)
     is_active = forms.BooleanField(label='Κατάσταση',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}), initial=True,required=False)
     email = forms.EmailField(widget=forms.EmailInput(attrs={'autocomplete': 'off','class':'block w-full rounded-md border-0 py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'}),required=True)
-    #is_staff = forms.BooleanField(initial=True,label='Καθηγητής',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
     is_student = forms.BooleanField(initial=True,label='Μαθητής',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
     course = ModelChoiceField(queryset=Course.objects.all(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),label='Οργανισμός',required=True)
     
@@ -52,7 +51,7 @@ class StudentCreationForm(forms.ModelForm):
         user = super().save(commit=False)
 
         # Set a default password for the user
-        default_password = "defaultpassword123"  # Set your default password here
+        default_password = "password"  # Set your default password here
         user.set_password(default_password)
 
         # Check if commit is True, then save the user instance
@@ -99,7 +98,6 @@ class StudentUserChangeForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
             super(StudentUserChangeForm, self).__init__(*args, **kwargs)
-            # Populate the fields with the value from the related User model
             if self.instance and self.instance.pk:
                 self.fields['organization'].initial = self.instance.user.organization
                 self.fields['date_of_birth'].initial = self.instance.user.date_of_birth
@@ -113,11 +111,10 @@ class StudentUserChangeForm(forms.ModelForm):
                 self.fields['postal_code'].initial = self.instance.user.postal_code
                 self.fields['is_active'].initial = self.instance.user.is_active
                 self.fields['email'].initial = self.instance.user.email
-                self.fields['course'].initial = self.instance.course  # Initialize course field
+                self.fields['course'].initial = self.instance.course  
 
     def save(self, commit=True):
             student = super(StudentUserChangeForm, self).save(commit=False)
-            # Save the fields back to the related User model
             student.user.organization = self.cleaned_data['organization']
             student.user.date_of_birth = self.cleaned_data['date_of_birth']
             student.user.gender = self.cleaned_data['gender']
@@ -130,7 +127,7 @@ class StudentUserChangeForm(forms.ModelForm):
             student.user.postal_code = self.cleaned_data['postal_code']
             student.user.is_active = self.cleaned_data['is_active']
             student.user.email = self.cleaned_data['email']
-            student.course = self.cleaned_data['course']  # Save course field
+            student.course = self.cleaned_data['course']
 
             if commit:
                 student.user.save()
@@ -146,7 +143,6 @@ class SubscriptionForm(ModelForm):
     course = ModelChoiceField(queryset=Course.objects.none(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),label='Course',required=True)
     user = ModelChoiceField(queryset=get_user_model().objects.order_by('last_name'),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),label='Καθηγητής',required=True)
     start_date = forms.DateField(initial=date.today,widget=forms.DateInput(attrs={'type': 'date','class': 'block w-full rounded-md border-0 py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6','placeholder': 'YYYY-MM-DD',}),required=True,label='Έναρξη')
-    #end_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date','class': 'block w-full rounded-md border-0 py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6','placeholder': 'YYYY-MM-DD',}),required=False)
     is_online = forms.BooleanField(label='Κατάσταση', initial=True, required=False)
     
     class Meta:
@@ -154,7 +150,6 @@ class SubscriptionForm(ModelForm):
         fields = ("user","student","course","start_date","is_online")
 
     def __init__(self, *args, **kwargs):
-        # Access the request or user from kwargs
         user = kwargs.pop('user', None)
         super(SubscriptionForm, self).__init__(*args, **kwargs)
         #     self.fields['end_date'].disabled = True
@@ -171,7 +166,6 @@ class SubscriptionForm(ModelForm):
             self.fields['course'].queryset = Course.objects.filter(is_online=True)
             #self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True)
 
-        # Ensure that the 'user' field (teachers) is always ordered by last name
         self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True).order_by('last_name')
 
 

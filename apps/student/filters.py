@@ -10,7 +10,6 @@ UserModel = get_user_model()
 
 class StudentFilter(django_filters.FilterSet):
     IS_ACTIVE_CHOICES = (
- # Optional: for no selection
         (True, 'Active'),
         (False, 'Inactive'),
     )
@@ -51,7 +50,7 @@ class StudentFilter(django_filters.FilterSet):
         super().__init__(*args, **kwargs)
     
         if user and hasattr(user, 'organization'):
-                # Assuming CustomUser has a direct company field
+ 
             if user.is_superuser:
                 organization = user.organization
                 self.filters['organization'].queryset = Organization.objects.all().distinct()
@@ -89,7 +88,7 @@ class SubscriptionFilter(django_filters.FilterSet):
         super().__init__(*args, **kwargs)
 
         if user and hasattr(user, 'organization'):
-            # Assuming CustomUser has a direct company field
+
             if user.is_superuser:
                 organization = user.organization
                 self.filters['course'].queryset = Course.objects.all()
