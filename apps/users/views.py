@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView,ListView, TemplateView
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView,DeleteView
 from django_filters.views import FilterView
 from .filters import UserStaffFillter, DocumentFilter, VacationFilter
 from .models import Document, Vacation, EmployeeDocument
@@ -230,6 +230,15 @@ class VacationStaffListView(LoginRequiredMixin, FilterView):
             return Vacation.objects.all()  # Staff can see all articles
         else:
             return Vacation.objects.filter(user__organization=self.request.user.organization)
+
+
+class UserFileDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+    model = User
+    template_name = 'app/staff/staff_delete_confirm.html'
+    success_url = reverse_lazy('home') 
+    
+    def test_func(self):
+        return self.request.user.is_company_owner or self.request.user.is_superuser
 
 class UpdateListView(LoginRequiredMixin,ListView):
     model = ''
