@@ -21,7 +21,6 @@ urlpatterns = [
     path('users/export', views.Staff_export, name='staff_list_export'),
     # path('users/member/dashboard/<int:pk>/', CustomUserDashboardView.as_view(), name='member_dashboard'),
     path('users/password_change/', views.password_change, name='password_change'), 
-    path('app/updates', views.fake_view, name='update_list'),
     # path('users/ajax/user_search/', views.ajax_user_search, name='ajax_user_search'),
     # #upload file
     path('users/upload_files/', student_upload_files, name='student_upload_files'),

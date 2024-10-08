@@ -240,9 +240,6 @@ class UserFileDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     def test_func(self):
         return self.request.user.is_company_owner or self.request.user.is_superuser
 
-class UpdateListView(LoginRequiredMixin,ListView):
-    model = ''
-    template_name = 'app/update_list.html'
-    context_object_name = 'updates'
+
     
     
