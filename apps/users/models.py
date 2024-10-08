@@ -127,9 +127,6 @@ class EmployeeDocument(models.Model):
         from django.core.urlresolvers import reverse
         return reverse('user_document_edit', kwargs={'pk': self.pk})
     
-    def get_absolute_url_delete(self):
-        from django.core.urlresolvers import reverse
-        return reverse('user_document_delete', kwargs={'pk': self.pk})
 
 
 

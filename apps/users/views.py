@@ -244,5 +244,21 @@ class StaffDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
         return self.request.user.is_company_owner or self.request.user.is_superuser
 
 
+class StaffDocumentDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+    model = EmployeeDocument
+    template_name = 'app/files/staff_document_confirm_delete.html'
+    success_url = reverse_lazy('home') 
     
+    def test_func(self):
+        return self.request.user.is_company_owner or self.request.user.is_superuser
     
+
+
+
+class StudentDocumentDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+    model = Document
+    template_name = 'app/files/student_document_confirm_delete.html'
+    success_url = reverse_lazy('home') 
+    
+    def test_func(self):
+        return self.request.user.is_company_owner or self.request.user.is_superuser

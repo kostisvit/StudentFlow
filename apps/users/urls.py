@@ -22,10 +22,14 @@ urlpatterns = [
     # path('users/member/dashboard/<int:pk>/', CustomUserDashboardView.as_view(), name='member_dashboard'),
     path('users/password_change/', views.password_change, name='password_change'), 
     # path('users/ajax/user_search/', views.ajax_user_search, name='ajax_user_search'),
-    # #upload file
-    path('users/upload_files/', student_upload_files, name='student_upload_files'),
-    path('users/documents', DocumentListView.as_view(), name='student_document_list'),
+    
+    # Students Documents
+    path('students/upload_files/', student_upload_files, name='student_upload_files'),
+    path('students/documents/list/', DocumentListView.as_view(), name='student_document_list'),
+    path('students/documents/delete/<int:pk>/', StudentDocumentDeleteView.as_view(), name='student_document_delete'),
+    
+    # Staff Documents
     path('users/staff/upload_files/', views.staff_upload_files, name='staff_upload_files'),
-    path('users/staff/documents', StaffDocumentListView.as_view(), name='staff_document_list'),
-    # path('users/files/delete/<int:pk>/', UserFileDeleteView.as_view(), name='user_file_delete'),
+    path('users/staff/documents/list/', StaffDocumentListView.as_view(), name='staff_document_list'),
+    path('users/staff/documents/delete/<int:pk>/', StaffDocumentDeleteView.as_view(), name='user_document_delete'),
 ]

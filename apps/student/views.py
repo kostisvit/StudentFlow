@@ -258,8 +258,12 @@ class CourseUpdateView(LoginRequiredMixin,UpdateView):
 # Delete View
 class StudentDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     model = Student
-    template_name = 'app/staff/staff_delete_confirm.html'
+    template_name = 'app/student/student_confirm_delete.html'
     success_url = reverse_lazy('home') 
     
     def test_func(self):
         return self.request.user.is_company_owner or self.request.user.is_superuser
+
+
+from users.models import Document
+

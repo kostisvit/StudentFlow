@@ -57,7 +57,7 @@
                     <td data-label="Download"><a href="{{ document.file.url }}" download class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800">Download</a></td>
                     <td class="px-6 py-4" data-label="Ενέργειες">
                         <a href="#" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800">Edit</a>
-                        <a href="#" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">Delete</a>
+                        <a href="{% url 'user_document_delete' document.pk %}" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">Delete</a>
                     </td>
                 </tr>
                     </tr>
