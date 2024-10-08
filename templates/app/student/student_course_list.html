@@ -59,6 +59,37 @@
         {% endfor %}
     </div>
 
+
+        <!-- Centered Pagination Controls -->
+    <div class="flex justify-center items-center mt-6 space-x-2">
+      
+      <!-- Previous Page Link -->
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+          Previous
+        </a>
+      {% else %}
+        <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded">Previous</span>
+      {% endif %}
+
+      <!-- Page Numbers -->
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <span class="px-4 py-2 bg-blue-700 text-white rounded">{{ num }}</span>
+        {% else %}
+          <a href="?page={{ num }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      <!-- Next Page Link -->
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+          Next
+        </a>
+      {% else %}
+        <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded">Next</span>
+      {% endif %}
+    </div>
         
         <!-- Modal Container -->
         <div id="course-new-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">

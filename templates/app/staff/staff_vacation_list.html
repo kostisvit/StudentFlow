@@ -71,6 +71,38 @@
           {% endfor %}
           </div>
 </div>
+
+<!-- Centered Pagination Controls -->
+    <div class="flex justify-center items-center mt-6 space-x-2">
+      
+      <!-- Previous Page Link -->
+      {% if vacations.has_previous %}
+        <a href="?page={{ vacations.previous_page_number }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+          Previous
+        </a>
+      {% else %}
+        <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded">Previous</span>
+      {% endif %}
+
+      <!-- Page Numbers -->
+      {% for num in vacations.paginator.page_range %}
+        {% if vacations.number == num %}
+          <span class="px-4 py-2 bg-blue-700 text-white rounded">{{ num }}</span>
+        {% else %}
+          <a href="?page={{ num }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      <!-- Next Page Link -->
+      {% if vacations.has_next %}
+        <a href="?page={{ vacations.next_page_number }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+          Next
+        </a>
+      {% else %}
+        <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded">Next</span>
+      {% endif %}
+    </div>
+    
 <!-- Modal Container -->
         <div id="staff-vacation-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
             <div class="bg-white p-6 rounded-lg shadow-lg w-1/3 relative">

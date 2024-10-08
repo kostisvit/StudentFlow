@@ -213,6 +213,13 @@ class SubscriptionEndsListView(LoginRequiredMixin, FilterView):
 def course_list_view(request):
     form = CourseForm(user=request.user)  # Initialize the form by default for both GET and POST
 
+    # filterset = CourseFilter(request.GET, queryset=courses)
+    # filtered_courses = filterset.qs
+    # Paginate the results
+    # paginator = Paginator(per_page, 2)  # 10 vacations per page
+    # page_number = request.GET.get('page')
+    # page_obj = paginator.get_page(page_number)
+    
     # Handle form submission (similar to the 'post' method in CBV)
     if request.method == 'POST':
         form = CourseForm(request.POST,user=request.user)

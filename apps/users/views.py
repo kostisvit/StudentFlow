@@ -14,6 +14,7 @@ from .export import Staff_export
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from .models import User
+from django.core.paginator import Paginator
 
 
 UserModel = get_user_model()
@@ -50,12 +51,15 @@ def custom_logout(request):
 
 #########################################################################################################
 
+
+
 # Staff List View
 class UserStaffView(LoginRequiredMixin,FilterView):
     model = get_user_model()
     filterset_class = UserStaffFillter
     context_object_name = 'users'
     template_name = "app/staff/staff.html"
+    paginate_by = 10
 
     # Pass the logged-in user to the form
     def get_context_data(self, **kwargs):
@@ -163,8 +167,9 @@ def staff_upload_files(request):
 
 #########################################################################################################
 
+
 # Document list
-class DocumentListView(LoginRequiredMixin,FilterView):
+class StudentDocumentListView(LoginRequiredMixin,FilterView):
     model = Document
     template_name = 'app/files/student_document_list.html'
     filterset_class = DocumentFilter
@@ -194,17 +199,21 @@ class StaffDocumentListView(LoginRequiredMixin,FilterView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['row_count'] = EmployeeDocument.objects.count()  
-        return context
+        if self.request.user.is_superuser:
+            context['row_count_superuser'] = EmployeeDocument.objects.all().count()  
+            return context
+        else:
+            context['row_count'] = EmployeeDocument.objects.filter(user__organization=self.request.user.organization).count()  
+            return context
     
     def get_queryset(self):
         if self.request.user.is_superuser:
-            return EmployeeDocument.objects.all()  
+            return EmployeeDocument.objects.all() 
         else:
             return EmployeeDocument.objects.filter(user__organization=self.request.user.organization)
 
 #########################################################################################################
-from django.core.paginator import Paginator
+
 # Staff Vacation List
 @login_required
 def vacation_staff_list_view(request):

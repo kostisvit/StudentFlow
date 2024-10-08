@@ -16,7 +16,7 @@
 <!--End Divider-->
 
 <!--Count Files-->
-<h1 class="grid justify-items-center lg:justify-items-start ml-5 text-indigo-600 font-bold">Αρχεία - {{ row_count }}</h1>
+<h1 class="grid justify-items-center lg:justify-items-start ml-5 text-indigo-600 font-bold">Αρχεία - {% if request.user.is_superuser %} {{row_count_superuser}} {% else %} {{ row_count }} {% endif %}</h1>
 <!--End Count Files-->
 
 <!--Buttons-->
@@ -65,6 +65,38 @@
                 </tbody>
             </table>
         </div>
+        
+        <!-- Centered Pagination Controls -->
+    <div class="flex justify-center items-center mt-6 space-x-2">
+      
+      <!-- Previous Page Link -->
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+          Previous
+        </a>
+      {% else %}
+        <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded">Previous</span>
+      {% endif %}
+
+      <!-- Page Numbers -->
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <span class="px-4 py-2 bg-blue-700 text-white rounded">{{ num }}</span>
+        {% else %}
+          <a href="?page={{ num }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      <!-- Next Page Link -->
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+          Next
+        </a>
+      {% else %}
+        <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded">Next</span>
+      {% endif %}
+    </div>
+        
         <div class="block sm:hidden space-y-4">
             {% for document in page_obj %}
             <div class="border p-4 rounded-lg shadow-md bg-white">
