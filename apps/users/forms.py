@@ -10,6 +10,8 @@ from .choices import gender_choice
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from student.models import Student, Enrollment, Course
+from .validators import validate_file_extension
+from .models import Course, Document,EmployeeDocument
 
 
 UserModel = get_user_model()
@@ -24,7 +26,7 @@ class EmailAuthenticationForm(AuthenticationForm):
             raise ValidationError("Το email δεν υπάρχει, επικοινωνήστε με τον διαχειριστή. ")
         return email
 
-
+#########################################################################################################
 
 # User New Form
 class UserCreationForm(forms.ModelForm):
@@ -73,9 +75,9 @@ class UserCreationForm(forms.ModelForm):
         if user and user.is_superuser:
             # Superuser: Show all courses
             self.fields['courses'].queryset = Course.objects.filter(is_online=True)
-        else:
+        elif user and hasattr(user, 'organization'):
             # Regular user: Only show courses where is_online=True
-            self.fields['courses'].queryset = Course.objects.filter(is_online=True)
+            self.fields['courses'].queryset = Course.objects.filter(is_online=True, organization=user.organization)
 
 
     def save(self, commit=True):
@@ -97,7 +99,7 @@ class UserCreationForm(forms.ModelForm):
                 Enrollment.objects.get_or_create(user=user, course=course)
         return user
 
-
+#########################################################################################################
 
 # Student - User Change Form
 class UserChangeForm(forms.ModelForm):
@@ -162,6 +164,7 @@ class UserChangeForm(forms.ModelForm):
 
         return user
 
+#########################################################################################################
 
 class VacationStaffForm(forms.ModelForm):
     user = forms.ModelChoiceField(queryset=get_user_model().objects.filter(is_staff=True),label=False,empty_label='---Επέλεξε Καθηγητή---',widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),required=True)
@@ -172,6 +175,15 @@ class VacationStaffForm(forms.ModelForm):
         model = Vacation
         fields = ('user','start_date','end_date')
 
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(VacationStaffForm, self).__init__(*args, **kwargs)
+        if user and user.is_superuser:
+            self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True).order_by('last_name')
+        elif user and hasattr(user, 'organization'):
+            # Ensure that the 'user' field (teachers) is always ordered by last name
+            self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True,organization=user.organization).order_by('last_name')
+            
     def save(self, commit=True):
         # Call the superclass's save method to handle the default saving behavior
         vacation = super().save(commit=False)
@@ -183,6 +195,10 @@ class VacationStaffForm(forms.ModelForm):
             vacation.save()  # Save the instance to the database
         
         return vacation
+
+
+#########################################################################################################
+
 
 # Email Authentication
 class EmailAuthenticationForm(AuthenticationForm):
@@ -203,16 +219,10 @@ class EmailAuthenticationForm(AuthenticationForm):
 
         return self.cleaned_data
     
-    
+#########################################################################################################    
 
 
-
-
-from .validators import validate_file_extension
-from .models import Course, Document,EmployeeDocument
-
-
-class MultipleUserFileForm(forms.ModelForm):
+class StudentFileForm(forms.ModelForm):
     user = forms.ModelChoiceField(queryset=get_user_model().objects.all(),widget=forms.Select(attrs={'class': 'form-control'}), label="Select User",required=True)
     course = forms.ModelChoiceField(queryset=Course.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}), label="Select Course",required=True)
     file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=True)
@@ -233,7 +243,7 @@ class MultipleUserFileForm(forms.ModelForm):
             self.fields['course'].queryset = Course.objects.all()
         else:
             self.fields['user'].queryset = get_user_model().objects.filter(organization=logged_in_user.organization, is_staff=False, is_active=True)
-            self.fields['course'].queryset = Course.objects.filter(is_online=True)
+            self.fields['course'].queryset = Course.objects.filter(is_online=True,organization=logged_in_user.organization)
 
     def clean_file(self):
         files = self.files.getlist('file')  # Get the list of uploaded files
@@ -241,8 +251,9 @@ class MultipleUserFileForm(forms.ModelForm):
             validate_file_extension(file)  # Validate each file individually
         return files
 
+#########################################################################################################   
 
-class StaffMultipleUserFileForm(forms.ModelForm):
+class StaffFileForm(forms.ModelForm):
     user = forms.ModelChoiceField(
         queryset=get_user_model().objects.all(),
         widget=forms.Select(attrs={'class': 'form-control'}),
@@ -293,4 +304,4 @@ class StaffMultipleUserFileForm(forms.ModelForm):
 
         return files
 
-
+#########################################################################################################   

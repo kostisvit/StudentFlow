@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
-from .forms import EmailAuthenticationForm, UserCreationForm, UserChangeForm, VacationStaffForm, MultipleUserFileForm, StaffMultipleUserFileForm
+from .forms import EmailAuthenticationForm, UserCreationForm, UserChangeForm, VacationStaffForm, StudentFileForm, StaffFileForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import CreateView,ListView, TemplateView
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
-from django.views.generic.edit import UpdateView,DeleteView
+from django.views.generic.edit import DeleteView
 from django_filters.views import FilterView
 from .filters import UserStaffFillter, DocumentFilter, VacationFilter
 from .models import Document, Vacation, EmployeeDocument
@@ -49,7 +48,7 @@ def custom_logout(request):
     logout(request)
     return redirect('login')
 
-
+#########################################################################################################
 
 # Staff List View
 class UserStaffView(LoginRequiredMixin,FilterView):
@@ -59,10 +58,13 @@ class UserStaffView(LoginRequiredMixin,FilterView):
     template_name = "app/staff/staff.html"
 
     # Pass the logged-in user to the form
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user  # Pass the logged-in user to the form
-        return kwargs
+    def get_context_data(self, **kwargs):
+        # Get the base context from the base implementation
+        context = super().get_context_data(**kwargs)
+        # Add the logged-in user to the context
+        context['logged_in_user'] = self.request.user
+        return context
+    
     # Override to add the form to the context
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -74,7 +76,7 @@ class UserStaffView(LoginRequiredMixin,FilterView):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('staff_list')  # Redirect to course list after submission
+            return redirect('staff_list')  
         return self.get(request, *args, form=form)
 
     def get_queryset(self):
@@ -85,6 +87,7 @@ class UserStaffView(LoginRequiredMixin,FilterView):
             queryset = queryset.filter(is_staff=True,organization=self.request.user.organization)
         return queryset
 
+#########################################################################################################
 
 # Staff Update Function View
 @login_required
@@ -101,14 +104,15 @@ def staff_update(request, pk):
         form = UserChangeForm(instance=post)
     return render(request, 'app/staff/staff_edit.html', {'form': form})
 
+#########################################################################################################
 
-# Upload File to User
+# Upload File User
 @login_required
 def student_upload_files(request):
-    logged_in_user = request.user  # Get the logged-in user
+    logged_in_user = request.user  
 
     if request.method == 'POST':
-        form = MultipleUserFileForm(request.POST, request.FILES, logged_in_user=logged_in_user)
+        form = StudentFileForm(request.POST, request.FILES, logged_in_user=logged_in_user)
         if form.is_valid():
             selected_user = form.cleaned_data['user']
             filename = form.cleaned_data['filename']
@@ -117,46 +121,47 @@ def student_upload_files(request):
             for file in file:
                 Document.objects.create(user=selected_user, file=file,filename=filename,course=course)
             messages.success(request, 'Files uploaded successfully!')
-            return redirect('student_upload_files')  # Redirect to a success page
+            return redirect('student_upload_files')  
         else:
             messages.error(request, 'Please correct the errors below and try again.')
     else:
-        form = MultipleUserFileForm(logged_in_user=logged_in_user)
+        form = StudentFileForm(logged_in_user=logged_in_user)
 
     return render(request, 'app/files/student_document_upload.html', {'form': form})
 
-
+#########################################################################################################
 
 # Upload File Staff
 def staff_upload_files(request):
-    logged_in_user = request.user  # Get the logged-in user
+    logged_in_user = request.user  
 
     if request.method == 'POST':
-        form = StaffMultipleUserFileForm(request.POST, request.FILES, logged_in_user=logged_in_user)
+        form = StaffFileForm(request.POST, request.FILES, logged_in_user=logged_in_user)
 
         if form.is_valid():
             # Extract valid data
             selected_user = form.cleaned_data['user']
             filename = form.cleaned_data['filename']
             course = form.cleaned_data['course']
-            files = form.cleaned_data['file']  # This will be the list of uploaded files
+            files = form.cleaned_data['file']  
 
             # Iterate through files and create EmployeeDocument entries
             for file in files:
                 EmployeeDocument.objects.create(user=selected_user, file=file, filename=filename, course=course)
 
             messages.success(request, 'Files uploaded successfully!')
-            return redirect('staff_upload_files')  # Redirect after success
+            return redirect('staff_upload_files')  
         else:
             # Log errors to the console
             print("Form Errors:", form.errors)
             messages.error(request, 'Please correct the errors below and try again.')
 
     else:
-        form = StaffMultipleUserFileForm(logged_in_user=logged_in_user)
+        form = StaffFileForm(logged_in_user=logged_in_user)
 
     return render(request, 'app/files/staff_document_upload.html', {'form': form})
 
+#########################################################################################################
 
 # Document list
 class DocumentListView(LoginRequiredMixin,FilterView):
@@ -168,17 +173,18 @@ class DocumentListView(LoginRequiredMixin,FilterView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['row_count'] = Document.objects.count()  # Count the rows
+        context['row_count'] = Document.objects.count()  
         return context
     
     def get_queryset(self):
         if self.request.user.is_superuser:
-            return Document.objects.all()  # Staff can see all articles
+            return Document.objects.all()  
         else:
             return Document.objects.filter(user__student__is_student=True, user__is_staff=False,user__student__organization=self.request.user.organization)
 
+#########################################################################################################
 
-# Document list
+# Staff Document list
 class StaffDocumentListView(LoginRequiredMixin,FilterView):
     model = EmployeeDocument
     template_name = 'app/files/staff_document_list.html'
@@ -188,53 +194,60 @@ class StaffDocumentListView(LoginRequiredMixin,FilterView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['row_count'] = EmployeeDocument.objects.count()  # Count the rows
+        context['row_count'] = EmployeeDocument.objects.count()  
         return context
     
     def get_queryset(self):
         if self.request.user.is_superuser:
-            return EmployeeDocument.objects.all()  # Staff can see all articles
+            return EmployeeDocument.objects.all()  
         else:
             return EmployeeDocument.objects.filter(user__organization=self.request.user.organization)
 
+#########################################################################################################
+from django.core.paginator import Paginator
+# Staff Vacation List
+@login_required
+def vacation_staff_list_view(request):
+    # Get the current user
+    user = request.user
 
+    # Filter queryset based on the user type
+    if user.is_superuser:
+        vacations = Vacation.objects.all()
+    else:
+        vacations = Vacation.objects.filter(user__organization=user.organization)
 
-class VacationStaffListView(LoginRequiredMixin, FilterView):
-    model = Vacation
-    template_name = 'app/staff/staff_vacation_list.html'
-    filterset_class = VacationFilter
-    context_object_name = 'vacations'
-    paginate_by = 10
+    # Apply filtering from VacationFilter
+    filterset = VacationFilter(request.GET, queryset=vacations)
+    filtered_vacations = filterset.qs
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['vacations_empty'] = not context['vacations'].exists()
-    #     return context
+    # Paginate the results
+    paginator = Paginator(filtered_vacations, 10)  # 10 vacations per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
-    # Override to add the form to the context
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = VacationStaffForm()  # Inject the form into the context
-        return context
-
-    # Handle form submission (manual post method for CreateView functionality)
-    def post(self, request, *args, **kwargs):
-        form = VacationStaffForm(request.POST)
+    # Handle form submission for new vacation (POST request)
+    if request.method == 'POST':
+        form = VacationStaffForm(request.POST,user=request.user)
         if form.is_valid():
             form.save()
-            return redirect('vacations_list')  # Redirect to course list after submission
-        return self.get(request, *args, form=form)
+            return redirect('vacations_list')  # Redirect after saving the form
+    else:
+        form = VacationStaffForm(user=request.user)
 
-    def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Vacation.objects.all()  # Staff can see all articles
-        else:
-            return Vacation.objects.filter(user__organization=self.request.user.organization)
+    # Context to be passed to the template
+    context = {
+        'vacations': page_obj,
+        'form': form,
+        'filter': filterset
+    }
+
+    return render(request, 'app/staff/staff_vacation_list.html', context)
+
+#########################################################################################################
 
 
-
-
-
+# Staff dele
 class StaffDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     model = User
     template_name = 'app/staff/staff_delete_confirm.html'
@@ -243,7 +256,9 @@ class StaffDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     def test_func(self):
         return self.request.user.is_company_owner or self.request.user.is_superuser
 
+#########################################################################################################
 
+# Staff Document Delete
 class StaffDocumentDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     model = EmployeeDocument
     template_name = 'app/files/staff_document_confirm_delete.html'
@@ -252,9 +267,9 @@ class StaffDocumentDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView)
     def test_func(self):
         return self.request.user.is_company_owner or self.request.user.is_superuser
     
+#########################################################################################################
 
-
-
+# Student Document Delete
 class StudentDocumentDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     model = Document
     template_name = 'app/files/student_document_confirm_delete.html'
@@ -262,3 +277,5 @@ class StudentDocumentDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteVie
     
     def test_func(self):
         return self.request.user.is_company_owner or self.request.user.is_superuser
+    
+#########################################################################################################

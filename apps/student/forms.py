@@ -72,7 +72,7 @@ class StudentCreationForm(forms.ModelForm):
 
         return user
 
-
+#########################################################################################################
 
 # Student update form
 class StudentUserChangeForm(forms.ModelForm):
@@ -134,8 +134,7 @@ class StudentUserChangeForm(forms.ModelForm):
                 student.save()
             return student
 
-
-
+#########################################################################################################
 
 # Subscriptio form
 class SubscriptionForm(ModelForm):
@@ -147,28 +146,31 @@ class SubscriptionForm(ModelForm):
     
     class Meta:
         model = Subscription
-        fields = ("user","student","course","start_date","is_online")
+        fields = ("user", "student", "course", "start_date", "is_online")
 
     def __init__(self, *args, **kwargs):
+        # Get the user from kwargs
         user = kwargs.pop('user', None)
         super(SubscriptionForm, self).__init__(*args, **kwargs)
-        #     self.fields['end_date'].disabled = True
 
-        # For superusers, show all students and courses
+        # Handle the queryset for superusers
         if user and user.is_superuser:
             self.fields['student'].queryset = Student.objects.all()
             self.fields['course'].queryset = Course.objects.all()
-            #self.fields['user'].queryset = get_user_model().objects.all()
-            
-        else:
-            # Filter students and courses by 'is_online' field for non-superusers
-            self.fields['student'].queryset = Student.objects.filter(user__is_staff=False,user__is_active=True)
-            self.fields['course'].queryset = Course.objects.filter(is_online=True)
-            #self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True)
+            self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True).order_by('last_name')
+        elif user and hasattr(user, 'organization'):
+            # For regular users, filter students by the organization and 'is_online' for courses
+            self.fields['student'].queryset = Student.objects.filter(
+                user__organization=user.organization,
+                user__is_staff=False, 
+                user__is_active=True
+            )
+            self.fields['course'].queryset = Course.objects.filter(is_online=True,organization=user.organization)
 
-        self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True).order_by('last_name')
+        # Filter teachers/staff members (user field)
+            self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True,organization=user.organization).order_by('last_name')
 
-
+#########################################################################################################
 
 # Subscriptio Update form
 class SubscriptionUpdateForm(ModelForm):
@@ -185,20 +187,29 @@ class SubscriptionUpdateForm(ModelForm):
         fields = ("user","student","course","start_date","is_online",'is_paid')
 
     def __init__(self, *args, **kwargs):
-        super(SubscriptionUpdateForm, self).__init__(*args, **kwargs)
-        self.fields['end_date'].disabled = True
-        
-    def __init__(self, *args, **kwargs):
+        # Get the user from kwargs
         user = kwargs.pop('user', None)
         super(SubscriptionUpdateForm, self).__init__(*args, **kwargs)
-        if user:
-            if user.is_superuser:
-                self.fields['student'].queryset = Student.objects.all()
-                self.fields['course'].queryset = Course.objects.all()
-            else:
-                self.fields['student'].queryset = Student.objects.filter(user__organization=user.organization.id,is_student=True)
-                self.fields['course'].queryset = Course.objects.filter(organization=user.organization.id)
 
+        # Handle the queryset for superusers
+        if user and user.is_superuser:
+            self.fields['student'].queryset = Student.objects.all()
+            self.fields['course'].queryset = Course.objects.all()
+            self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True).order_by('last_name')
+        elif user and hasattr(user, 'organization'):
+            # For regular users, filter students by the organization and 'is_online' for courses
+            self.fields['student'].queryset = Student.objects.filter(
+                user__organization=user.organization,
+                user__is_staff=False, 
+                user__is_active=True
+            )
+            self.fields['course'].queryset = Course.objects.filter(is_online=True,organization=user.organization)
+
+        # Filter teachers/staff members (user field)
+            self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True,organization=user.organization).order_by('last_name')
+
+
+#########################################################################################################
 
 # Course form
 class CourseForm(forms.ModelForm):
@@ -217,13 +228,14 @@ class CourseForm(forms.ModelForm):
         user = kwargs.pop('user', None)
         super(CourseForm, self).__init__(*args, **kwargs)
         if user and user.is_superuser:
-                # self.fields['member'].queryset = Member.objects.all()
             self.fields['organization'].queryset = Organization.objects.all().distinct()
-        else:
-                # self.fields['member'].queryset = Member.objects.filter(user__company=user.company.id,is_student=True)
-            self.fields['organization'].queryset = Organization.objects.all().distinct()
+            self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True).order_by('last_name')
+        elif user and hasattr(user, 'organization'):
+            self.fields['organization'].queryset = Organization.objects.filter(user=user).distinct()
             # Ensure that the 'user' field (teachers) is always ordered by last name
-        self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True).order_by('last_name')
+            self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True,organization=user.organization).order_by('last_name')
+
+#########################################################################################################
 
 # Course update form
 class CourseUpdateForm(forms.ModelForm):
@@ -247,3 +259,6 @@ class CourseUpdateForm(forms.ModelForm):
             else:
                 # self.fields['member'].queryset = Member.objects.filter(user__company=user.company.id,is_student=True)
                 self.fields['organization'].queryset = Organization.objects.filter(user__organization=user.organization.id).distinct()
+                
+
+#########################################################################################################

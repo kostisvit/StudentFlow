@@ -15,7 +15,7 @@ urlpatterns = [
     path('logout/', views.custom_logout, name='logout'),
     #path('sentry-debug/', trigger_error),
     path('users/staff', UserStaffView.as_view(), name='staff_list'),
-    path('users/staff/vacations', VacationStaffListView.as_view(), name='vacations_list'),
+    path('users/staff/vacations', views.vacation_staff_list_view, name='vacations_list'),
     path('users/<int:pk>/edit/', views.staff_update, name='user_student_edit'),
     path('users/<int:pk>/delete/', StaffDeleteView.as_view(),  name='user_student_delete'),
     path('users/export', views.Staff_export, name='staff_list_export'),

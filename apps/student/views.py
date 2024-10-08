@@ -15,6 +15,7 @@ from datetime import timedelta
 from .forms import CourseForm 
 from .send_email_view import compose_email
 from django.shortcuts import get_object_or_404
+from django.core.paginator import Paginator  
 
 
 UserModel = get_user_model()
@@ -114,10 +115,10 @@ class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
     #     print(form.errors)
     #     return super().form_invalid(form)
     
-    # def get_form_kwargs(self):
-    #     kwargs = super().get_form_kwargs()
-    #     kwargs['user'] = self.request.user
-    #     return kwargs
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
     
     # def get_initial(self):
     #     initial = super().get_initial()
@@ -140,46 +141,40 @@ class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
     #     return super().form_valid(form)
 
 
-    
+ 
 # Subscription list 
-class SubscriptionListView(LoginRequiredMixin, FilterView):
-    model = Subscription
-    #fields = '__all__'
-    filterset_class = SubscriptionFilter
-    template_name = 'app/student/subscriptions_list.html'
-    context_object_name = 'subscriptions'
-    paginate_by = 10
-    
-    def get_filterset_kwargs(self, filterset_class):
-        # Get the default kwargs from the parent method
-        kwargs = super().get_filterset_kwargs(filterset_class)
-        # Add the current user to the kwargs
-        kwargs['user'] = self.request.user
-        return kwargs
-    
-    # Override to add the form to the context
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = SubscriptionForm()  # Inject the form into the context
-        return context
+@login_required
+def subscription_list_view(request):
+    if request.user.is_superuser:
+        queryset = Subscription.objects.all()
+    elif hasattr(request.user, 'organization'):
+        queryset = Subscription.objects.filter(student__user__organization=request.user.organization)
+    else:
+        queryset = Subscription.objects.none()
 
-    # Handle form submission (manual post method for CreateView functionality)
-    def post(self, request, *args, **kwargs):
-        form = SubscriptionForm(request.POST)
+    filterset = SubscriptionFilter(request.GET, queryset=queryset)
+    filtered_queryset = filterset.qs
+
+    paginator = Paginator(filtered_queryset.order_by('-end_date'), 10)  
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    
+    if request.method == 'POST':
+        form = SubscriptionForm(request.POST, user=request.user)
         if form.is_valid():
             form.save()
-            return redirect('subscriptions_list')  # Redirect to course list after submission
-        return self.get(request, *args, form=form)
-    
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        if self.request.user.is_superuser:
-            # Apply filter for superuser
-            queryset = Subscription.objects.all()  # Replace with your actual filter conditions for superusers
-        else:
-            # Apply different filter for regular users
-            queryset = queryset.filter(student__user__organization=self.request.user.organization)  # Replace with your actual filter conditions for regular users
-        return queryset.order_by('-end_date')
+            return redirect('subscriptions_list')  
+    else:
+        form = SubscriptionForm(user=request.user)
+
+    context = {
+        'subscriptions': page_obj,  # Paged and filtered subscription list
+        'form': form,               # Subscription form
+        'filter': filterset          # Filter for search/filter UI
+    }
+
+    return render(request, 'app/student/subscriptions_list.html', context)
 
 
 
@@ -214,32 +209,31 @@ class SubscriptionEndsListView(LoginRequiredMixin, FilterView):
 
 
     
-# Course LIst with modal creating new course
-class CourseListView(LoginRequiredMixin,ListView):
-    model = Course
-    template_name = 'app/student/student_course_list.html'
-    context_object_name = 'courses'
-     
-    # Override to add the form to the context
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = CourseForm()  # Inject the form into the context
-        return context
+# Course List with modal creating new course
+def course_list_view(request):
+    form = CourseForm(user=request.user)  # Initialize the form by default for both GET and POST
 
-
-    # Handle form submission (manual post method for CreateView functionality)
-    def post(self, request, *args, **kwargs):
-        form = CourseForm(request.POST)
+    # Handle form submission (similar to the 'post' method in CBV)
+    if request.method == 'POST':
+        form = CourseForm(request.POST,user=request.user)
         if form.is_valid():
             form.save()
             return redirect('course_list')  # Redirect to course list after submission
-        return self.get(request, *args, form=form)
 
-    def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Course.objects.all()  # Staff can see all articles
-        else:
-            return Course.objects.filter(user__organization=self.request.user.organization)
+    # Define the query based on the user (similar to 'get_queryset')
+    if request.user.is_superuser:
+        courses = Course.objects.all()  # Superuser can see all courses
+    else:
+        courses = Course.objects.filter(user__organization=request.user.organization)  # Non-superuser can only see courses for their organization
+    
+    # Define context with form and courses (similar to 'get_context_data')
+    context = {
+        'courses': courses,
+        'form': form,  # Ensure form is passed in both cases (GET and POST)
+    }
+
+    # Render the response (similar to 'template_name')
+    return render(request, 'app/student/student_course_list.html', context)
 
 
 # Course update
