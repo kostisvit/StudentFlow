@@ -232,7 +232,10 @@ class VacationStaffListView(LoginRequiredMixin, FilterView):
             return Vacation.objects.filter(user__organization=self.request.user.organization)
 
 
-class UserFileDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+
+
+
+class StaffDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     model = User
     template_name = 'app/staff/staff_delete_confirm.html'
     success_url = reverse_lazy('home') 

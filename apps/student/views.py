@@ -3,6 +3,7 @@ from .models import Student
 from .filters import StudentFilter, SubscriptionFilter
 from django_filters.views import FilterView
 from django.views.generic import CreateView, UpdateView,ListView
+from django.views.generic.edit import UpdateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
 from .forms import *
@@ -252,3 +253,13 @@ class CourseUpdateView(LoginRequiredMixin,UpdateView):
         # Ensure you retrieve the object based on the primary key from the URL or modal
         obj = get_object_or_404(Course, pk=self.kwargs['pk'])
         return obj
+
+
+# Delete View
+class StudentDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+    model = Student
+    template_name = 'app/staff/staff_delete_confirm.html'
+    success_url = reverse_lazy('home') 
+    
+    def test_func(self):
+        return self.request.user.is_company_owner or self.request.user.is_superuser

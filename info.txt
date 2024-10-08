@@ -10,7 +10,9 @@ g@test.gr -  Φροντιστήριο Αγγλικών
 4-Αρχεία Προσωπικού, φίλτρο ανα οργανισμό - OK
 5-Courses, φίλτρο ανα οργανισμό - OK
 6-Edit εγγραφών - OK
+7-Delete, perm, only company_owner and superuser - ΟΚ 
 
 -ΜΑΘΗΤΕΣ-
 1-Εγγραφές, φίλτρο ανα οργανισμό - OK
 2-Αρχεία, φίλτρο ανα οργανισμό - OK
+3-Delete, perm, only company_owner and superuser - ΟΚ 
