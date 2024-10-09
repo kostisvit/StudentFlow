@@ -15,7 +15,7 @@ from datetime import timedelta
 from .forms import CourseForm 
 from .send_email_view import compose_email
 from django.shortcuts import get_object_or_404
-from django.core.paginator import Paginator  
+from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 
 
 UserModel = get_user_model()
@@ -211,35 +211,36 @@ class SubscriptionEndsListView(LoginRequiredMixin, FilterView):
     
 # Course List with modal creating new course
 def course_list_view(request):
-    form = CourseForm(user=request.user)  # Initialize the form by default for both GET and POST
+    form = CourseForm(user=request.user) 
 
-    # filterset = CourseFilter(request.GET, queryset=courses)
-    # filtered_courses = filterset.qs
-    # Paginate the results
-    # paginator = Paginator(per_page, 2)  # 10 vacations per page
-    # page_number = request.GET.get('page')
-    # page_obj = paginator.get_page(page_number)
     
-    # Handle form submission (similar to the 'post' method in CBV)
     if request.method == 'POST':
-        form = CourseForm(request.POST,user=request.user)
+        form = CourseForm(request.POST, user=request.user)
         if form.is_valid():
             form.save()
-            return redirect('course_list')  # Redirect to course list after submission
+            return redirect('course_list')  
 
-    # Define the query based on the user (similar to 'get_queryset')
-    if request.user.is_superuser:
-        courses = Course.objects.all()  # Superuser can see all courses
-    else:
-        courses = Course.objects.filter(user__organization=request.user.organization)  # Non-superuser can only see courses for their organization
     
-    # Define context with form and courses (similar to 'get_context_data')
+    if request.user.is_superuser:
+        courses = Course.objects.all()  
+    else:
+        courses = Course.objects.filter(user__organization=request.user.organization) 
+    # Pagination logic
+    paginator = Paginator(courses, 10) 
+    page_number = request.GET.get('page')  
+
+    try:
+        page_obj = paginator.page(page_number)  
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)  
+        page_obj = paginator.page(paginator.num_pages)  
+
+    
     context = {
-        'courses': courses,
-        'form': form,  # Ensure form is passed in both cases (GET and POST)
+        'page_obj': page_obj,  
+        'form': form,  
     }
 
-    # Render the response (similar to 'template_name')
     return render(request, 'app/student/student_course_list.html', context)
 
 

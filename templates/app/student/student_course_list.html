@@ -29,7 +29,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for course in courses %}
+                    {% for course in page_obj %}
                     <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                         <td class="px-6 py-4" data-label="Title">{{ course.title }}</td>
                         <td class="px-6 py-4" data-label="Title">{{ course.description }}</td>
@@ -48,7 +48,7 @@
             </table>
         </div>
         <div class="block sm:hidden space-y-4">
-        {% for course in courses %}
+        {% for course in page_obj %}
         <div class="border p-4 rounded-lg shadow-md bg-white">
             <p><span class="font-bold text-gray-700">Title:</span> {{ course.title }}</p>
             <p><span class="font-bold text-gray-700">Description:</span> {{ course.description }}</p>
