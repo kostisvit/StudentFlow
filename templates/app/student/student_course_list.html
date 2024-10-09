@@ -1,8 +1,18 @@
 {% extends "_base.html" %}
+{% load widget_tweaks %}
 
 {% block content %}
 <!-- templates/courses/course_list_with_modal.html -->
 <body>
+
+<!--Filter Form-->
+<form method="get" action="#" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mt-3">
+    {% csrf_token %}
+    {{ filter.form }}
+    <button type="submit" class="btn btn-warning sm:w-44">Αναζήτηση</button>
+</form>
+<!--End Filter Form-->
+
 <!--Buttons-->
 <div class="flex flex-col sm:flex-row sm:space-x-1 space-y-1 sm:space-y-0 mt-3">
     <button onclick="openModalCourseNew()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Νέα εγγραφή</button>

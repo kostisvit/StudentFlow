@@ -207,38 +207,43 @@ class SubscriptionEndsListView(LoginRequiredMixin, FilterView):
         return queryset
 
 
-
+from .filters import CourseFilter
     
 # Course List with modal creating new course
 def course_list_view(request):
-    form = CourseForm(user=request.user) 
+    form = CourseForm(user=request.user)
 
+    # Determine the base queryset based on user type
+    if request.user.is_superuser:
+        queryset = Course.objects.all()  # Superuser can see all courses
+    else:
+        queryset = Course.objects.filter(user__organization=request.user.organization)
+
+    # Apply CourseFilter to the queryset
+    filterset = CourseFilter(request.GET, queryset=queryset,user=request.user)
+    filtered_queryset = filterset.qs
+
+    # Pagination logic for the filtered queryset
+    paginator = Paginator(filtered_queryset.order_by('-title'), 10)
+    page_number = request.GET.get('page')
     
+    try:
+        page_obj = paginator.page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+
     if request.method == 'POST':
         form = CourseForm(request.POST, user=request.user)
         if form.is_valid():
             form.save()
-            return redirect('course_list')  
+            return redirect('course_list')  # Redirect to the course list after saving
 
-    
-    if request.user.is_superuser:
-        courses = Course.objects.all()  
-    else:
-        courses = Course.objects.filter(user__organization=request.user.organization) 
-    # Pagination logic
-    paginator = Paginator(courses, 10) 
-    page_number = request.GET.get('page')  
-
-    try:
-        page_obj = paginator.page(page_number)  
-    except PageNotAnInteger:
-        page_obj = paginator.page(1)  
-        page_obj = paginator.page(paginator.num_pages)  
-
-    
     context = {
-        'page_obj': page_obj,  
-        'form': form,  
+        'page_obj': page_obj,
+        'form': form,
+        'filter': filterset,  # Include filterset in context for rendering
     }
 
     return render(request, 'app/student/student_course_list.html', context)

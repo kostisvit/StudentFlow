@@ -227,7 +227,7 @@ def vacation_staff_list_view(request):
         vacations = Vacation.objects.filter(user__organization=user.organization)
 
     # Apply filtering from VacationFilter
-    filterset = VacationFilter(request.GET, queryset=vacations)
+    filterset = VacationFilter(request.GET, queryset=vacations,user=request.user)
     filtered_vacations = filterset.qs
 
     # Paginate the results

@@ -52,6 +52,21 @@ class VacationFilter(django_filters.FilterSet):
         class Meta:
             model = Vacation
             fields = ['user','year']
+
+        def __init__(self, *args, **kwargs):
+            user = kwargs.pop('user', None)
+            super().__init__(*args, **kwargs)
+            
+            # Set queryset for organization and user based on the provided user
+            if user and hasattr(user, 'organization'):
+                if user.is_superuser:
+                    # Superuser can see all organizations and users
+                    self.filters['user'].queryset = User.objects.filter(is_staff=True).distinct()
+                else:
+                    self.filters['user'].queryset = User.objects.filter(
+                        organization=user.organization,
+                        is_staff=True  # Assuming you want to filter for staff users only
+                    ).distinct()
     
 
 
