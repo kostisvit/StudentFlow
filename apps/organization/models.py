@@ -2,13 +2,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
 
-# class TimeStampMixin(models.Model):
-#     created_at = models.DateTimeField(default=datetime.now)
-#     updated_at = models.DateTimeField(auto_now=True)
-
-#     class Meta:
-#         abstract = True
-
 class Organization(TimeStampedModel):
     owner_name = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
