@@ -13,12 +13,13 @@
         <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
             <h1 class="text-xl font-bold mb-4 text-center text-red-600">Επιβεβαίωση διαγραφής</h1>
 
-            <p class="text-gray-700 mb-6 text-center">Είστε σίγουρος/η για την διαγραφή του/της υπαλλήλου; <strong>{{ user.last_name }}</strong> <strong>{{ user.first_name }}</strong> </p>
+            <p class="text-gray-700 mb-6 text-center">Είστε σίγουρος/η για την διαγραφή της συνδρομής του μαθητή: <strong>{{ user.last_name }}</strong> <strong>{{ user.first_name }}</strong> 
+            ,με έναρξη στις <strong>{{subscription.start_date|date:'d/m/Y'}} </strong>του μαθήματος<strong> {{subscription.course}}</strong></p>
 
             <form method="post">
                 {% csrf_token %}
                 <div class="flex justify-between">
-                    <a href="{% url 'staff_list' %}" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">
+                    <a href="{% url 'subscriptions_list' %}" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">
                         Cancel
                     </a>
                     <button type="submit" class="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700">

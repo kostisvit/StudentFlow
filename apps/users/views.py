@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
-from django.views.generic.edit import DeleteView
+from django.views.generic.edit import DeleteView, UpdateView
 from django_filters.views import FilterView
 from .filters import UserStaffFillter, DocumentFilter, VacationFilter
 from .models import Document, Vacation, EmployeeDocument
@@ -257,13 +257,24 @@ def vacation_staff_list_view(request):
 
 
 # Staff dele
-class StaffDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
-    model = User
-    template_name = 'app/staff/staff_delete_confirm.html'
-    success_url = reverse_lazy('home') 
+# class StaffDeleteView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
+#     model = User
+#     fields = ['is_active'] 
+#     template_name = 'app/staff/staff_disable_confirm.html'
+#     success_url = reverse_lazy('staff_list') 
+
+#     def form_valid(self, form):
+#         user = form.save(commit=False)
+#         user.is_active = False
+#         user.save()
+#         return super().form_valid(form)
+
+#     def get_object(self):
+#         user_id = self.kwargs.get('pk')
+#         return get_object_or_404(User, id=user_id)
     
-    def test_func(self):
-        return self.request.user.is_company_owner or self.request.user.is_superuser
+#     def test_func(self):
+#         return self.request.user.is_company_owner or self.request.user.is_superuser
 
 #########################################################################################################
 

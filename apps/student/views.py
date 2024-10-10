@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Student
-from .filters import StudentFilter, SubscriptionFilter
+from .filters import StudentFilter, SubscriptionFilter, CourseFilter
 from django_filters.views import FilterView
 from django.views.generic import CreateView, UpdateView,ListView
 from django.views.generic.edit import UpdateView,DeleteView
@@ -111,34 +111,20 @@ class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
     form_class = StudentUserChangeForm
     success_url = reverse_lazy('home')
 
-    # def form_invalid(self, form):
-    #     print(form.errors)
-    #     return super().form_invalid(form)
-    
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
-    
-    # def get_initial(self):
-    #     initial = super().get_initial()
-    #     initial['is_student'] = True  # Set the initial value as needed
-    #     return initial
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['is_student'] = True  # Set the initial value as needed
+        return initial
 
-    # def form_valid(self, form):
-    #     """Override to handle the selected course and assign it to the user."""
-    #     user = form.save(commit=False)
-    #     course = form.cleaned_data.get('course_title')
-    #     user.save()
+    def form_valid(self, form):
+        """Override to handle the selected course and assign it to the user."""
+        user = form.save(commit=False)
+        course = form.cleaned_data.get('course_title')
+        user.save()
     
-    # def form_valid(self, form):
-    #     form.cleaned_data['is_student'] = self.get_initial()['is_student']
-    #     return super().form_valid(form)
-
-    # def form_valid(self, form):
-    #     # Add a success message after a successful form submission
-    #     messages.success(self.request, 'Your form has been changed successfully!')
-    #     return super().form_valid(form)
+    def form_valid(self, form):
+        form.cleaned_data['is_student'] = self.get_initial()['is_student']
+        return super().form_valid(form)
 
 
  
@@ -207,7 +193,29 @@ class SubscriptionEndsListView(LoginRequiredMixin, FilterView):
         return queryset
 
 
-from .filters import CourseFilter
+class SubscriptionUpdateView(LoginRequiredMixin,UpdateView):
+    model = Subscription
+    #fields = '__all__'
+    template_name = 'app/student/subscription_edit.html'
+    form_class = SubscriptionUpdateForm
+    success_url = reverse_lazy('subscriptions_list')
+
+
+    def form_valid(self, form):
+        """Override to handle the selected course and assign it to the user."""
+        user = form.save(commit=False)
+        course = form.cleaned_data.get('course_title')
+        user.save()
+
+
+class SubscriptionDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+    model = Subscription
+    template_name = 'app/student/subscription_delete_confirm.html'
+    success_url = reverse_lazy('subscriptions_list') 
+    
+    def test_func(self):
+        return self.request.user.is_company_owner or self.request.user.is_superuser
+
     
 # Course List with modal creating new course
 def course_list_view(request):

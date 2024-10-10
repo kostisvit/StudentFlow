@@ -98,8 +98,5 @@ class Subscription(TimeStampedModel):
         else:
             raise ValueError("Cannot renew subscription: Payment is not completed.")
     
-    def get_absolute_url_edit(self):
-        return reverse("subscription_edit", args=[str(self.id)])
-    
     def get_absolute_url_delete(self):
         return reverse("subscription_delete", args=[str(self.id)])
