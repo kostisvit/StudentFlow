@@ -104,13 +104,16 @@ class StudentUserCreateView(LoginRequiredMixin,CreateView):
 
 
 # Student update view
-class StudentUserUpdateView(LoginRequiredMixin,UpdateView):
+class StudentUserUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = Student
     #fields = '__all__'
     template_name = 'app/student/student_edit.html'
     form_class = StudentUserChangeForm
     success_url = reverse_lazy('home')
 
+    def test_func(self):
+        return self.request.user.is_company_owner or self.request.user.is_superuser
+    
     def get_initial(self):
         initial = super().get_initial()
         initial['is_student'] = True  # Set the initial value as needed
@@ -193,7 +196,7 @@ class SubscriptionEndsListView(LoginRequiredMixin, FilterView):
         return queryset
 
 
-class SubscriptionUpdateView(LoginRequiredMixin,UpdateView):
+class SubscriptionUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = Subscription
     #fields = '__all__'
     template_name = 'app/student/subscription_edit.html'
@@ -260,7 +263,7 @@ def course_list_view(request):
 
 
 # Course update
-class CourseUpdateView(LoginRequiredMixin,UpdateView):
+class CourseUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = Course
     form_class = CourseUpdateForm
     template_name = 'app/student/student_course_update.html'  # This will be rendered in the modal

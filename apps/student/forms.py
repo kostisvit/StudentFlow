@@ -229,11 +229,11 @@ class CourseForm(forms.ModelForm):
         super(CourseForm, self).__init__(*args, **kwargs)
         if user and user.is_superuser:
             self.fields['organization'].queryset = Organization.objects.all().distinct()
-            self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True).order_by('last_name')
+            self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True,is_active=True).order_by('last_name')
         elif user and hasattr(user, 'organization'):
             self.fields['organization'].queryset = Organization.objects.filter(user=user).distinct()
             # Ensure that the 'user' field (teachers) is always ordered by last name
-            self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True,organization=user.organization).order_by('last_name')
+            self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True,is_active=True,organization=user.organization).order_by('last_name')
 
 #########################################################################################################
 

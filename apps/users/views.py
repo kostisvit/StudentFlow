@@ -93,10 +93,18 @@ class UserStaffView(LoginRequiredMixin,FilterView):
 
 #########################################################################################################
 
+
 # Staff Update Function View
 @login_required
 def staff_update(request, pk):
+    # Retrieve the user object to be updated
     post = get_object_or_404(User, pk=pk)
+
+    # Check if the requesting user is a company owner or superuser
+    if not (request.user.is_company_owner or request.user.is_superuser):
+        return render(request, '403.html', status=403)
+
+    # Handle form submission
     if request.method == "POST":
         form = UserChangeForm(request.POST, instance=post)
         if form.is_valid():
@@ -106,6 +114,8 @@ def staff_update(request, pk):
             return redirect('staff_list')
     else:
         form = UserChangeForm(instance=post)
+
+    # Render the edit form
     return render(request, 'app/staff/staff_edit.html', {'form': form})
 
 #########################################################################################################
