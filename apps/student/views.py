@@ -207,6 +207,8 @@ class SubscriptionUpdateView(LoginRequiredMixin,UpdateView):
         course = form.cleaned_data.get('course_title')
         user.save()
 
+    def test_func(self):
+        return self.request.user.is_company_owner or self.request.user.is_superuser
 
 class SubscriptionDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     model = Subscription
@@ -269,15 +271,17 @@ class CourseUpdateView(LoginRequiredMixin,UpdateView):
         obj = get_object_or_404(Course, pk=self.kwargs['pk'])
         return obj
 
-
-# Delete View
-class StudentDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
-    model = Student
-    template_name = 'app/student/student_confirm_delete.html'
-    success_url = reverse_lazy('home') 
-    
     def test_func(self):
         return self.request.user.is_company_owner or self.request.user.is_superuser
+
+# Delete View
+# class StudentDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+#     model = Student
+#     template_name = 'app/student/student_confirm_delete.html'
+#     success_url = reverse_lazy('home') 
+    
+#     def test_func(self):
+#         return self.request.user.is_company_owner or self.request.user.is_superuser
 
 
 from users.models import Document
