@@ -123,9 +123,9 @@
                     {% csrf_token %}
                     {{ form.as_p }}
                     <div class="mt-4 flex justify-end">
-                        <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50">Αποθήκευση</button>
+                        <button type="submit" id="saveBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50">Αποθήκευση</button>
                     </div>
-                    <p class="text-left text-gray-700" >* Ο αριθμός ημερών άδειας υπολογίζεται αυτόματα</p>
+                    <p class="text-left text-gray-700" >* Ο αριθμός ημερών άδειας υπολογίζεται αυτόματα.</p>
                 </div>
                 </form>
             </div>
@@ -155,4 +155,30 @@
       }
       // window.onload = hideMessage; 
   </script>
+
+  <script>
+    // Function to check date validity and toggle the save button
+    function checkDates() {
+        var startDate = document.getElementById("id_start_date").value;
+        var endDate = document.getElementById("id_end_date").value;
+        var saveBtn = document.getElementById("saveBtn");
+
+        if (startDate && endDate) {
+            // Parse the dates to Date objects for comparison
+            var start = new Date(startDate);
+            var end = new Date(endDate);
+
+            // Disable the save button if end date is earlier than start date
+            if (end < start) {
+                saveBtn.disabled = true;
+            } else {
+                saveBtn.disabled = false;
+            }
+        }
+    }
+
+    // Attach the function to date input fields
+    document.getElementById("id_start_date").addEventListener("input", checkDates);
+    document.getElementById("id_end_date").addEventListener("input", checkDates);
+</script>
 {% endblock %}
