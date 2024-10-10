@@ -16,6 +16,11 @@ django-tailwind = {extras = ["reload"], version = "^3.8.0"}
 node = "^1.2.2"
 django-filter = "^24.3"
 django-widget-tweaks = "^1.5.0"
+psycopg2-binary = "^2.9.9"
+dj-database-url = "^2.2.0"
+whitenoise = {extras = ["brotli"], version = "^6.7.0"}
+gunicorn = "^23.0.0"
+uvicorn = "^0.31.1"
 
 
 [build-system]
