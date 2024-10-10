@@ -213,13 +213,13 @@ class SubscriptionUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     def test_func(self):
         return self.request.user.is_company_owner or self.request.user.is_superuser
 
-class SubscriptionDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
-    model = Subscription
-    template_name = 'app/student/subscription_delete_confirm.html'
-    success_url = reverse_lazy('subscriptions_list') 
+# class SubscriptionDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+#     model = Subscription
+#     template_name = 'app/student/subscription_delete_confirm.html'
+#     success_url = reverse_lazy('subscriptions_list') 
     
-    def test_func(self):
-        return self.request.user.is_company_owner or self.request.user.is_superuser
+#     def test_func(self):
+#         return self.request.user.is_company_owner or self.request.user.is_superuser
 
     
 # Course List with modal creating new course
@@ -286,6 +286,4 @@ class CourseUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
 #     def test_func(self):
 #         return self.request.user.is_company_owner or self.request.user.is_superuser
 
-
-from users.models import Document
 

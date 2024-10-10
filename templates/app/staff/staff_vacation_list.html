@@ -19,11 +19,18 @@
 </div>
 <!--End Buttons-->
 
-{% comment %} {% if vacations_empty %}
-<div class="mt-10 text-center font-mono text-lg font-bold">
-  <p>No vacations found.</p>
-</div>
-{% else %} {% endcomment %}
+<body onload="hideMessage()"> <!-- Call the function on page load -->
+        <!-- Display success messages -->
+        {% if messages %}
+            <div id="success-message" class="mb-4 mt-3">
+                {% for message in messages %}
+                    <div class="bg-green-600 text-white font-bold px-4 py-2 rounded">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
   <div class="hidden sm:block">
     <table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
@@ -44,8 +51,8 @@
         {% for vacation in vacations %}
         <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
         <td class="px-6 py-4" data-label="Ονοματεπώνυμο"><a href="">{{ vacation.user }}</a></td>
-        <td class="px-6 py-4" data-label="Εταιρεία">{{ vacation.start_date|date:"d M Y" }}</td>
-        <td class="px-6 py-4" data-label="Εταιρεία">{{ vacation.end_date|date:"d M Y" }}</td>
+        <td class="px-6 py-4" data-label="Εταιρεία">{{ vacation.start_date|date:"d/m/Y" }}</td>
+        <td class="px-6 py-4" data-label="Εταιρεία">{{ vacation.end_date|date:"d/m/Y" }}</td>
         <td class="px-6 py-4" data-label="Εταιρεία">{{ vacation.days }}</td>
         <td class="px-6 py-4" data-label="Εταιρεία">{{ vacation.user.organization }}</td>
         <td class="px-6 py-4" data-label="Ενέργειες">
@@ -136,4 +143,16 @@
             document.getElementById("staff-vacation-modal").classList.add("hidden");
         }
     </script>
+    <script>
+      // Function to hide the message after a certain duration
+      function hideMessage() {
+          const messageDiv = document.getElementById('success-message');
+          if (messageDiv) {
+              setTimeout(() => {
+                  messageDiv.style.display = 'none';
+              }, 3000); // 3000 milliseconds = 3 seconds
+          }
+      }
+      // window.onload = hideMessage; 
+  </script>
 {% endblock %}

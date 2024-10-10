@@ -21,6 +21,7 @@ dj-database-url = "^2.2.0"
 whitenoise = {extras = ["brotli"], version = "^6.7.0"}
 gunicorn = "^23.0.0"
 uvicorn = "^0.31.1"
+django-encrypted-model-fields = "^0.6.5"
 
 
 [build-system]

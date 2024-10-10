@@ -179,10 +179,10 @@ class VacationStaffForm(forms.ModelForm):
         user = kwargs.pop('user', None)
         super(VacationStaffForm, self).__init__(*args, **kwargs)
         if user and user.is_superuser:
-            self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True).order_by('last_name')
+            self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True,is_active=True).order_by('last_name')
         elif user and hasattr(user, 'organization'):
             # Ensure that the 'user' field (teachers) is always ordered by last name
-            self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True,organization=user.organization).order_by('last_name')
+            self.fields['user'].queryset = get_user_model().objects.filter(is_staff=True,is_active=True,organization=user.organization).order_by('last_name')
             
     def save(self, commit=True):
         # Call the superclass's save method to handle the default saving behavior

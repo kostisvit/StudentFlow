@@ -180,3 +180,5 @@ DEFAULT_FROM_EMAIL = 'your-email@gmail.com'
 
 # Optional settings
 EMAIL_TIMEOUT = 10  # Timeout for the email server connection (in seconds)
+
+ENCRYPTED_MODEL_FIELDS_KEY = '2da4bb4e84de1a950af053d402cbba642d50d8fa54295d89c18b99c8a2f5e84e'

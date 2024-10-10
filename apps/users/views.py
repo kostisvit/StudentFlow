@@ -237,7 +237,7 @@ def vacation_staff_list_view(request):
         vacations = Vacation.objects.filter(user__organization=user.organization)
 
     # Apply filtering from VacationFilter
-    filterset = VacationFilter(request.GET, queryset=vacations,user=request.user)
+    filterset = VacationFilter(request.GET, queryset=vacations, user=request.user)
     filtered_vacations = filterset.qs
 
     # Paginate the results
@@ -247,9 +247,10 @@ def vacation_staff_list_view(request):
 
     # Handle form submission for new vacation (POST request)
     if request.method == 'POST':
-        form = VacationStaffForm(request.POST,user=request.user)
+        form = VacationStaffForm(request.POST, user=request.user)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Επιτυχής καταχώρηση εγγραφής!')  # Add a success message
             return redirect('vacations_list')  # Redirect after saving the form
     else:
         form = VacationStaffForm(user=request.user)

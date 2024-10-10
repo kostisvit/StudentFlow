@@ -32,7 +32,7 @@
           <th scope="col" class="px-6 py-3">Καθηγητής</th>
           <th scope="col" class="px-6 py-3">Μαθητής</th>
           <th scope="col" class="px-6 py-3">Μάθημα</th>
-          <th scope="col" class="px-6 py-3">Κατάσταση</th>
+          <th scope="col" class="px-6 py-3">Is Online?</th>
           <th scope="col" class="px-6 py-3">Έναρξη</th>
           <th scope="col" class="px-6 py-3">Λήξη</th>
           <th scope="col" class="px-6 py-3">Ανανεώθηκε</th>
@@ -45,13 +45,13 @@
           <td class="px-6 py-4" data-label="Καθηγητής"><a href="">{{ user.first_name }} {{ user.last_name }}</a></td>
           <td class="px-6 py-4" data-label="Μαθητής">{{ subscription.student }}</td>
           <td class="px-6 py-4" data-label="Μάθημα">{{ subscription.course }}</td>
-          <td class="px-6 py-4" data-label="Κατάσταση">{{ subscription.is_online }}</td>
+          <td class="px-6 py-4" data-label="Is Online?">{{ subscription.is_online|yesno:"Yes,No" }}</td>
           <td class="px-6 py-4" data-label="Έναρξη">{{ subscription.start_date|date:'d/m/Y' }}</td>
           <td class="px-6 py-4" data-label="Λήξη">{{ subscription.end_date|date:'d/m/Y' }}</td>
           <td class="px-6 py-4" data-label="Ανανεώθηκε">{{ subscription.is_paid|yesno:"Yes,No" }}</td>
           <td class="px-6 py-4" data-label="Ενέργειες">
             <a href="{% url 'subscription_edit' subscription.pk %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800">Edit</a>
-            <a href="{% url 'subscription_delete' subscription.pk  %}" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">Delete</a></td>
+            {% comment %} <a href="{% url 'subscription_delete' subscription.pk  %}" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">Delete</a></td> {% endcomment %}
             {% empty %}
           <tr>
             <td colspan="8" class="border px-4 py-2 text-center">Δεν βρέθηκε καμία συνδρομή.</td>
