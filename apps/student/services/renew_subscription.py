@@ -23,7 +23,5 @@ def renew_subscription(subscription):
         end_date=subscription.end_date + timedelta(days=subscription.days),
         is_paid=subscription.is_paid
         )
-
-    
     new_subscription.save()
     return new_subscription
