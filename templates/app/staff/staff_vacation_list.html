@@ -70,7 +70,7 @@
     <div class="block sm:hidden space-y-4">
           {% for vacation in vacations %}
           <div class="border p-4 rounded-lg shadow-md bg-white">
-              <p><span class="font-bold text-gray-700">Καθηγητής:</span> {{ user.first_name }} {{ user.last_name }}</p>
+              <p><span class="font-bold text-gray-700">Καθηγητής:</span> {{ vacation.user }}</p>
               <p><span class="font-bold text-gray-700">Έναρξη:</span>{{ vacation.start_date|date:"d M Y" }}</p>
               <p><span class="font-bold text-gray-700">Λήξη:</span> {{ vacation.end_date|date:"d M Y" }}</p>
               <p><span class="font-bold text-gray-700">Ημέρες:</span> {{ vacation.days }}</p>
@@ -123,7 +123,7 @@
                     {% csrf_token %}
                     {{ form.as_p }}
                     <div class="mt-4 flex justify-end">
-                        <button type="submit" id="saveBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50">Αποθήκευση</button>
+                        <button type="submit" id="saveBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50 disabled:opacity-50">Αποθήκευση</button>
                     </div>
                     <p class="text-left text-gray-700" >* Ο αριθμός ημερών άδειας υπολογίζεται αυτόματα.</p>
                 </div>

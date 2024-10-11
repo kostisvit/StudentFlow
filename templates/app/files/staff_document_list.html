@@ -100,7 +100,7 @@
         <div class="block sm:hidden space-y-4">
             {% for document in page_obj %}
             <div class="border p-4 rounded-lg shadow-md bg-white">
-                <p><span class="font-bold text-gray-700">User:</span> {{ user.first_name }} {{ user.last_name }}</p>
+                <p><span class="font-bold text-gray-700">User:</span> {{ document.user }}</p>
                 <p><span class="font-bold text-gray-700">Course:</span> {{ document.course }}</p>
                 <p><span class="font-bold text-gray-700">File:</span> {{ document.file.name|filename }}</p>
                 <p><span class="font-bold text-gray-700">Filename:</span> {{ document.filename }}</p>

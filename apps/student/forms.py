@@ -213,11 +213,11 @@ class SubscriptionUpdateForm(ModelForm):
 
 # Course form
 class CourseForm(forms.ModelForm):
-    organization = ModelChoiceField(queryset=Organization.objects.all(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),empty_label='---Επιλέξτε Οργανισμό---',label=False,required=True)
-    user = ModelChoiceField(queryset=get_user_model().objects.order_by('last_name'),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),empty_label='---Επιλέξτε Καθηγητή---',label=False)
-    title = forms.CharField(label=False, widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700','placeholder':'Μάθημα'}),required=True)
-    description = forms.CharField(label=False, widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700','placeholder':'Περιγραφή'}),required=False)
-    is_online = forms.BooleanField(initial=True,label='Κατάσταση',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded',}),required=False)
+    organization = ModelChoiceField(queryset=Organization.objects.all(),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),empty_label='---Επιλέξτε Οργανισμό---',label='Όργανισμός',required=True)
+    user = ModelChoiceField(queryset=get_user_model().objects.order_by('last_name'),widget=forms.Select(attrs={'class': 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),empty_label='---Επιλέξτε Καθηγητή---',label='Κσθηγητής', required=True)
+    title = forms.CharField(widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700'}),label='Μάθημα',required=True)
+    description = forms.CharField(widget=forms.TextInput(attrs={'class':'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700 '}),label='Περιγραφή',required=False)
+    #is_online = forms.BooleanField(initial=True,label='Κατάσταση',widget=forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded'}),required=False)
     class Meta:
         model = Course
         fields = ['organization','user','title', 'description','is_online']

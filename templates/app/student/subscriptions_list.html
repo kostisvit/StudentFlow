@@ -42,7 +42,7 @@
       <tbody>
         {% for subscription in subscriptions %}
         <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-          <td class="px-6 py-4" data-label="Καθηγητής"><a href="">{{ user.first_name }} {{ user.last_name }}</a></td>
+          <td class="px-6 py-4" data-label="Καθηγητής"><a href="">{{subscription.user}}</a></td>
           <td class="px-6 py-4" data-label="Μαθητής">{{ subscription.student }}</td>
           <td class="px-6 py-4" data-label="Μάθημα">{{ subscription.course }}</td>
             {% if subscription.is_online == True %}
@@ -84,7 +84,7 @@
    <div class="block sm:hidden space-y-4">
     {% for subscription in subscriptions %}
     <div class="border p-4 rounded-lg shadow-md bg-white">
-        <p><span class="font-bold text-gray-700">Καθηγητής:</span> {{ user.first_name }} {{ user.last_name }}</p>
+        <p><span class="font-bold text-gray-700">Καθηγητής:</span> {{subscription.user}}</p>
         <p><span class="font-bold text-gray-700">Μαθητής:</span> {{ subscription.student }}</p>
         <p><span class="font-bold text-gray-700">Μάθημα:</span> {{ subscription.course }}</p>
         <p><span class="font-bold text-gray-700">Έναρξη:</span> {{ subscription.start_date|date:'d/m/Y' }}</p>

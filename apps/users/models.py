@@ -42,8 +42,6 @@ class User(TimeStampedModel,AbstractBaseUser, PermissionsMixin):
         MALE = 'M', _('Male')
         FEMALE = 'F', _('Female')
         OTHER = 'O', _('Other')
-    #ompany = models.ForeignKey(Company, on_delete=models.CASCADE,null=True, blank=True)
-    #course = models.ManyToManyField(Course, related_name='staff')
     organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, blank=True)
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30, blank=True)
@@ -51,7 +49,6 @@ class User(TimeStampedModel,AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_company_owner = models.BooleanField(default=False)
-    #date_joined = models.DateTimeField(default=timezone.now)
     date_of_birth = models.DateField(null=True)
     phone_number = models.CharField(max_length=15, unique=True,null=True, blank=True)
     address = models.CharField(max_length=255)
@@ -63,7 +60,6 @@ class User(TimeStampedModel,AbstractBaseUser, PermissionsMixin):
         choices=Gender.choices,
         default=Gender.OTHER,
     )
-    #membership_date = models.DateField(auto_now_add=True)
     first_login = models.BooleanField(default=True)
 
 
@@ -74,9 +70,6 @@ class User(TimeStampedModel,AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f"{self.last_name} {self.first_name}"
-
-    # def get_course_as_string(self):
-    #     return ", ".join(course.title for course in self.course.all())
     
     def get_absolute_url_edit(self):
         return reverse('user_student_edit', args=[str(self.id)])
