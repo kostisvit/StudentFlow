@@ -82,21 +82,16 @@ class Subscription(TimeStampedModel):
     def __str__(self):
         return f"{self.student.user}"
 
-    def save(self, *args, **kwargs):
-        if not self.end_date:
-            self.end_date = timezone.now() + timedelta(days=self.days)
-        
-        super(Subscription, self).save(*args, **kwargs)
+    # A flag to prevent recursion
+    _is_creating_new_subscription = False
 
-    def renew(self):
-        """
-        Calls the renew_subscription function to renew the subscription.
-        """
-        from student.services.renew_subscription import renew_subscription
-        if self.is_paid:
-            renew_subscription(self)
-        else:
-            raise ValueError("Cannot renew subscription: Payment is not completed.")
+    def save(self, *args, **kwargs):
+        # If it's a new subscription or the end_date is not set, calculate the end date
+        if not self.end_date:
+            self.end_date = self.start_date + timezone.timedelta(days=self.days)
+
+        # Save the current subscription without creating any new ones
+        super(Subscription, self).save(*args, **kwargs)
     
     def get_absolute_url_delete(self):
         return reverse("subscription_delete", args=[str(self.id)])

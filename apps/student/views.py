@@ -195,23 +195,39 @@ class SubscriptionEndsListView(LoginRequiredMixin, FilterView):
         queryset = super().get_queryset().filter(end_date__lte=cutoff_date)
         return queryset
 
+from student.services.renew_subscription import renew_subscription
+from django.core.exceptions import PermissionDenied
 
-class SubscriptionUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
-    model = Subscription
-    #fields = '__all__'
-    template_name = 'app/student/subscription_edit.html'
-    form_class = SubscriptionUpdateForm
-    success_url = reverse_lazy('subscriptions_list')
+@login_required
+def subscription_update_view(request, pk):
+    # Fetch the subscription object by ID (or 404 if not found)
+    subscription = get_object_or_404(Subscription, pk=pk)
 
+    # Ensure that the logged-in user has permission to update this subscription (similar to UserPassesTestMixin)
+    if not (request.user.is_company_owner or request.user.is_superuser):
+        raise PermissionDenied("You are not allowed to edit this subscription.")
 
-    def form_valid(self, form):
-        """Override to handle the selected course and assign it to the user."""
-        user = form.save(commit=False)
-        course = form.cleaned_data.get('course_title')
-        user.save()
+    # Handle form submission (POST)
+    if request.method == 'POST':
+        form = SubscriptionUpdateForm(request.POST, instance=subscription)
+        
+        if form.is_valid():
+            # Save the subscription
+            subscription = form.save()
 
-    def test_func(self):
-        return self.request.user.is_company_owner or self.request.user.is_superuser
+            # Renew the subscription if it's paid
+            if subscription.is_paid:
+                new_subscription = renew_subscription(subscription)
+
+            # Redirect to the success page (subscriptions list)
+            return redirect(reverse_lazy('subscriptions_list'))
+    
+    # If GET request, display the form
+    else:
+        form = SubscriptionUpdateForm(instance=subscription)
+
+    # Render the template with the form
+    return render(request, 'app/student/subscription_edit.html', {'form': form})
 
 # class SubscriptionDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
 #     model = Subscription
