@@ -30,6 +30,6 @@ urlpatterns = [
     
     # Staff Documents
     path('users/staff/upload_files/', views.staff_upload_files, name='staff_upload_files'),
-    path('users/staff/documents/list/', StaffDocumentListView.as_view(), name='staff_document_list'),
+    path('users/staff/documents/list/', views.staff_document_list, name='staff_document_list'),
     path('users/staff/documents/delete/<int:pk>/', StaffDocumentDeleteView.as_view(), name='user_document_delete'),
 ]
