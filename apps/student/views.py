@@ -141,7 +141,7 @@ def subscription_list_view(request):
     else:
         queryset = Subscription.objects.none()
 
-    filterset = SubscriptionFilter(request.GET, queryset=queryset)
+    filterset = SubscriptionFilter(request.GET, queryset=queryset,user=request.user)
     filtered_queryset = filterset.qs
 
     paginator = Paginator(filtered_queryset.order_by('-end_date'), 10)  

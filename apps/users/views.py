@@ -179,23 +179,36 @@ def staff_upload_files(request):
 
 
 # Document list
-class StudentDocumentListView(LoginRequiredMixin,FilterView):
-    model = Document
-    template_name = 'app/files/student_document_list.html'
-    filterset_class = DocumentFilter
-    context_object_name = 'documents'
-    paginate_by = 10
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['row_count'] = Document.objects.count()  
-        return context
+@login_required
+def student_document_list(request):
+    # Superuser logic: if superuser, get all documents, otherwise filter by user organization
+    if request.user.is_superuser:
+        queryset = Document.objects.all()
+    else:
+        queryset = Document.objects.filter(
+            user__student__is_student=True,
+            user__is_staff=False,
+            user__student__organization=request.user.organization
+        )
     
-    def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Document.objects.all()  
-        else:
-            return Document.objects.filter(user__student__is_student=True, user__is_staff=False,user__student__organization=self.request.user.organization)
+    # Apply filters
+    document_filter = DocumentFilter(request.GET, queryset=queryset,user=request.user)
+    filtered_queryset = document_filter.qs
+
+    # Paginate the filtered results
+    paginator = Paginator(filtered_queryset, 10)  # Show 10 documents per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Pass context data to the template
+    context = {
+        'documents': page_obj,
+        'filter': document_filter,
+        'row_count': Document.objects.count()  # total number of documents
+    }
+
+    # Render the template with the context
+    return render(request, 'app/files/student_document_list.html', context)
 
 #########################################################################################################
 

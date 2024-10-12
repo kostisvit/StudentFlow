@@ -25,7 +25,7 @@ urlpatterns = [
     
     # Students Documents
     path('students/upload_files/', student_upload_files, name='student_upload_files'),
-    path('students/documents/list/', StudentDocumentListView.as_view(), name='student_document_list'),
+    path('students/documents/list/', views.student_document_list, name='student_document_list'),
     path('students/documents/delete/<int:pk>/', StudentDocumentDeleteView.as_view(), name='student_document_delete'),
     
     # Staff Documents
