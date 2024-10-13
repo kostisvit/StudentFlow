@@ -68,7 +68,7 @@ class UserStaffView(LoginRequiredMixin,FilterView):
         # Add the logged-in user to the context
         context['user'] = self.request.user
         return context
-    
+
     # Override to add the form to the context
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
