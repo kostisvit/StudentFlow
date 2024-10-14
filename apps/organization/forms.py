@@ -9,3 +9,12 @@ class OrganizationForm(ModelForm):
         model = Organization
         fields = '__all__'
         exclude = ['created']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Make the field not required
+        self.fields['address'].required = False
+        self.fields['city'].required = False
+        self.fields['postal_code'].required = False
+        self.fields['country'].required = False
+        self.fields['phone_number'].required = False

@@ -215,7 +215,7 @@ def student_document_list(request):
 @login_required
 def staff_document_list(request):
     if request.user.is_superuser:
-        queryset = EmpolyeeDocument.objects.all()
+        queryset = EmployeeDocument.objects.all()
     else:
         queryset = EmployeeDocument.objects.filter(
             user__is_staff = True,
