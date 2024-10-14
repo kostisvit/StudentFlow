@@ -19,9 +19,9 @@ environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
+ALLOWED_HOSTS = ['127.0.0.1']
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -110,12 +110,13 @@ DATABASES = {
 }
 
 # Deploy DB
-DATABASES = {
-    'default': dj_database_url.config(
-        default=env('DB_PATH'),
-        conn_max_age=600
-    )
-}
+if os.environ.get('DJANGO_ENV') == 'production':
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=env('DB_PATH'),
+            conn_max_age=600
+        )
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
