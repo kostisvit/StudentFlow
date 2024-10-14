@@ -1,7 +1,7 @@
+import dj_database_url
 import os
 import sys
 import environ
-import dj_database_url
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -103,10 +103,16 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': env('DB_PATH', default=os.path.join(BASE_DIR, 'db.sqlite3')),
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
+DATABASES = {
+    'default': dj_database_url.config(
+        default=env('DB_PATH'),
+        conn_max_age=600
+    )
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
