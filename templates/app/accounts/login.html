@@ -1,0 +1,71 @@
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudentFlow.gr</title>
+<link href="{% static 'css/dist/styles.css' %}" rel="stylesheet">
+  
+</head>
+<!-- component -->
+<div class="bg-white flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-sm ">
+    <h1 class="text-center text-5xl font-bold text-indigo-600 animate-bounce">
+      StudentFlow
+    </h1>
+  </div>
+
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <form class="space-y-6" method="POST" action="{% url 'login' %}">
+      {% csrf_token %}
+        {% if form.errors %}
+        <div id="error-message" class="alert alert-error" role="alert">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <p class="font-bold text-white">{{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+      {% endif %}
+      <div>
+        <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
+        <div class="mt-2">
+          <input id="username" name="username"  autocomplete="off" required class="p-4 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+        </div>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between">
+          <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+          <div class="text-sm">
+            {% comment %} <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Ξεχάσατε τον κωδικό σας;</a> {% endcomment %}
+          </div>
+        </div>
+        <div class="mt-2">
+          <input id="password" name="password" type="password" autocomplete="off" required class="p-4 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+        </div>
+      </div>
+
+      <div>
+        <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Είσοδος</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const successMessage = document.getElementById('error-message');
+      if (successMessage) {
+          setTimeout(function() {
+              successMessage.style.opacity = 0;
+              setTimeout(function() {
+                  successMessage.style.display = 'none';
+              }, 600); // Matches the CSS transition time
+          }, 2000); //  seconds
+      }
+  });
+</script>
