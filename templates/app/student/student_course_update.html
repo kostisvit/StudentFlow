@@ -4,11 +4,22 @@
      <button class="absolute top-2 right-2 close-modal-update">✕</button>
 
     <!-- Form -->
-    <h2 class="text-lg font-bold mb-4 text-gray-700">Update Course</h2>
+    <h2 class="text-lg font-bold mb-4 text-gray-700">Ενημέρωση εγγραφής</h2>
     <form method="POST" id="update-form" action="{% url 'course_edit' object.pk %}">
         <div class="space-y-4">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% for field in form %}
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ field.label }}
+                    {% if field.field.required %}
+                    <span class="text-red-500">*</span>
+                    {% endif %}
+                    </label>
+                    {{ field }}
+                    <p class="text-red-500 text-xs italic">{{ field.errors }}</p>
+            </div>
+                    {% endfor %}
             <div class="mt-4 flex justify-end">
                 <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded">Αποθήκευση</button>
             </div>
