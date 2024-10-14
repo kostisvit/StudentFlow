@@ -10,6 +10,3 @@ python manage.py collectstatic --no-input
 
 # Apply any outstanding database migrations
 python manage.py migrate
-
-# Run Server with deploy settings
-python manage.py runserver --settings=config.settings_deploy
