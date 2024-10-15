@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'users',
     'organization',
     'student',
+    'pages',
     
     #External
     'django_extensions',
