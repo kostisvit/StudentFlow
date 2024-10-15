@@ -82,6 +82,16 @@ class Subscription(TimeStampedModel):
     def __str__(self):
         return f"{self.student.user}"
 
+    @property
+    def days_active(self):
+        delta = self.end_date - self.start_date
+        return delta.days
+
+    @property
+    def is_short_term(self):
+        # Returns True if the subscription is 15 days or shorter
+        return self.days_active <=10
+
     # A flag to prevent recursion
     _is_creating_new_subscription = False
 
