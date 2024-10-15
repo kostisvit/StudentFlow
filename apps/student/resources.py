@@ -31,3 +31,22 @@ class StudentExportResource(resources.ModelResource):
             'date_of_birth': {'format': '%d/%m/%Y'},
             'membership_date': {'format': '%d/%m/%Y'},
         }
+
+    def __init__(self, *args, request=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.request = request 
+        
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        
+        if self.request.user.is_authenticated:
+            if self.request.user.is_superuser:
+                return queryset.filter(user__student__is_student=True)
+            # Get the organization ID from the request user
+            organization_id = self.request.user.organization.id
+            return queryset.filter(
+                user__student__is_student=True, 
+                user__organization__id=organization_id
+            )
+        else:
+            return queryset.none() 
