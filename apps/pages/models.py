@@ -12,7 +12,7 @@ class UpdateInfo(TimeStampedModel):
         verbose_name_plural = _('Αναβαθμίσεις')
   
     def __str__(self):
-      return self.update_version
+      return self.update_info
 
 class UpdateVersion(TimeStampedModel):
     version = models.CharField(max_length=50, blank=True, null=True)

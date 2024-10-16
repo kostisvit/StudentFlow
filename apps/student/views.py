@@ -147,6 +147,12 @@ def subscription_list_view(request):
     paginator = Paginator(filtered_queryset.order_by('-end_date'), 10)  
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    try:
+        page_obj = paginator.page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
 
     
     if request.method == 'POST':
@@ -158,7 +164,7 @@ def subscription_list_view(request):
         form = SubscriptionForm(user=request.user)
 
     context = {
-        'subscriptions': page_obj,  # Paged and filtered subscription list
+        'page_obj': page_obj,  # Paged and filtered subscription list
         'form': form,               # Subscription form
         'filter': filterset          # Filter for search/filter UI
     }
