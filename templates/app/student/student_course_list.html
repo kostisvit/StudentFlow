@@ -26,7 +26,7 @@
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
         <div class="hidden sm:block">
-        <!-- Course List Section -->
+            <!-- Course List Section -->
             <table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                     <tr>
@@ -67,16 +67,18 @@
                 </tbody>
             </table>
         </div>
+        <!-- Cards for smaller screens -->
         <div class="block sm:hidden space-y-4">
-        {% for course in page_obj %}
-        <div class="border p-4 rounded-lg shadow-md bg-white">
-            <p><span class="font-bold text-gray-700">Τίτλος:</span> {{ course.title }}</p>
-            <p><span class="font-bold text-gray-700">Περιγραφή:</span> {{ course.description }}</p>
-            <p><span class="font-bold text-gray-700">Καθηγητής:</span> {{ course.user }}</p>
-            <p><span class="font-bold text-gray-700">Οργανισμός:</span> {{ course.organization }}</p>
-            <p><span class="font-bold text-gray-700">Is Online?:</span> {{ course.is_online|yesno:"Yes,No" }}</p>
+            {% for course in page_obj %}
+                <div class="border p-4 rounded-lg shadow-md bg-white">
+                    <p><span class="font-bold text-gray-700">Τίτλος:</span> {{ course.title }}</p>
+                    <p><span class="font-bold text-gray-700">Περιγραφή:</span> {{ course.description }}</p>
+                    <p><span class="font-bold text-gray-700">Καθηγητής:</span> {{ course.user }}</p>
+                    <p><span class="font-bold text-gray-700">Οργανισμός:</span> {{ course.organization }}</p>
+                    <p><span class="font-bold text-gray-700">Is Online?:</span> {{ course.is_online|yesno:"Yes,No" }}</p>
+                </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 
 

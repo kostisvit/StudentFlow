@@ -21,11 +21,7 @@
 </div>
 <!--End Buttons-->
 
-{% if students_empty %}
-<div class="mt-10 text-center font-mono text-lg font-bold">
-  <p>Δεν βρέθηκε καμία εγγραφή.</p>
-</div>
-{% else %}
+
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
     <div class="hidden sm:block">
         <table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
@@ -79,7 +75,8 @@
                 {% endfor %}
             </tbody>
         </table>
-        <div>
+      </div>
+
             <!-- Cards for smaller screens -->
             <div class="block sm:hidden space-y-4">
                 {% for student in page_obj %}
@@ -95,8 +92,8 @@
                 </div>
                 {% endfor %}
             </div>
-        </div>
-{% endif %}
+
+          </div>
 
 <!-- Centered Pagination Controls -->
 <div class="flex justify-center items-center mt-6 space-x-2">
