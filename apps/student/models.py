@@ -39,8 +39,8 @@ class Student(TimeStampedModel):
 
     class Meta:
         ordering = ['user']
-        verbose_name = _('Student')
-        verbose_name_plural = _('Student')
+        verbose_name = _('Μαθητές')
+        verbose_name_plural = _('Μαθητές')
 
 
 class Course(TimeStampedModel):
@@ -52,6 +52,11 @@ class Course(TimeStampedModel):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        ordering = ['title']
+        verbose_name = _('Μαθήματα')
+        verbose_name_plural = _('Μαθήματα')
 
 
 
@@ -78,6 +83,11 @@ class Subscription(TimeStampedModel):
     days = models.PositiveIntegerField(default=30)
     end_date = models.DateField(editable=False)
     is_paid = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['start_date']
+        verbose_name = _('Εγγραφές')
+        verbose_name_plural = _('Εγγραφές')
 
     def __str__(self):
         return f"{self.student.user}"

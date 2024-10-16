@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from .models import UpdateInfo
 
 #fake view for testing
@@ -9,10 +10,14 @@ def fake_view(request):
     return HttpResponse("This is a fake view for testing purposes.")
 
 
-class HomePageView(LoginRequiredMixin,TemplateView):
-  template_name = 'home.html'
+
+@login_required
+def homePageView(request):
+    user = request.user  # get the logged-in user
+    return render(request, 'home.html', {'user': user})
 
 
+@login_required
 def update_info_view(request):
     # Fetch all update info records
     updates = UpdateInfo.objects.select_related('update_version').all()
