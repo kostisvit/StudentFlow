@@ -2,26 +2,27 @@ from django.contrib import admin
 from .models import Student, Course, Subscription, Enrollment
 
 class StudentModelAdmin(admin.ModelAdmin):
-    list_display = ("user","organization","course","is_student","membership_number","created","modified")
-    list_filter = ("organization","is_student")
+    list_display = ("id","user","organization","course","is_student","membership_number","created","modified")
+    list_filter = ("organization","is_student","course")
     readonly_fields = ('membership_number',)
     search_fields = ("user",)
     ordering = ("user",)
 
 
 class CourseModelAdmin(admin.ModelAdmin):
-    list_display = ("title","description","is_online","organization","created","modified")
+    list_display = ("id","title","description","is_online","organization","created","modified")
     list_display_links = ("title","description",)
+    list_filter = ('is_online',)
 
 
 class EnrollmentAdmin(admin.ModelAdmin):
-    list_display = ('user', 'course', 'enrollment_date', 'is_online')
+    list_display = ('id','user', 'course', 'enrollment_date', 'is_online')
     list_filter = ('is_online', 'course')
     search_fields = ('user__email', 'course__name')
 
 class SubscriptionModelAdmin(admin.ModelAdmin):
-    list_display = ("user","student","course","is_online","formatted_start_date","is_paid","formatted_end_date","created","modified")
-    list_filter = ("student",)
+    list_display = ("id","user","student","course","is_online","formatted_start_date","is_paid","formatted_end_date","created","modified")
+    list_filter = ("student","is_online","is_paid","course")
     readonly_fields = ()
 
     # Override the save_model method to handle renew logic

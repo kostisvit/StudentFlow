@@ -48,7 +48,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for document in page_obj %}
+                    {% for document in documents %}
                     <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                     <td class="px-6 py-4" data-label="Μαθητής"><a href="">{{ document.user }}</a></td>
                     <td class="px-6 py-4" data-label="Μάθημα">{{ document.course }}</td>
@@ -68,7 +68,7 @@
             </table>
         </div>
         <div class="block sm:hidden space-y-4">
-            {% for document in page_obj %}
+            {% for document in documents %}
             <div class="border p-4 rounded-lg shadow-md bg-white">
                 <p><span class="font-bold text-gray-700">User:</span>{{ document.user }}</p>
                 <p><span class="font-bold text-gray-700">Course:</span> {{ document.course }}</p>

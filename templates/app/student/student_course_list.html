@@ -35,7 +35,7 @@
                         <th scope="col" class="px-6 py-3">Καθηγητής</th>
                         <th scope="col" class="px-6 py-3">Οργανισμός</th>
                         <th scope="col" class="px-6 py-3">Is Online?</th>
-                        <th scope="col" class="px-6 py-3">Actions</th>
+                        <th scope="col" class="px-6 py-3">Ενέργειες</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,7 +73,7 @@
                 <div class="border p-4 rounded-lg shadow-md bg-white">
                     <p><span class="font-bold text-gray-700">Τίτλος:</span> {{ course.title }}</p>
                     <p><span class="font-bold text-gray-700">Περιγραφή:</span> {{ course.description }}</p>
-                    <p><span class="font-bold text-gray-700">Καθηγητής:</span> {{ course.user }}</p>
+                    <p><span class="font-bold text-gray-700">Καθηγητής:</span> {{ course.user|default_if_none:"-" }}</p>
                     <p><span class="font-bold text-gray-700">Οργανισμός:</span> {{ course.organization }}</p>
                     <p><span class="font-bold text-gray-700">Is Online?:</span> {{ course.is_online|yesno:"Yes,No" }}</p>
                 </div>

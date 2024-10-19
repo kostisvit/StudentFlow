@@ -23,7 +23,7 @@ class UserAdmin(UserAdmin):
     add_form = UserCreationForm
     form = UserChangeForm
     model = User
-    list_display = ('email', 'first_name', 'last_name', 'is_staff', 'is_active','gender','is_company_owner','organization')
+    list_display = ('id','email', 'first_name', 'last_name', 'is_staff', 'is_active','gender','is_company_owner','organization')
     list_filter = ('is_staff', 'is_active')
     readonly_fields = ()
     fieldsets = (
@@ -43,11 +43,11 @@ class UserAdmin(UserAdmin):
 
 
 class EmployeeDocumentAdmin(admin.ModelAdmin):
-    list_display = ('user','course','file','filename')
+    list_display = ('id','user','course','file','filename')
 
 class VacationsAdmin(admin.ModelAdmin):
     readonly_fields = ('days',)  # Make 'days' read-only
-    list_display = ('user', 'start_date', 'end_date', 'days')
+    list_display = ('id','user', 'start_date', 'end_date', 'days')
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Document)

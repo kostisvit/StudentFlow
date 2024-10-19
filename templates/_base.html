@@ -1,4 +1,6 @@
+{% load custom_tags %}
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -150,7 +152,10 @@
                 </div>
                  <!-- App Version Section -->
             <div class="px-4 py-4 text-center text-xs font-bold text-gray-700 dark:text-white mb-20">
-                App Version: <span id="app-version">1.0.0</span></br>
+                {% get_latest_update_version as latest_version %}
+                    {% if latest_version %} 
+                App Version: <span id="app-version">{{ latest_version.version }}</span></br>
+                    {% endif %}
                 {% if user.is_authenticated %}
                 {{ user.organization.title }}</br>
                 {% endif %}
