@@ -63,19 +63,15 @@ class UserStaffView(LoginRequiredMixin,FilterView):
 
     # Pass the logged-in user to the form
     def get_context_data(self, **kwargs):
-        # Get the base context from the base implementation
         context = super().get_context_data(**kwargs)
-        # Add the logged-in user to the context
         context['user'] = self.request.user
         return context
 
-    # Override to add the form to the context
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = UserCreationForm()  # Inject the form into the context
+        context['form'] = UserCreationForm()
         return context
 
-    # Handle form submission (manual post method for CreateView functionality)
     def post(self, request, *args, **kwargs):
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -104,7 +100,6 @@ def staff_update(request, pk):
     if not (request.user.is_company_owner or request.user.is_superuser):
         return render(request, '403.html', status=403)
 
-    # Handle form submission
     if request.method == "POST":
         form = UserChangeForm(request.POST, instance=post)
         if form.is_valid():
@@ -115,7 +110,6 @@ def staff_update(request, pk):
     else:
         form = UserChangeForm(instance=post)
 
-    # Render the edit form
     return render(request, 'app/staff/staff_edit.html', {'form': form})
 
 #########################################################################################################
@@ -153,20 +147,17 @@ def staff_upload_files(request):
         form = StaffFileForm(request.POST, request.FILES, logged_in_user=logged_in_user)
 
         if form.is_valid():
-            # Extract valid data
             selected_user = form.cleaned_data['user']
             filename = form.cleaned_data['filename']
             course = form.cleaned_data['course']
             files = form.cleaned_data['file']  
 
-            # Iterate through files and create EmployeeDocument entries
             for file in files:
                 EmployeeDocument.objects.create(user=selected_user, file=file, filename=filename, course=course)
 
             messages.success(request, 'Files uploaded successfully!')
             return redirect('staff_upload_files')  
         else:
-            # Log errors to the console
             print("Form Errors:", form.errors)
             messages.error(request, 'Please correct the errors below and try again.')
 
@@ -181,7 +172,6 @@ def staff_upload_files(request):
 # Document list
 @login_required
 def student_document_list(request):
-    # Superuser logic: if superuser, get all documents, otherwise filter by user organization
     if request.user.is_superuser:
         queryset = Document.objects.all()
     else:
@@ -191,23 +181,19 @@ def student_document_list(request):
             user__student__organization=request.user.organization
         )
     
-    # Apply filters
     document_filter = DocumentFilter(request.GET, queryset=queryset,user=request.user)
     filtered_queryset = document_filter.qs
 
     # Paginate the filtered results
-    paginator = Paginator(filtered_queryset, 10)  # Show 10 documents per page
+    paginator = Paginator(filtered_queryset, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # Pass context data to the template
     context = {
         'documents': page_obj,
         'filter': document_filter,
-        'row_count': Document.objects.count()  # total number of documents
+        'row_count': Document.objects.count()
     }
-
-    # Render the template with the context
     return render(request, 'app/files/student_document_list.html', context)
 
 #########################################################################################################
@@ -225,42 +211,19 @@ def staff_document_list(request):
     employee_document_filter = DocumentFilter(request.GET, queryset=queryset, user=request.user)
     filtered_queryset = employee_document_filter.qs 
     
-    paginator = Paginator(filtered_queryset, 10)  # Show 10 documents per page
+    paginator = Paginator(filtered_queryset, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
     context = {
         'documents': page_obj,
         'filter': employee_document_filter,
-        'row_count': Document.objects.count()  # total number of documents
+        'row_count': Document.objects.count()
     }
 
     # Render the template with the context
     return render(request, 'app/files/staff_document_list.html', context)
 
-
-# Staff Document list
-# class StaffDocumentListView(LoginRequiredMixin,FilterView):
-#     model = EmployeeDocument
-#     template_name = 'app/files/staff_document_list.html'
-#     filterset_class = DocumentFilter
-#     context_object_name = 'documents'
-#     paginate_by = 10
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         if self.request.user.is_superuser:
-#             context['row_count_superuser'] = EmployeeDocument.objects.all().count()  
-#             return context
-#         else:
-#             context['row_count'] = EmployeeDocument.objects.filter(user__organization=self.request.user.organization).count()  
-#             return context
-    
-#     def get_queryset(self):
-#         if self.request.user.is_superuser:
-#             return EmployeeDocument.objects.all() 
-#         else:
-#             return EmployeeDocument.objects.filter(user__organization=self.request.user.organization)
 
 #########################################################################################################
 
@@ -270,32 +233,28 @@ def vacation_staff_list_view(request):
     # Get the current user
     user = request.user
 
-    # Filter queryset based on the user type
     if user.is_superuser:
         vacations = Vacation.objects.all()
     else:
         vacations = Vacation.objects.filter(user__organization=user.organization)
 
-    # Apply filtering from VacationFilter
     filterset = VacationFilter(request.GET, queryset=vacations, user=request.user)
     filtered_vacations = filterset.qs
 
     # Paginate the results
-    paginator = Paginator(filtered_vacations, 10)  # 10 vacations per page
+    paginator = Paginator(filtered_vacations, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # Handle form submission for new vacation (POST request)
     if request.method == 'POST':
         form = VacationStaffForm(request.POST, user=request.user)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Επιτυχής καταχώρηση εγγραφής!')  # Add a success message
-            return redirect('vacations_list')  # Redirect after saving the form
+            messages.success(request, 'Επιτυχής καταχώρηση εγγραφής!')
+            return redirect('vacations_list')
     else:
         form = VacationStaffForm(user=request.user)
 
-    # Context to be passed to the template
     context = {
         'vacations': page_obj,
         'form': form,

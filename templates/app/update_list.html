@@ -2,5 +2,39 @@
 
 
 {% block content %}
-
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+      <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <h1 class="text-xl text-center font-bold p-4 bg-indigo-600 text-white">Αναβαθμίσεις εφαρμογής</h1>
+        <div class="grid grid-cols-2 gap-4 p-4">
+          {% for version, data  in grouped_updates.items %}
+            <!-- Left Column: Version -->
+            <div class="w-full p-4 bg-gradient-to-r from-gray-200 to-gray-50 rounded-lg grid grid-cols-2">
+                <!-- Left Column: Label (Έκδοση) -->
+                <div class="text-left pr-4">
+                  <p class="text-lg font-semibold text-gray-700">Ημ. Έκδοσης</p>
+                  <p class="text-gray-700">{{ data.created|date:"m/d/Y" }}</p>
+                </div>
+              
+                <!-- Right Column: Version Value -->
+                <div class="text-left pl-4">
+                    <p class="text-lg font-semibold text-gray-700">Έκδοση</p>
+                  <p class="text-gray-700">{{ version }}</p>
+                </div>
+              </div>
+            
+            <!-- Right Column: Update Information -->
+            <div class="w-full p-4 bg-gray-50 rounded-lg">
+              <p class="text-lg text-center font-semibold text-gray-700">Χαρακτηριστικά αναβάθμισης</p>
+              <ul class="list-disc list-inside">
+                {% for info in data.infos %}
+                  <li class="text-gray-700">{{ info }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </body>
 {% endblock %}

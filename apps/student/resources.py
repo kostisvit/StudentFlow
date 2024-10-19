@@ -4,18 +4,51 @@ from import_export.widgets import ForeignKeyWidget
 
 from users.models import User
 
+
+# class UserForeignKeyWidget(ForeignKeyWidget):
+
+#     def clean(self, value, row=None, *args, **kwargs):
+#         # Assuming the value format is "Last Name, First Name"
+#         last_name, first_name = value.split(', ')
+#         return self.model.objects.get(user__last_name=last_name, user__first_name=first_name)
+
+#     def render(self, value, obj=None):
+#         # Return "Last Name, First Name" when exporting
+#         return f"{value.user.last_name}, {value.user.first_name}"
+        
+
 class SubscriptionResource(resources.ModelResource):
     course = fields.Field(column_name='course',attribute='course',widget=ForeignKeyWidget(Course, 'title'))
     student = fields.Field(column_name='student', attribute='student', widget=ForeignKeyWidget(User, 'user__last_name'))
     
     class Meta:
         model = Subscription
-        fields = ('student','course','start_date','end_date')
-        export_order = ('student','course','start_date','end_date')
+        fields = ('user__first_name', 'user__last_name','student','course','start_date','end_date','user__last_name','is_online')
+        export_order = ('student','course','start_date','end_date','user','is_online')
         widgets = {
             'start_date': {'format': '%d/%m/%Y'},
             'end_date': {'format': '%d/%m/%Y'},
         }
+
+    # def __init__(self, *args, request=None, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.request = request 
+        
+    # def get_queryset(self):
+    #     queryset = super().get_queryset()
+        
+    #     if self.request.user.is_authenticated:
+    #         if self.request.user.is_superuser:
+    #             return queryset.filter(user__student__is_student=True)
+    #         # Get the organization ID from the request user
+    #         organization_id = self.request.user.organization.id
+    #         return queryset.filter(
+    #             user__student__is_student=True, 
+    #             user__organization__id=organization_id
+    #         )
+    #     else:
+    #         return queryset.none() 
+
 
 
 class StudentExportResource(resources.ModelResource):
@@ -31,3 +64,22 @@ class StudentExportResource(resources.ModelResource):
             'date_of_birth': {'format': '%d/%m/%Y'},
             'membership_date': {'format': '%d/%m/%Y'},
         }
+
+    def __init__(self, *args, request=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.request = request 
+        
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        
+        if self.request.user.is_authenticated:
+            if self.request.user.is_superuser:
+                return queryset.filter(user__student__is_student=True)
+            # Get the organization ID from the request user
+            organization_id = self.request.user.organization.id
+            return queryset.filter(
+                user__student__is_student=True, 
+                user__organization__id=organization_id
+            )
+        else:
+            return queryset.none() 

@@ -68,6 +68,10 @@ class User(TimeStampedModel,AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
+    class Meta:
+        verbose_name = _('Χρήστες')
+        verbose_name_plural = _('Χρήστες')
+
     def __str__(self):
         return f"{self.last_name} {self.first_name}"
     
@@ -92,6 +96,10 @@ class Document(TimeStampedModel):
     course = models.ForeignKey(Course, on_delete=models.CASCADE,blank=True, null=True)
     file = models.FileField(upload_to=student_directory_path,validators=[validate_file_extension,file_size_validator])
     filename = models.CharField(max_length=255, blank=True)
+
+    class Meta:
+        verbose_name = _('Αρχεία χρηστών')
+        verbose_name_plural = _('Αρχεία χρηστών')
     
     def __str__(self):
         return f"{self.user.email} - {self.file.name}"
@@ -112,6 +120,10 @@ class EmployeeDocument(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, blank=True, null=True)
     file = models.FileField(upload_to=user_directory_path, validators=[validate_file_extension,file_size_validator])
     filename = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        verbose_name = _('Αρχεία προσωπικού')
+        verbose_name_plural = _('Αρχεία προσωπικού')
     
     def __str__(self):
         return f"{self.user.email} - {self.file.name}"
@@ -130,8 +142,8 @@ class Vacation(TimeStampedModel):
     days = models.PositiveIntegerField(default=0, editable=False)
     
     class Meta:
-        verbose_name = 'Vacations'
-        verbose_name_plural = 'Vacations'
+        verbose_name = _('Άδειες προσωπικού')
+        verbose_name_plural = _('Άδειες προσωπικού')
 
     def save(self, *args, **kwargs):
         

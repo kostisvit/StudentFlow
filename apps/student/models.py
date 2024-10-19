@@ -39,8 +39,8 @@ class Student(TimeStampedModel):
 
     class Meta:
         ordering = ['user']
-        verbose_name = _('Student')
-        verbose_name_plural = _('Student')
+        verbose_name = _('Μαθητές')
+        verbose_name_plural = _('Μαθητές')
 
 
 class Course(TimeStampedModel):
@@ -51,7 +51,12 @@ class Course(TimeStampedModel):
     is_online = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.title
+        return f"{self.title} με τον/την {self.user}"
+
+    class Meta:
+        ordering = ['title']
+        verbose_name = _('Μαθήματα')
+        verbose_name_plural = _('Μαθήματα')
 
 
 
@@ -79,8 +84,23 @@ class Subscription(TimeStampedModel):
     end_date = models.DateField(editable=False)
     is_paid = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ['start_date']
+        verbose_name = _('Εγγραφές')
+        verbose_name_plural = _('Εγγραφές')
+
     def __str__(self):
         return f"{self.student.user}"
+
+    @property
+    def days_active(self):
+        delta = self.end_date - self.start_date
+        return delta.days
+
+    @property
+    def is_short_term(self):
+        # Returns True if the subscription is 15 days or shorter
+        return self.days_active <=10
 
     # A flag to prevent recursion
     _is_creating_new_subscription = False

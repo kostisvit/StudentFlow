@@ -3,6 +3,7 @@ import os
 import sys
 import environ
 from pathlib import Path
+from django.conf import settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,9 +20,9 @@ environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['www.studentflow.gr']
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'users',
     'organization',
     'student',
+    'pages',
     
     #External
     'django_extensions',
@@ -102,12 +104,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 # Local DB
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+
+
 
 # Deploy DB
 DATABASES = {
@@ -115,6 +113,14 @@ DATABASES = {
             default=env('DB_PATH'),
             conn_max_age=600
         )
+    }
+    
+    # Check if the environment is in DEBUG mode
+if settings.DEBUG:
+    # Override with development database settings
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),  # Local SQLite database
     }
 
 # Password validation

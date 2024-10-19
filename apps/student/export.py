@@ -6,13 +6,13 @@ from django.contrib.auth.decorators import login_required
 
 # Subscription export
 @login_required
-def Export_data_subscription(request):
+def subscriptions_export_data(request):
     if request.method == 'POST':
         file_format = request.POST['file-format']
         #user = request.user
-        student_resource = SubscriptionResource()
+        subscription_resource = SubscriptionResource()
 
-        dataset = student_resource.export()
+        dataset = subscription_resource.export()
         if file_format == 'CSV':
             response = HttpResponse(dataset.csv, content_type='text/csv')
             response['Content-Disposition'] = 'attachment; filename="Subscrioptions_list.csv"'
@@ -22,7 +22,7 @@ def Export_data_subscription(request):
             response['Content-Disposition'] = 'attachment; filename="Subscrioptions_list.json"'
             return response
         elif file_format == 'XLS (Excel)':
-            response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+            response = HttpResponse(dataset.export('xlsx'), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
             response['Content-Disposition'] = 'attachment; filename="Subscrioptions_list.xls"'
             return response   
 
@@ -31,12 +31,12 @@ def Export_data_subscription(request):
 
 
 @login_required
-def Student_Export_data(request):
+def student_Export_data(request):
     if request.method == 'POST':
 
         file_format = request.POST['file-format']
         #user = request.user
-        student_resource = StudentExportResource()
+        student_resource = StudentExportResource(request=request)
 
         dataset = student_resource.export()
         if file_format == 'CSV':
@@ -48,8 +48,8 @@ def Student_Export_data(request):
             response['Content-Disposition'] = 'attachment; filename="Student_list.json"'
             return response
         elif file_format == 'XLS (Excel)':
-            response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
-            response['Content-Disposition'] = 'attachment; filename="Student_list.xls"'
+            response = HttpResponse(dataset.export('xlsx'), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response['Content-Disposition'] = 'attachment; filename="Student_list.xlsx"'
             return response   
 
     return render(request, 'app/student/student_export.html')
