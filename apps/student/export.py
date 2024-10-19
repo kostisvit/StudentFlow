@@ -6,13 +6,13 @@ from django.contrib.auth.decorators import login_required
 
 # Subscription export
 @login_required
-def Export_data_subscription(request):
+def subscriptions_export_data(request):
     if request.method == 'POST':
         file_format = request.POST['file-format']
         #user = request.user
-        student_resource = SubscriptionResource()
+        subscription_resource = SubscriptionResource()
 
-        dataset = student_resource.export()
+        dataset = subscription_resource.export()
         if file_format == 'CSV':
             response = HttpResponse(dataset.csv, content_type='text/csv')
             response['Content-Disposition'] = 'attachment; filename="Subscrioptions_list.csv"'
@@ -31,7 +31,7 @@ def Export_data_subscription(request):
 
 
 @login_required
-def Student_Export_data(request):
+def student_Export_data(request):
     if request.method == 'POST':
 
         file_format = request.POST['file-format']
