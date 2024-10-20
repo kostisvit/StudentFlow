@@ -50,6 +50,8 @@ class SubscriptionModelAdmin(admin.ModelAdmin):
     formatted_end_date.short_description = 'End Date'
     
 
+
+
 admin.site.register(Student,StudentModelAdmin)
 admin.site.register(Course,CourseModelAdmin)
 admin.site.register(Enrollment,EnrollmentAdmin)

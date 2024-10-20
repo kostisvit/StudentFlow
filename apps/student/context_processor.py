@@ -21,14 +21,14 @@ def subscriptions_count(request):
 
 
 # subscription count
-def subscriptions_closing_soon(request):
+def subscriptions_expired(request):
     # Define the threshold for "closing soon" (e.g., 15 days)
     today = timezone.now().date()
-    end_date_threshold = today + timedelta(days=15)
+    end_date_threshold = today + timedelta(days=30)
 
-    count = Subscription.objects.filter(end_date__lte=end_date_threshold, is_online=True).count()
+    count = Subscription.objects.filter(end_date__lte=timezone.now().date()).count()
 
-    return {'subscription_closing_soon': count}
+    return {'subscriptions_expired': count}
 
 
 # course count

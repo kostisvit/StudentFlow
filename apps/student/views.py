@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Student
+from .models import Student, Subscription
 from .filters import StudentFilter, SubscriptionFilter, CourseFilter
 from django_filters.views import FilterView
 from django.views.generic import CreateView, UpdateView,ListView
@@ -174,24 +174,24 @@ def subscription_list_view(request):
 #########################################################################################################
 
 # Subscriptions ending date list
-class SubscriptionEndsListView(LoginRequiredMixin, FilterView):
-    model = Subscription
-    filterset_class = SubscriptionFilter
-    template_name = 'app/student/subscription_ends_list.html'
-    context_object_name = 'subscriptions'
-    paginate_by = 10
+# class SubscriptionEndsListView(LoginRequiredMixin, FilterView):
+#     model = Subscription
+#     filterset_class = SubscriptionFilter
+#     template_name = 'app/student/subscription_ends_list.html'
+#     context_object_name = 'subscriptions'
+#     paginate_by = 10
 
 
-    def get_filterset_kwargs(self, filterset_class):
-        kwargs = super().get_filterset_kwargs(filterset_class)
-        kwargs['user'] = self.request.user
-        return kwargs
+#     def get_filterset_kwargs(self, filterset_class):
+#         kwargs = super().get_filterset_kwargs(filterset_class)
+#         kwargs['user'] = self.request.user
+#         return kwargs
     
-    def get_queryset(self):
-        today = timezone.now().date()
-        cutoff_date = today + timedelta(days=15)
-        queryset = super().get_queryset().filter(end_date__lte=cutoff_date)
-        return queryset
+#     def get_queryset(self):
+#         today = timezone.now().date()
+#         cutoff_date = today + timedelta(days=15)
+#         queryset = super().get_queryset().filter(end_date__lte=cutoff_date)
+#         return queryset
 
 
 #########################################################################################################
@@ -295,4 +295,11 @@ class CourseUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
 #     def test_func(self):
 #         return self.request.user.is_company_owner or self.request.user.is_superuser
 
-
+from django.utils import timezone
+def expired_subscriptions_view(request):
+    # Get all expired subscriptions
+    expired_subscriptions = Subscription.objects.filter(end_date__lte=timezone.now().date())
+    # Pass the expired subscriptions to the template
+    return render(request, 'app/student/subscription_ends_list.html', {
+        'expired_subscriptions': expired_subscriptions,
+    })

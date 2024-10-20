@@ -20,7 +20,7 @@ environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
@@ -90,7 +90,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'users.context_processor.users_count',
                 'student.context_processor.subscriptions_count',
-                'student.context_processor.subscriptions_closing_soon',
+                'student.context_processor.subscriptions_expired',
                 'student.context_processor.course_count'
             ],
         },

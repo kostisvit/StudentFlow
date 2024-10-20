@@ -73,6 +73,7 @@ class Enrollment(models.Model):
         return f"{self.user.email} enrolled in {self.course.title}"
 
 
+from .subscription_helpers import is_subscription_expired
 
 class Subscription(TimeStampedModel):
     user = models.ForeignKey("users.User", on_delete=models.CASCADE)
@@ -92,18 +93,36 @@ class Subscription(TimeStampedModel):
     def __str__(self):
         return f"{self.student.user}"
 
-    @property
-    def days_active(self):
-        delta = self.end_date - self.start_date
-        return delta.days
+    def save(self, *args, **kwargs):
+            # On creation, set the end_date to 'start_date + duration' days
+            if not self.end_date:
+                self.end_date = self.start_date + timedelta(days=self.days)
+            super().save(*args, **kwargs)
 
-    @property
-    def is_short_term(self):
-        # Returns True if the subscription is 15 days or shorter
-        return self.days_active <=10
+    def is_expired(self):
+            # Use the helper function to check if the subscription is expired
+        return is_subscription_expired(self.end_date)
 
-    # A flag to prevent recursion
-    _is_creating_new_subscription = False
+    # def mark_expired(self):
+    #         # Use the helper function to mark the subscription as expired
+    #     mark_subscription_expired(self)
+
+    def __str__(self):
+        return f"Subscription: {self.start_date} to {self.end_date}, Status: {self.is_online}"
+
+
+    # @property
+    # def days_active(self):
+    #     delta = self.end_date - self.start_date
+    #     return delta.days
+
+    # @property
+    # def is_short_term(self):
+    #     # Returns True if the subscription is 15 days or shorter
+    #     return self.days_active <=15
+
+    # # A flag to prevent recursion
+    # _is_creating_new_subscription = False
 
     def save(self, *args, **kwargs):
         # If it's a new subscription or the end_date is not set, calculate the end date
