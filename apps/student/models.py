@@ -51,7 +51,7 @@ class Course(TimeStampedModel):
     is_online = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.title} με τον/την {self.user}" if self.user else f"{self.title}"
+        return f"{self.title} - {self.user}" if self.user else f"{self.title}"
 
     class Meta:
         ordering = ['title']
