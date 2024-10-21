@@ -117,11 +117,25 @@ DATABASES = {
     
     # Check if the environment is in DEBUG mode
 if settings.DEBUG:
-    # Override with development database settings
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),  # Local SQLite database
-    }
+        DATABASES = {
+
+            'default': {
+
+                'ENGINE': 'django.db.backends.postgresql_psycopg2',
+
+                'NAME': 'local',
+
+                'USER': 'postgres',
+
+                'PASSWORD': 'passw0rd',
+
+                'HOST': 'localhost',
+
+                'PORT': '5432',
+
+            }
+
+        }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -167,8 +181,8 @@ if not DEBUG:
     # and renames the files with unique names for each version to support long-term caching
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -198,4 +212,16 @@ DEFAULT_FROM_EMAIL = 'your-email@gmail.com'
 # Optional settings
 EMAIL_TIMEOUT = 10  # Timeout for the email server connection (in seconds)
 
-ENCRYPTED_MODEL_FIELDS_KEY = '2da4bb4e84de1a950af053d402cbba642d50d8fa54295d89c18b99c8a2f5e84e'
+
+
+
+
+# AWS S3 settings
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_S3_FILE_OVERWRITE = False
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'

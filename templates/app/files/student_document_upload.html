@@ -57,9 +57,10 @@
                 <!-- Submit Button -->
                 <div>
                     <button type="submit" id="upload-button" class="w-full py-2 px-4 bg-indigo-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-700 disabled:opacity-50" disabled>Upload</button>
+                    <p class="text-left text-gray-700" >* Επιτρεπόμενα αρχεία με κατάληξη .pdf, .doc, .docs, .xls, .xlsx. Μέγιστο μέγεθος αρχείου 10MB.</p>
                 </div>
             </form>
-            <p class="text-left text-gray-700" >* Επιτρεπόμενα αρχεία με κατάληξη .pdf, .doc, .docs, .xls, .xlsx. Μέγιστο μέγεθος αρχείου 10MB.</p>
+
         </div>
     </div>
 </body>
@@ -78,7 +79,7 @@
             }
         });
     </script>
-    <script>
+    {% comment %} <script>
         // Select the message container
         const messageContainer = document.getElementById('message-container');
         // Set a timeout to fade out messages after 3 seconds
@@ -94,5 +95,5 @@
                 }, 600); // Match the duration of the opacity transition
             });
         }, 3000); // 3000 ms = 3 seconds
-    </script>
+    </script> {% endcomment %}
 {% endblock %}

@@ -128,10 +128,10 @@ def student_upload_files(request):
             file = request.FILES.getlist('file')
             for file in file:
                 Document.objects.create(user=selected_user, file=file,filename=filename,course=course)
-            messages.success(request, 'Files uploaded successfully!')
-            return redirect('student_upload_files')  
-        else:
-            messages.error(request, 'Please correct the errors below and try again.')
+            # messages.success(request, 'Files uploaded successfully!')
+            return redirect('student_document_list')  
+        # else:
+        #     messages.error(request, 'Please correct the errors below and try again.')
     else:
         form = StudentFileForm(logged_in_user=logged_in_user)
 
@@ -155,11 +155,11 @@ def staff_upload_files(request):
             for file in files:
                 EmployeeDocument.objects.create(user=selected_user, file=file, filename=filename, course=course)
 
-            messages.success(request, 'Files uploaded successfully!')
-            return redirect('staff_upload_files')  
-        else:
-            print("Form Errors:", form.errors)
-            messages.error(request, 'Please correct the errors below and try again.')
+            # messages.success(request, 'Files uploaded successfully!')
+            return redirect('staff_document_list')  
+        # else:
+        #     print("Form Errors:", form.errors)
+        #     messages.error(request, 'Please correct the errors below and try again.')
 
     else:
         form = StaffFileForm(logged_in_user=logged_in_user)
