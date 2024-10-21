@@ -143,7 +143,7 @@ def subscription_list_view(request):
     filterset = SubscriptionFilter(request.GET, queryset=queryset,user=request.user)
     filtered_queryset = filterset.qs
 
-    paginator = Paginator(filtered_queryset.order_by('-end_date'), 10)  
+    paginator = Paginator(filtered_queryset.order_by('student'), 10)  
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     try:
@@ -244,7 +244,7 @@ def course_list_view(request):
     filterset = CourseFilter(request.GET, queryset=queryset,user=request.user)
     filtered_queryset = filterset.qs
 
-    paginator = Paginator(filtered_queryset.order_by('-title'), 10)
+    paginator = Paginator(filtered_queryset.order_by('title'), 10)
     page_number = request.GET.get('page')
     
     try:

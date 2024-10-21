@@ -37,8 +37,8 @@
           <th colspan="8" class="text-center text-2xl font-bold">Συνδρομές Μαθητών</th>
         </tr>
         <tr>
-          <th scope="col" class="px-6 py-3">Καθηγητής</th>
           <th scope="col" class="px-6 py-3">Μαθητής</th>
+          <th scope="col" class="px-6 py-3">Καθηγητής</th>
           <th scope="col" class="px-6 py-3">Μάθημα</th>
           <th scope="col" class="px-6 py-3">Is Online?</th>
           <th scope="col" class="px-6 py-3">Έναρξη</th>
@@ -54,8 +54,8 @@
           {% else %}
           <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
           {% endif %}
-          <td class="px-6 py-4" data-label="Καθηγητής"><a href="">{{subscription.user}}</a></td>
           <td class="px-6 py-4" data-label="Μαθητής">{{ subscription.student }}</td>
+          <td class="px-6 py-4" data-label="Καθηγητής"><a href="">{{subscription.user}}</a></td>
           <td class="px-6 py-4" data-label="Μάθημα">{{ subscription.course }}</td>
             {% if subscription.is_online == True %}
           <td class="flex justify-center items-center h-10" data-label="Κατάσταση"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="text-green-600 size-6">

@@ -82,9 +82,9 @@ class UserStaffView(LoginRequiredMixin,FilterView):
     def get_queryset(self):
         queryset = super().get_queryset()
         if  self.request.user.is_superuser:
-            queryset = get_user_model().objects.filter(is_staff=True)
+            queryset = get_user_model().objects.filter(is_staff=True).order_by('last_name')
         else:
-            queryset = queryset.filter(is_staff=True,organization=self.request.user.organization)
+            queryset = queryset.filter(is_staff=True,organization=self.request.user.organization).order_by('last_name')
         return queryset
 
 #########################################################################################################

@@ -42,7 +42,7 @@
                     {% for course in page_obj %}
                     <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                         <td class="px-6 py-4" data-label="Τίτλος">{{ course.title }}</td>
-                        <td class="px-6 py-4" data-label="Περιγραφή">{{ course.description }}</td>
+                        <td class="px-6 py-4" data-label="Περιγραφή">{{ course.description|default:" - " }}</td>
                         <td class="px-6 py-4" data-label="Καθηγητής">{{ course.user|default:" - " }}</td>
                         <td class="px-6 py-4" data-label="Οργανισμός">{{ course.organization }}</td>
                             {% if course.is_online == True %}
